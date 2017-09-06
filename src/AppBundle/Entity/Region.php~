@@ -1,0 +1,68 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+/**
+ * Region
+ *
+ * @ORM\Table(name="region")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RegionRepository")
+ */
+class Region
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
+     */
+    private $code;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Department", mappedBy="region")
+     */
+    private $departments;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column( type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $visible;
+
+}
+

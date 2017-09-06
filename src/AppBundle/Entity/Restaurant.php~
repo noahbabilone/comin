@@ -1,0 +1,106 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Restaurant
+ *
+ * @ORM\Table(name="restaurant")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RestaurantRepository")
+ */
+class Restaurant
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Evaluation")
+     * @Assert\NotBlank()
+     */
+    private $evaluation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Offer")
+     * @Assert\NotBlank()
+     */
+    private $offer;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Menu")
+     * @Assert\NotBlank()
+     */
+    private $menu;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Card")
+     * @Assert\NotBlank()
+     */
+    private $card;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="speciality", type="string", length=255, nullable=true)
+     */
+    private $speciality;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="onTheSpot", type="boolean", nullable=true)
+     */
+    private $onTheSpot;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rite", type="string", length=255, nullable=true)
+     */
+    private $rite;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="OpeningHours", type="datetime")
+     */
+    private $openingHours;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
+     */
+    private $dateCreated;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $visible;
+
+}
+

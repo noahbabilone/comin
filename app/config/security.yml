@@ -1,0 +1,56 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+# app/config/security.yml
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_CUSTOMER:       ROLE_USER
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+    providers:
+        main_providers:
+            id: fos_user.user_provider.username_email         
+#            id: fos_user.user_provider.username          
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main_login:
+            pattern:   ^/login$
+            anonymous: true
+#        wsse_secured:
+#            pattern:   ^/api/
+#            stateless:    true
+#            wsse: true
+#            anonymous : true
+        main:
+            pattern:   ^/
+            anonymous: true
+            provider:  main_providers
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                require_previous_session: false
+
+#                default_target_path: /user
+            logout:
+                path:   fos_user_security_logout
+                target: /
+            remember_me:
+                secret:     %secret%
+                lifetime: 1800 # 30 min
+                path: /login$
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/account/reset/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/account/validation/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user-action/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        Access API 
+        - { path: ^/api/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api-documentation.html, role: ROLE_ADMIN }     
+        - { path: ^/, role:  IS_AUTHENTICATED_REMEMBERED }
+#        - { path: ^/account/, role: ROLE_ADMIN, requires_channel: https }
