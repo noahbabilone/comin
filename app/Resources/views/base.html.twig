@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %} B2B {% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name=""/>
+    <meta content="" name="B2B"/>
+    <meta content="" name="YanNs"/>
+
+    {% block stylesheets %}
+        {#<!-- BEGIN GLOBAL MANDATORY STYLES -->#}
+        {% stylesheets
+        'public/assets/global/plugins/font-awesome/css/font-awesome.min.css'
+        'public/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
+        'public/assets/global/plugins/bootstrap/css/bootstrap.min.css'
+        'public/assets/global/plugins/jquery-ui/jquery-ui.min.css'
+        filter='cssrewrite' %}
+        {#<!-- END GLOBAL MANDATORY STYLES -->#}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+
+    {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>#}
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+{% block body %}{% endblock %}
+{% block javascripts %}
+    {#<!-- BEGIN CORE PLUGINS -->#}
+    {% javascripts
+    'public/assets/global/plugins/jquery.min.js'
+    'public/assets/global/plugins/jquery-ui/jquery-ui.min.js'
+    'public/assets/global/plugins/bootstrap/js/bootstrap.min.js'
+    "public/assets/global/plugins/js.cookie.min.js"
+    "bundles/fosjsrouting/js/router.js" %}
+    {#<!-- END CORE PLUGINS -->#}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    {#"assets/vendor/jquery/dist/jquery.min.js"#}
+{% endblock %}</body>
 </html>

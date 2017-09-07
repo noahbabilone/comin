@@ -1,0 +1,84 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    <form class="login-form"
+          action="{{ path("fos_user_security_check") }}" method="post">
+        <h3 class="form-title">Connexion </h3>
+        <div class="alert alert-danger display-hide">
+            <button class="close" data-close="alert"></button>
+            <span> Veuillez saisir votre login et mot de passer.</span>
+        </div>
+        {% if error %}
+            <div class="alert alert-danger">
+                <button class="close" data-close="alert"></button>
+                <span> {{ error.messageKey|trans(error.messageData, 'security') }}</span>
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+            <label class="control-label visible-ie8 visible-ie9">{{ 'security.login.username'|trans }}</label>
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
+                       placeholder="{{ 'security.login.username'|trans }}" name="_username"
+                       value="{{ last_username }}"/></div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{{ 'security.login.password'|trans }}</label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off"
+                       placeholder="{{ 'security.login.password'|trans }}" name="_password"/></div>
+        </div>
+        <div class="form-actions">
+            <label class="rememberme mt-checkbox mt-checkbox-outline">
+                <input type="checkbox" name="remember" value="1"/> {{ 'security.login.remember_me'|trans }}
+                <span></span>
+            </label>
+            <a href="javascript:;" id="forget-password" class="pull-right">Mot de passe oublié ?</a>
+
+
+            {#<input type="submit" id="_submit" name="_submit" class="btn green pull-right btn-block"#}
+            {#value="{{ 'security.login.submit'|trans }}"/>#}
+            <button type="submit"
+                    class="btn red-mint pull-right btn-block"> {{ 'security.login.submit'|trans }}</button>
+        </div>
+
+        <div class="form-group">
+
+        </div>
+
+        <div class="forget-password">
+        </div>
+    </form>
+    <!-- END LOGIN FORM -->
+    <!-- BEGIN FORGOT PASSWORD FORM -->
+    <form class="forget-form" action="" method="post">
+        <h3 class="form-title">Mot de passe oublié ?</h3>
+        <div class="alert alert-danger display-hide">
+            <button class="close" data-close="alert"></button>
+            <span>Aucun compte n'est associé à cette adresse e-mail.</span>
+        </div>
+
+
+        <div class="form-group">
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
+                       placeholder="E-mail" name="email" id="input_email"/></div>
+        </div>
+        <div class="form-actions">
+            <button type="button" id="back-btn" class="btn red btn-outline">Retour</button>
+            <button type="submit" class="btn green pull-right btn-forget-form"> Envoyer</button>
+        </div>
+        <input type="hidden" value="0" id="heck_email">
+        <p class="form-subtitle" style="padding-left: 0px !important;">Saisissez votre adresse e-mail pour
+            réinitialiser
+            votre mot de passe.
+            Vous devrez peut-être consulter votre dossier de spams ou autoriser no-reply@contact.com.</p>
+    </form>
+
+    <!-- END FORGOT PASSWORD FORM -->
+
+</div>

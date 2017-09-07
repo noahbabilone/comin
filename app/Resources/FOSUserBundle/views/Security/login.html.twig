@@ -1,0 +1,88 @@
+{#{% extends "@FOSUser/layout.html.twig" %}#}
+
+{#{% block fos_user_content %}#}
+    {#{{ include('@FOSUser/Security/login_content.html.twig') }}#}
+{#{% endblock fos_user_content %}#}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Comin' | Connexion</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="" name="Comin'"/>
+    <meta content="" name="YanNs"/>
+    {% block stylesheets %}
+        {% stylesheets
+        'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all'
+        'public/assets/global/plugins/font-awesome/css/font-awesome.min.css'
+        'public/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
+        'public/assets/global/plugins/bootstrap/css/bootstrap.min.css'
+        'public/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'
+
+        'public/assets/global/plugins/select2/css/select2.min.css'
+        'public/assets/global/plugins/select2/css/select2-bootstrap.min.css'
+
+        'public/assets/global/css/components.min.css'
+        'public/assets/global/css/plugins.min.css'
+
+        'public/assets/pages/css/login-2.css'
+        filter='cssrewrite' %}
+        
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>#}
+</head>
+<body class="login">
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+
+    {% block fos_user_content %}
+        <div class="logo">
+            <h2 class="sbold "><span class="font-white">Com</span><span class="font-red">In'</span></h2>
+            {#<h2 class="sbold"><span class="font-white">B</span><span class="font-red-mint">2</span><span class="font-white">B</span></h2>#}
+            {#<img src="{{ asset('public/assets/pages/img/logo-big.png') }}" alt=""/>#}
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN LOGIN -->
+        {{ include('@FOSUser/Security/login_content.html.twig') }}
+        <!-- END LOGIN -->
+        <!-- BEGIN COPYRIGHT -->
+        <div class="copyright"><a href="" class="font-white">ComIn'</a> {{ "now"|date("Y") }} &copy;
+            Tous droits réservés
+        </div>
+
+    {% endblock fos_user_content %}
+{% endblock body %}
+
+{% block javascripts %}
+    {% javascripts
+    'public/assets/global/plugins/jquery.min.js'
+    'public/assets/global/plugins/bootstrap/js/bootstrap.min.js'
+    'public/assets/global/plugins/js.cookie.min.js'
+        
+    'public/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'
+    'public/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js'
+    'public/assets/global/plugins/jquery.blockui.min.js'
+    'public/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'
+
+    'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+    'public/assets/global/plugins/select2/js/select2.full.min.js'
+
+    'public/assets/global/scripts/app.min.js'
+    'public/assets/pages/scripts/login.js'
+
+    "bundles/fosjsrouting/js/router.js" %}
+    {#<!-- END CORE PLUGINS -->#}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+{% endblock %}
+</body>
+</html>
