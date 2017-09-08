@@ -1,0 +1,31 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{#Include CSS#}
+  {% block stylesheets %}
+      {{ parent() }}
+      {% stylesheets
+      filter='cssrewrite' %}
+      <link rel="stylesheet" href="{{ asset_url }}"/>
+      {% endstylesheets %}
+  {% endblock stylesheets %}
+
+
+{% block title %}
+    Dashboard |  {{ parent() }}
+{% endblock %}
+
+
+ {% block header_breadcrumb %}
+     <li>
+         <span>Dashboard</span>
+     </li>
+ {% endblock header_breadcrumb %}
+
+
+{% block action_toolbar %}
+{% endblock action_toolbar %}
+
+
+{% block back_body %}
+                
+{% endblock back_body %}
