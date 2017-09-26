@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace tests\appbundle\controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use symfony\bundle\frameworkbundle\test\webtestcase;
 
-class DefaultControllerTest extends WebTestCase
+class defaultcontrollertest extends webtestcase
 {
-    public function testIndex()
+    public function testindex()
     {
-        $client = static::createClient();
+        $client = static::createclient();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('get', '/login');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        $this->assertequals(200, $client->getresponse()->getstatuscode());
+        $this->assertcontains('comin', $crawler->filter('.logo h2')->text());
     }
 }

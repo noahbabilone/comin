@@ -1,0 +1,102 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+ {% endblock stylesheets %}
+
+
+{% block title %}    Mon Compte |  {{ parent() }} {% endblock %}
+
+{% block header_breadcrumb %}
+    <li>
+        <span>Mon Compte</span>
+    </li>
+{% endblock header_breadcrumb %}
+
+{% block action_toolbar %} {% if app.user.lastLogin is defined and app.user.lastLogin %}
+    <div class="page-toolbar font-grey-silver">
+        <small><i class="fa fa-clock-o"></i> Dernière
+            connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>
+    </div>
+{% endif %}{% endblock action_toolbar %}
+{% block back_body %}
+
+    <div class="row" id="page_account">
+        {#<div class="col-md-12 col-sm-12 col-xs-12">#}
+        <div class="portlet light">
+
+
+            <div class="portlet-body">
+                <div class="tabbable-line tabbable-full-width">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#profile" data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_account_password') }}" data-toggle="tab"><i class="fa fa-key"></i> Mot de passe </a>
+                        </li>
+                        <li>
+                            <a href="" data-toggle="tab"><i class="fa fa-users"></i> Utilisateurs</a>
+                        </li> 
+                        <li>
+                            <a href="" data-toggle="tab"><i class="fa fa-info"></i> Aide</a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div id="" class="tab-pane active">
+                            {{ form_start(form, {'attr': {'id': 'form_validation','autocomplete':'off'}}) }}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    {% if form.lastName is defined %}
+                                        {{ form_row(form.lastName) }}
+                                    {% endif %}
+                                    {% if form.firstName is defined %}
+                                        {{ form_row(form.firstName) }}
+                                    {% endif %}
+                                    {% if form.phone is defined %}
+                                        {{ form_row(form.phone) }}
+                                    {% endif %}
+                                    {% if form.homePhone is defined %}
+                                        {{ form_row(form.homePhone) }}
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-12">
+                                    <hr>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="col-sm-3 ">
+                                        <button type="submit"
+                                                id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                    class="fa fa-save"></span>
+                                            Enregistrer
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <a href="{{ path('app_account_edit') }}"
+                                           id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                    class="fa fa-remove"></span>
+                                            Annuler
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#</div>#}
+    </div>
+
+{% endblock back_body %}
+
