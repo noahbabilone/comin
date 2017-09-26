@@ -62,13 +62,10 @@ class UserType extends AbstractType
         ));
     }
 
-//    public function getParent()
-//    {
-//        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
-//
-//        // Or for Symfony < 2.8
-//        // return 'fos_user_registration';
-//    }
+    public function getParent()
+    {
+        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+    }
 
 
     /**
@@ -79,5 +76,10 @@ class UserType extends AbstractType
         return 'appbundle_user';
     }
 
+    // For Symfony 2.x
+    public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
 
 }

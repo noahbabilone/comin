@@ -28,28 +28,47 @@
     <div class="row" id="page_account">
         {#<div class="col-md-12 col-sm-12 col-xs-12">#}
         <div class="portlet light">
-
-
+            {% set action=app.request.query.get("q") %}
             <div class="portlet-body">
                 <div class="tabbable-line tabbable-full-width">
                     <ul class="nav nav-tabs">
-                        <li class="active">
+                        <li {% if action == null or action =="edit" or
+                            ( action !="_password" and  action !="_users") %}class="active" {% endif %} >
                             <a href="#profile" data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
                         </li>
-                        <li>
-                            <a href="{{ path('app_account_password') }}" data-toggle="tab"><i class="fa fa-key"></i> Mot de passe </a>
+                        <li {% if action =="_password" %}class="active" {% endif %} >
+                            <a href="#password" data-toggle="tab"><i class="fa fa-key"></i> Mot
+                                de passe </a>
                         </li>
-                        <li>
+                        <li {% if action =="_users" %}class="active" {% endif %} >
                             <a href="" data-toggle="tab"><i class="fa fa-users"></i> Utilisateurs</a>
-                        </li> 
-                        <li>
+                        </li>
+                        <li {% if action =="help" %}class="active" {% endif %} >
                             <a href="" data-toggle="tab"><i class="fa fa-info"></i> Aide</a>
                         </li>
 
                     </ul>
+
+
                     <div class="tab-content">
-                        <div id="" class="tab-pane active">
-                            {{ form_start(form, {'attr': {'id': 'form_validation','autocomplete':'off'}}) }}
+                        {% if app.request.hasPreviousSession %}
+                            <div class="row">
+                                {% for type, messages in app.session.flashbag.all() %}
+                                    {% for message in messages %}
+                                        <div class="col-md-12">
+                                            <div class="alert alert-{{ type }} alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-hidden="true"></button>
+                                                <strong>{{ type }}</strong>
+                                                {{ message }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div id="profile" class="tab-pane active">
+                            {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
                             <div class="row">
                                 <div class="col-sm-6">
                                     {% if form.lastName is defined %}
@@ -58,12 +77,22 @@
                                     {% if form.firstName is defined %}
                                         {{ form_row(form.firstName) }}
                                     {% endif %}
+                                    {% if form.email is defined %}
+                                        {{ form_row(form.email) }}
+                                    {% endif %}
+
+                                    {% if form.username is defined %}
+                                        {{ form_row(form.username) }}
+                                    {% endif %}
                                     {% if form.phone is defined %}
                                         {{ form_row(form.phone) }}
                                     {% endif %}
                                     {% if form.homePhone is defined %}
                                         {{ form_row(form.homePhone) }}
                                     {% endif %}
+
+                                    {{ form_widget(form) }}
+
                                 </div>
                                 <div class="col-sm-12">
                                     <hr>
@@ -88,6 +117,45 @@
                             </div>
 
 
+                            {{ form_end(form) }}
+                        </div>
+
+                        <div id="password" class="tab-pane">
+                            {{ form_start(formPassword, {'action': path('app_account_edit'), 'attr': {'id': 'app_account_edit','autocomplete':'off'}}) }}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    {#   {% if form.current_password is defined %}
+                                           {{ form_row(form.current_password ) }}
+                                       {% endif %}
+                                       {% if form.plainPassword is defined %}
+                                           {{ form_row(form.plainPassword ) }}
+                                       {% endif %}
+                                       {% if form._token is defined %}
+                                           {{ form_row(form._token ) }}
+                                       {% endif %}#}
+                                    {{ form_widget(formPassword) }}
+                                </div>
+                                <div class="col-sm-12">
+                                    <hr>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="col-sm-3 ">
+                                        <button type="submit"
+                                                id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                    class="fa fa-save"></span>
+                                            Enregistrer
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <a href="{{ path('app_account_edit') }}"
+                                           id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                    class="fa fa-remove"></span>
+                                            Annuler
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
                             {{ form_end(form) }}
                         </div>
                     </div>
