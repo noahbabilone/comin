@@ -18,10 +18,10 @@
 {% endblock header_breadcrumb %}
 
 {% block action_toolbar %} {% if app.user.lastLogin is defined and app.user.lastLogin %}
-    <div class="page-toolbar font-grey-silver">
-        <small><i class="fa fa-clock-o"></i> Dernière
-            connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>
-    </div>
+    {#<div class="page-toolbar font-grey-silver">#}
+    {#<small><i class="fa fa-clock-o"></i> Dernière#}
+    {#connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>#}
+    {#</div>#}
 {% endif %}{% endblock action_toolbar %}
 {% block back_body %}
 
@@ -47,7 +47,6 @@
                         {#<li {% if action =="help" %}class="active" {% endif %} >
                             <a href="" data-toggle="tab"><i class="fa fa-info"></i> Aide</a>
                         </li>#}
-
                     </ul>
 
 
@@ -70,7 +69,7 @@
                         {% endif %}
                         <div id="profile"
                              {% if (action == null and page == null) or ( action =="edit" and page == null) or
-                            ( action !="_password" and  action !="_users" and page == null) %}class="tab-pane active" {% else %} class="tab-pane"{% endif %}
+                             ( action !="_password" and  action !="_users" and page == null) %}class="tab-pane active" {% else %} class="tab-pane"{% endif %}
                         >
                             {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
                             <div class="row">
@@ -164,7 +163,7 @@
                             </div>
                             {{ form_end(form) }}
                         </div>
-                        <div id="users" {% if action =="_users" or page != null%} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
+                        <div id="users" {% if action =="_users" or page != null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
                             {% if users is defined %}
                                 <div class="row">
                                     <div class="col-md-12">
@@ -184,11 +183,23 @@
                                             {#{{ dump(users) }}#}
                                             {% for user in users %}
                                                 <tr>
-                                                    <td>{{ user.lastName | capitalize | escape }}{{ user.firstName |capitalize }}</td>
+                                                    <td>{{ user.lastName | upper | escape }} {{ user.firstName |capitalize }}</td>
                                                     <td>{{ user.username }}</td>
                                                     <td>{{ user.email }}</td>
-                                                    <td>{{ user.created | date('d/m/Y', "Europe/Paris") }}</td>
-                                                    <td>{{ user.lastLogin | date('d/m/Y à H:m', "Europe/Paris") }}</td>
+                                                    <td>
+                                                        {% if user.created is defined and user.created %}
+                                                            {{ user.created | date('d/m/Y', "Europe/Paris") }}
+                                                        {% else %}
+                                                            <span class="text-center"> -- </span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if user.created is defined and user.created %}
+                                                            {{ user.lastLogin | date('d/m/Y à H:m', "Europe/Paris") }}
+                                                        {% else %}
+                                                            <span class="text-center"> -- </span>
+                                                        {% endif %}
+                                                    </td>
                                                     <td>
                                                         {% if user.enabled is defined and user.enabled %}
                                                             <span class="label label-success label-sm"><i
