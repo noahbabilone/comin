@@ -1,1 +1,1 @@
-.alert-success {    color: #3c763d;    background-color: #dff0d8;    border-color: #d6e9c6;}
+.alert-success {    color: #3c763d;    background-color: #dff0d8;    border-color: #d6e9c6;}.label-success {    background-color: #00b600;}/* Kpn paginator */.pager > li > a {    color: #393939;}pager > .active > a, .pager > .active > a:focus,.pager > .active > a:hover, .pager > .active > span, .pager > .active > span:focus,.pager > .active > span:hover {    background-color: #32b2bf !important;    border-color: #32b2bf;    color: #fff;}

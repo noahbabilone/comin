@@ -31,21 +31,31 @@ class AccountController extends Controller
      */
     public function editAction(Request $request)
     {
-        $em = $this->ge
 
 //        $user = $this->get('security.token_storage')->getToken()->getUser();
-
         $user = $this->getUser();
+
 //        dump($user) or die;
 
         if (!is_object($user) || !$user instanceof User) {
             //throw new AccessDeniedException('This user does not have access to this section.');
             return $this->redirectToRoute('fos_user_security_logout');
         }
+        $numberPage = 1;
+        $arrShow = array(10, 20, 50, 100);  // CHOIX DU NOMBRE D AFFICHAGE PAR PAGE
+        $limitPage = ($request->get('show') !== null && in_array($request->get('show'), $arrShow)) ? $request->get('show') : 10;
 
+
+        $em = $this->getDoctrine()->getManager();
+        $results = $em->getRepository('AppBundle:User')->findByCreator($user);
+
+        $users = $this->get('knp_paginator')->paginate(
+            $results,
+            $request->query->getInt('page', $numberPage),
+            $limitPage
+        );
         //$form = $this->createForm(UserType::class, $user);
         //$form->handleRequest($request);
-
         /** @var $dispatcher EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
 
@@ -68,9 +78,6 @@ class AccountController extends Controller
 
 //        dump($form->createView()) or die;
         if ($form->isSubmitted() && $form->isValid()) {
-//            dump($form, $user);
-//            die("Edit info");
-
             /** @var $userManager UserManagerInterface */
             $userManager = $this->get('fos_user.user_manager');
             $userManager->updateUser($user);
@@ -79,7 +86,7 @@ class AccountController extends Controller
                 'Your changes were saved!'
             );
             return $this->redirectToRoute('app_account_edit', array('q' => 'edit'), 301);
-            
+
             /* $event = new FormEvent($form, $request);
              $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
              dump($event->getResponse()); die;
@@ -116,7 +123,11 @@ class AccountController extends Controller
             /** @var $userManager UserManagerInterface */
             $userManager = $this->get('fos_user.user_manager');
             $userManager->updateUser($user);
-
+            $this->addFlash(
+                'success',
+                'Your changes were saved!'
+            );
+            
             return $this->redirectToRoute('app_account_edit', array('q' => '_password'), 301);
 
             /* $event = new FormEvent($formPassword, $request);
@@ -134,6 +145,7 @@ class AccountController extends Controller
         return $this->render('AppBundle:Account:edit.profile.html.twig', array(// ...
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView(),
+            'users' => $users,
 
         ));
     }

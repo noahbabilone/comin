@@ -29,23 +29,24 @@
         {#<div class="col-md-12 col-sm-12 col-xs-12">#}
         <div class="portlet light">
             {% set action=app.request.query.get("q") %}
+            {% set page =app.request.query.get("page") %}
             <div class="portlet-body">
                 <div class="tabbable-line tabbable-full-width">
                     <ul class="nav nav-tabs">
-                        <li {% if action == null or action =="edit" or
-                            ( action !="_password" and  action !="_users") %}class="active" {% endif %} >
+                        <li {% if (action == null and page == null) or ( action =="edit" and page == null) or
+                            ( action !="_password" and  action !="_users" and page == null) %}class="active" {% endif %} >
                             <a href="#profile" data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
                         </li>
                         <li {% if action =="_password" %}class="active" {% endif %} >
                             <a href="#password" data-toggle="tab"><i class="fa fa-key"></i> Mot
                                 de passe </a>
                         </li>
-                        <li {% if action =="_users" %}class="active" {% endif %} >
-                            <a href="" data-toggle="tab"><i class="fa fa-users"></i> Utilisateurs</a>
+                        <li {% if action =="_users" or page != null %}class="active" {% endif %} >
+                            <a href="#users" data-toggle="tab"><i class="fa fa-users"></i> Utilisateurs</a>
                         </li>
-                        <li {% if action =="help" %}class="active" {% endif %} >
+                        {#<li {% if action =="help" %}class="active" {% endif %} >
                             <a href="" data-toggle="tab"><i class="fa fa-info"></i> Aide</a>
-                        </li>
+                        </li>#}
 
                     </ul>
 
@@ -67,7 +68,10 @@
                                 {% endfor %}
                             </div>
                         {% endif %}
-                        <div id="profile" class="tab-pane active">
+                        <div id="profile"
+                             {% if (action == null and page == null) or ( action =="edit" and page == null) or
+                            ( action !="_password" and  action !="_users" and page == null) %}class="tab-pane active" {% else %} class="tab-pane"{% endif %}
+                        >
                             {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
                             <div class="row">
                                 <div class="col-sm-6">
@@ -120,19 +124,21 @@
                             {{ form_end(form) }}
                         </div>
 
-                        <div id="password" class="tab-pane">
+                        <div id="password"
+                                {% if action =="_password" %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
+
                             {{ form_start(formPassword, {'action': path('app_account_edit'), 'attr': {'id': 'app_account_edit','autocomplete':'off'}}) }}
                             <div class="row">
                                 <div class="col-sm-6">
                                     {#   {% if form.current_password is defined %}
-                                           {{ form_row(form.current_password ) }}
-                                       {% endif %}
-                                       {% if form.plainPassword is defined %}
-                                           {{ form_row(form.plainPassword ) }}
-                                       {% endif %}
-                                       {% if form._token is defined %}
-                                           {{ form_row(form._token ) }}
-                                       {% endif %}#}
+                                    {{ form_row(form.current_password ) }}
+                                    {% endif %}
+                                    {% if form.plainPassword is defined %}
+                                    {{ form_row(form.plainPassword ) }}
+                                    {% endif %}
+                                    {% if form._token is defined %}
+                                        {{ form_row(form._token ) }}
+                                    {% endif %}#}
                                     {{ form_widget(formPassword) }}
                                 </div>
                                 <div class="col-sm-12">
@@ -157,6 +163,65 @@
                                 </div>
                             </div>
                             {{ form_end(form) }}
+                        </div>
+                        <div id="users" {% if action =="_users" or page != null%} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
+                            {% if users is defined %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-reponsive">
+                                            <thead>
+                                            <tr>
+                                                <th class="col-sm-2">Nom</th>
+                                                <th class="col-sm-1">Login</th>
+                                                <th class="col-sm-2">Email</th>
+                                                <th class="col-sm-2">Date Création</th>
+                                                <th class="col-sm-2">Dernière Connextion</th>
+                                                <th class="col-sm-1"> Etat</th>
+                                                <th class="col-sm-2 text-center">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {#{{ dump(users) }}#}
+                                            {% for user in users %}
+                                                <tr>
+                                                    <td>{{ user.lastName | capitalize | escape }}{{ user.firstName |capitalize }}</td>
+                                                    <td>{{ user.username }}</td>
+                                                    <td>{{ user.email }}</td>
+                                                    <td>{{ user.created | date('d/m/Y', "Europe/Paris") }}</td>
+                                                    <td>{{ user.lastLogin | date('d/m/Y à H:m', "Europe/Paris") }}</td>
+                                                    <td>
+                                                        {% if user.enabled is defined and user.enabled %}
+                                                            <span class="label label-success label-sm"><i
+                                                                        class="fa fa-unlock"></i> Actif</span>
+                                                        {% else %}
+                                                            <span class="label label-danger label-xs"><i
+                                                                        class="fa fa-lock"></i> Bloquer</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="" class="btn btn-xs btn-outline dark"><i
+                                                                    class="fa fa-lock"></i></a>
+                                                        <a href="" class="btn btn-xs btn-outline blue"><i
+                                                                    class="fa fa-edit"></i></a>
+                                                        <a href="" class="btn btn-xs btn-outline red"><i
+                                                                    class="fa fa-trash"></i></a>
+
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="6"> Aucune donnée trouvée</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <div class="text-center">
+                                            {{ knp_pagination_render(users) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
