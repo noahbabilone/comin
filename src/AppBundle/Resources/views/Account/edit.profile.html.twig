@@ -3,13 +3,15 @@
  {% block stylesheets %}
      {{ parent() }}
      {% stylesheets
+     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
      {% endstylesheets %}
  {% endblock stylesheets %}
 
 
-{% block title %}    Mon Compte |  {{ parent() }} {% endblock %}
+{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
 
 {% block header_breadcrumb %}
     <li>
@@ -17,12 +19,22 @@
     </li>
 {% endblock header_breadcrumb %}
 
-{% block action_toolbar %} {% if app.user.lastLogin is defined and app.user.lastLogin %}
-    {#<div class="page-toolbar font-grey-silver">#}
-    {#<small><i class="fa fa-clock-o"></i> Dernière#}
-    {#connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>#}
+
+{% block action_toolbar %}
+    {% if app.user.lastLogin is defined and app.user.lastLogin %}
+        <div class="page-toolbar font-grey-silver">
+        <small><i class="fa fa-clock-o"></i> Dernière
+        connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>
+        </div>
+    {% endif %}
+
+    {#<div class="btn-group pull-right">#}
+    {#<a type="button" class="btn green btn-sm btn-outline">#}
+    {#<i class="fa fa-user-plus"></i> Créer un compte#}
+    {#</a>#}
     {#</div>#}
-{% endif %}{% endblock action_toolbar %}
+
+{% endblock action_toolbar %}
 {% block back_body %}
 
     <div class="row" id="page_account">
@@ -30,26 +42,28 @@
         <div class="portlet light">
             {% set action=app.request.query.get("q") %}
             {% set page =app.request.query.get("page") %}
+
+            {% set routeName = app.request.get('_route') %}
             <div class="portlet-body">
-                <div class="tabbable-line tabbable-full-width">
+                <div class="tabbable-line tabbable-full-width"> {#tabbable-tabdrop#}
                     <ul class="nav nav-tabs">
-                        <li {% if (action == null and page == null) or ( action =="edit" and page == null) or
-                            ( action !="_password" and  action !="_users" and page == null) %}class="active" {% endif %} >
-                            <a href="#profile" data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
+                        <li class="dropdown pull-right tabdrop">
+                            <a class="" data-toggle="dropdown" href="#"> <i class="fa fa-user-plus fa-fw"></i> Créer un compte </a></li>
+                        <li {% if routeName == "app_account_edit" and page == null %}class="active" {% endif %} >
+                            <a href="#profile" class="btn " data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
                         </li>
-                        <li {% if action =="_password" %}class="active" {% endif %} >
+                        <li {% if routeName == "app_account_password" and page == null %}class="active" {% endif %} >
                             <a href="#password" data-toggle="tab"><i class="fa fa-key"></i> Mot
                                 de passe </a>
                         </li>
-                        <li {% if action =="_users" or page != null %}class="active" {% endif %} >
+                        <li {% if routeName == "app_account_users" or page != null %}class="active" {% endif %} >
                             <a href="#users" data-toggle="tab"><i class="fa fa-users"></i> Utilisateurs</a>
                         </li>
                         {#<li {% if action =="help" %}class="active" {% endif %} >
                             <a href="" data-toggle="tab"><i class="fa fa-info"></i> Aide</a>
                         </li>#}
                     </ul>
-
-
+                    
                     <div class="tab-content">
                         {% if app.request.hasPreviousSession %}
                             <div class="row">
@@ -67,11 +81,21 @@
                                 {% endfor %}
                             </div>
                         {% endif %}
+
+
                         <div id="profile"
-                             {% if (action == null and page == null) or ( action =="edit" and page == null) or
-                             ( action !="_password" and  action !="_users" and page == null) %}class="tab-pane active" {% else %} class="tab-pane"{% endif %}
+                             {% if routeName == "app_account_edit" and page == null %}class="tab-pane active" {% else %} class="tab-pane"{% endif %}
                         >
-                            {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                            {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation_account','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="message-alert" class="alert alert-danger display-hide">
+                                        <button class="close" data-close="alert"></button>
+                                        <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     {% if form.lastName is defined %}
@@ -80,12 +104,48 @@
                                     {% if form.firstName is defined %}
                                         {{ form_row(form.firstName) }}
                                     {% endif %}
+                                    {#{% if form.email is defined %}#}
+                                    {#{{ form_row(form.email) }}#}
+                                    {#{% endif %}#}
+
+                                    {#{% if form.username is defined %}#}
+                                    {#{{ form_row(form.username) }}#}
+                                    {#{% endif %}#}
+
                                     {% if form.email is defined %}
-                                        {{ form_row(form.email) }}
+                                        {#<div class="col-sm-12">#}
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    {{ form_label(form.email) }}
+                                                </div>
+                                                <div class="col-sm-6 text-right">
+                                                    <small class="message-error font-red display-hide"></small>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    {{ form_widget(form.email) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#</div>#}
                                     {% endif %}
 
                                     {% if form.username is defined %}
-                                        {{ form_row(form.username) }}
+                                        {#<div class="col-sm-12">#}
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    {{ form_label(form.username) }}
+                                                </div>
+                                                <div class="col-sm-6 text-right">
+                                                    <small class="message-error font-red display-hide"></small>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    {{ form_widget(form.username) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#</div>#}
                                     {% endif %}
                                     {% if form.phone is defined %}
                                         {{ form_row(form.phone) }}
@@ -115,7 +175,6 @@
                                             Annuler
                                         </a>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -124,10 +183,18 @@
                         </div>
 
                         <div id="password"
-                                {% if action =="_password" %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
+                                {% if routeName == "app_account_password" and page == null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
 
-                            {{ form_start(formPassword, {'action': path('app_account_edit'), 'attr': {'id': 'app_account_edit','autocomplete':'off'}}) }}
+                            {{ form_start(formPassword, {'action': path('app_account_password'), 'attr': {'id': 'form_validation_password','autocomplete':'off'}}) }}
+
                             <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="message-alert" class="alert alert-danger display-hide">
+                                        <button class="close" data-close="alert"></button>
+                                        <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-6">
                                     {#   {% if form.current_password is defined %}
                                     {{ form_row(form.current_password ) }}
@@ -163,7 +230,7 @@
                             </div>
                             {{ form_end(form) }}
                         </div>
-                        <div id="users" {% if action =="_users" or page != null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
+                        <div id="users" {% if routeName == "app_account_users" or page != null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
                             {% if users is defined %}
                                 <div class="row">
                                     <div class="col-md-12">
@@ -175,14 +242,14 @@
                                                 <th class="col-sm-2">Email</th>
                                                 <th class="col-sm-2">Date Création</th>
                                                 <th class="col-sm-2">Dernière Connextion</th>
-                                                <th class="col-sm-1"> Etat</th>
+                                                <th class="col-sm-2 text-center"> Etat</th>
                                                 <th class="col-sm-2 text-center">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             {#{{ dump(users) }}#}
                                             {% for user in users %}
-                                                <tr>
+                                                <tr id="line_user_{{ user.id }}">
                                                     <td>{{ user.lastName | upper | escape }} {{ user.firstName |capitalize }}</td>
                                                     <td>{{ user.username }}</td>
                                                     <td>{{ user.email }}</td>
@@ -200,22 +267,34 @@
                                                             <span class="text-center"> -- </span>
                                                         {% endif %}
                                                     </td>
-                                                    <td>
-                                                        {% if user.enabled is defined and user.enabled %}
-                                                            <span class="label label-success label-sm"><i
-                                                                        class="fa fa-unlock"></i> Actif</span>
-                                                        {% else %}
-                                                            <span class="label label-danger label-xs"><i
-                                                                        class="fa fa-lock"></i> Bloquer</span>
-                                                        {% endif %}
+                                                    <td class="td-enable text-center">
+                                                        <i class="fa fa-spinner fa-spin loading"></i>
+                                                        <input
+                                                                {% if user.enabled is defined and user.enabled %}
+                                                                    checked
+                                                                {% endif %}
+                                                                class="hide btn-enable"
+                                                                data-size="mini"
+                                                                data-notify-id="{{ user.id }}"
+                                                                data-notify-name="{{ user.username }}"
+                                                                data-on="ACTIF" data-off="Bloquer"
+                                                                data-onstyle="success" data-offstyle="warning"
+                                                                data-toggle="toggle" type="checkbox"
+                                                        >
+
+
                                                     </td>
                                                     <td class="text-center">
-                                                        <a href="" class="btn btn-xs btn-outline dark"><i
-                                                                    class="fa fa-lock"></i></a>
                                                         <a href="" class="btn btn-xs btn-outline blue"><i
                                                                     class="fa fa-edit"></i></a>
-                                                        <a href="" class="btn btn-xs btn-outline red"><i
-                                                                    class="fa fa-trash"></i></a>
+
+                                                        <button
+                                                                data-toggle="modal"
+                                                                data-target="#modal_remove"
+                                                                class="btn btn-xs btn-outline red btn_remove"
+                                                                data-name="{{ user.firstName | upper | e }} {{ user.lastName |capitalize }}"
+                                                                data-id="{{ user.id }}"
+                                                        ><i class="fa fa-trash"></i></button>
 
                                                     </td>
                                                 </tr>
@@ -242,5 +321,56 @@
         {#</div>#}
     </div>
 
+
+    <div class="modal fade" tabindex="-1" id="modal_remove" role="dialog"
+         data-attention-animation="false">
+        <div class="modal-dialog" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-red bg-font-red">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title red"><i class="fa fa fa-trash-o"></i> Suppression utilisateur </h4>
+                </div>
+                <div class="modal-body">
+                    <h5 style="font-size: 16px;">Vous voulez vraiment supprimer cet utilisateur (<b
+                                class="name"></b>)?
+                    </h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline btn-default" data-dismiss="modal"><i
+                                class="fa fa-remove fa-fw"></i>Non
+                    </button>
+                    <button type="button" class="btn btn-danger btn_remove_ok" data-dismiss="modal">
+                        <i class="fa fa-trash-o fa-fw"></i>Oui
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 {% endblock back_body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+    'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+    'bundles/app/js/account/edit.js'
+    'bundles/app/js/account/list.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{#
+'bundles/back/theme/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'bundles/back/theme/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+
+    'bundles/back/theme/assets/global/plugins/select2/js/select2.full.min.js'
+    "bundles/back/theme/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
+#}
 

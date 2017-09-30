@@ -14,6 +14,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -26,6 +27,8 @@ class AccountController extends Controller
 {
     /**
      * @Route("/edit", name="app_account_edit")
+     * @Route("/edit/password", name="app_account_password")
+     * @Route("/edit/users", name="app_account_users")
      * @param Request $request
      * @return RedirectResponse|null|\Symfony\Component\HttpFoundation\Response
      */
@@ -127,20 +130,9 @@ class AccountController extends Controller
                 'success',
                 'Your changes were saved!'
             );
-            
+
             return $this->redirectToRoute('app_account_edit', array('q' => '_password'), 301);
-
-            /* $event = new FormEvent($formPassword, $request);
-             $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_SUCCESS, $event);
-             if (null === $response = $event->getResponse()) {
-                 $url = $this->generateUrl('app_account_edit');
-                 $response = new RedirectResponse($url);
-                 return $response;
-             }
-             $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-             return $response;*/
         }
-
 
         return $this->render('AppBundle:Account:edit.profile.html.twig', array(// ...
             'form' => $form->createView(),
@@ -223,13 +215,112 @@ class AccountController extends Controller
         ));
     }
 
+
     /**
-     * @Route("/remove")
+     * @Route("/check-username-or-email", name="app_user_check_username_or_email" ,options = {"expose"=true})
+     * @param Request $request
+     * @return Response
      */
-    public function removeAction()
+    public function checkEmailValidAction(Request $request)
     {
-        return $this->render('AppBundle:Account:remove.html.twig', array(// ...
-        ));
+        if ($request->isXmlHttpRequest()) {
+//            $em = $this->getDoctrine()->getManager();
+            $usernameOrEmail = $request->get("user");
+            $userManager = $this->container->get('fos_user.user_manager');
+            $user = $userManager->findUserByUsernameOrEmail($usernameOrEmail);
+
+            return new Response (json_encode(array('type' => "success",
+                "response" => ($user === null) ? false : true,
+                "message" => "OK")), 200,
+                ['Content-Type' => 'application/json']
+            );
+        }
+
+        return new Response (json_encode(array('type' => "error", response => false, "message" => "Error: isXmlHttpRequest")), 200,
+            ['Content-Type' => 'application/json']
+        );
+
     }
+
+
+    /**
+     * @Route("/remove", name="app_account_remove",  options = {"expose"=true})
+     * @param Request $request
+     * @return Response
+     */
+    public
+    function removeAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $id = $request->get('id');
+            if (!empty($id)) {
+                /** @var User $user */
+                $user = $em->getRepository('AppBundle:User')->find($id);
+
+                if ($user === null) {
+                    return new Response(json_encode(array(
+                            "result" => "error",
+                            "message" => "L'utilisateur n'a pas été trouvé.")
+                    ), 200, ['Content-Type' => 'application/json']);
+                }
+                $message = "L'utilisateur (<b>" . $user->getLastName() . " " . $user->getFirstName() . "</b>) a été supprimé(e).";
+                $em->remove($user);
+                //$em->flush();
+                return new Response(json_encode(array(
+                        "result" => "success",
+                        "message" => $message)
+                ), 200, ['Content-Type' => 'application/json']);
+            }
+            $message = "ID User is empty ";
+
+        } else {
+            $message = "Error: isXmlHttpRequest";
+        }
+        return new response (json_encode(array('result' => 'error', "message" => $message)), 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/enable", name="app_account_state",  options = {"expose"=true})
+     * @param Request $request
+     * @return Response
+     */
+    public
+    function enableAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $id = $request->get('id');
+            $enable = $request->get('enable') == "false" ? false : true;
+            if (!empty($id) && $enable !== null) {
+                /** @var User $user */
+                $user = $em->getRepository('AppBundle:User')->find($id);
+
+                if ($user === null) {
+                    return new Response(json_encode(array(
+                            "result" => "error",
+                            "message" => "L'utilisateur n'a pas été trouvé.")
+                    ), 200, ['Content-Type' => 'application/json']);
+                }
+                $user->setEnabled($enable);
+
+                $message = "Le compte  (<b>" . $user->getUsername() . "</b>) a été  ";
+                $message .= $user->isEnabled() === true ? "activé." : "désactivé.";
+
+                $em->flush();
+                return new Response(json_encode(array(
+                        "result" => "success",
+                        'enable' =>$user->isEnabled(),
+                        "message" => $message)
+                ), 200, ['Content-Type' => 'application/json']);
+            }
+            $message = "ID User ou enable is empty ";
+
+        } else {
+            $message = "Error: isXmlHttpRequest";
+        }
+        return new response (json_encode(array('result' => 'error', "message" => $message)), 200, ['Content-Type' => 'application/json']);
+    }
+
 
 }
