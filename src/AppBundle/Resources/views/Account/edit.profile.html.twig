@@ -23,8 +23,8 @@
 {% block action_toolbar %}
     {% if app.user.lastLogin is defined and app.user.lastLogin %}
         <div class="page-toolbar font-grey-silver">
-        <small><i class="fa fa-clock-o"></i> Dernière
-        connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>
+            <small><i class="fa fa-clock-o"></i> Dernière
+                connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>
         </div>
     {% endif %}
 
@@ -47,10 +47,17 @@
             <div class="portlet-body">
                 <div class="tabbable-line tabbable-full-width"> {#tabbable-tabdrop#}
                     <ul class="nav nav-tabs">
-                        <li class="dropdown pull-right tabdrop">
-                            <a class="" data-toggle="dropdown" href="#"> <i class="fa fa-user-plus fa-fw"></i> Créer un compte </a></li>
+                        <li {% if routeName == "app_account_add" and page == null %}
+                            class="pull-right tabdrop active"
+                        {% else %}
+                            class="pull-right tabdrop"
+                        {% endif %}
+                        >
+
+                            <a class="btn" data-toggle="tab" href="#add"> <i class="fa fa-user-plus fa-fw"></i>
+                                Créer un compte </a></li>
                         <li {% if routeName == "app_account_edit" and page == null %}class="active" {% endif %} >
-                            <a href="#profile" class="btn " data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
+                            <a href="#profile" class="btn" data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
                         </li>
                         <li {% if routeName == "app_account_password" and page == null %}class="active" {% endif %} >
                             <a href="#password" data-toggle="tab"><i class="fa fa-key"></i> Mot
@@ -63,7 +70,7 @@
                             <a href="" data-toggle="tab"><i class="fa fa-info"></i> Aide</a>
                         </li>#}
                     </ul>
-                    
+
                     <div class="tab-content">
                         {% if app.request.hasPreviousSession %}
                             <div class="row">
@@ -84,151 +91,153 @@
 
 
                         <div id="profile"
-                             {% if routeName == "app_account_edit" and page == null %}class="tab-pane active" {% else %} class="tab-pane"{% endif %}
-                        >
-                            {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation_account','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                             {% if routeName == "app_account_edit" and page == null %}class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div id="message-alert" class="alert alert-danger display-hide">
-                                        <button class="close" data-close="alert"></button>
-                                        <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                            {% if form is defined %}
+                                {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation_account','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="message-alert" class="alert alert-danger display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    {% if form.lastName is defined %}
-                                        {{ form_row(form.lastName) }}
-                                    {% endif %}
-                                    {% if form.firstName is defined %}
-                                        {{ form_row(form.firstName) }}
-                                    {% endif %}
-                                    {#{% if form.email is defined %}#}
-                                    {#{{ form_row(form.email) }}#}
-                                    {#{% endif %}#}
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        {% if form.lastName is defined %}
+                                            {{ form_row(form.lastName) }}
+                                        {% endif %}
+                                        {% if form.firstName is defined %}
+                                            {{ form_row(form.firstName) }}
+                                        {% endif %}
+                                        {#{% if form.email is defined %}#}
+                                        {#{{ form_row(form.email) }}#}
+                                        {#{% endif %}#}
 
-                                    {#{% if form.username is defined %}#}
-                                    {#{{ form_row(form.username) }}#}
-                                    {#{% endif %}#}
+                                        {#{% if form.username is defined %}#}
+                                        {#{{ form_row(form.username) }}#}
+                                        {#{% endif %}#}
 
-                                    {% if form.email is defined %}
-                                        {#<div class="col-sm-12">#}
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    {{ form_label(form.email) }}
-                                                </div>
-                                                <div class="col-sm-6 text-right">
-                                                    <small class="message-error font-red display-hide"></small>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    {{ form_widget(form.email) }}
+                                        {% if form.email is defined %}
+                                            {#<div class="col-sm-12">#}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{ form_label(form.email) }}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <small class="message-error font-red display-hide"></small>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {{ form_widget(form.email) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {#</div>#}
-                                    {% endif %}
+                                            {#</div>#}
+                                        {% endif %}
 
-                                    {% if form.username is defined %}
-                                        {#<div class="col-sm-12">#}
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    {{ form_label(form.username) }}
-                                                </div>
-                                                <div class="col-sm-6 text-right">
-                                                    <small class="message-error font-red display-hide"></small>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    {{ form_widget(form.username) }}
+                                        {% if form.username is defined %}
+                                            {#<div class="col-sm-12">#}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{ form_label(form.username) }}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <small class="message-error font-red display-hide"></small>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {{ form_widget(form.username) }}
+                                                    </div>
                                                 </div>
                                             </div>
+                                            {#</div>#}
+                                        {% endif %}
+                                        {% if form.phone is defined %}
+                                            {{ form_row(form.phone) }}
+                                        {% endif %}
+                                        {% if form.homePhone is defined %}
+                                            {{ form_row(form.homePhone) }}
+                                        {% endif %}
+
+                                        {{ form_widget(form) }}
+
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <hr>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-sm-3 ">
+                                            <button type="submit"
+                                                    id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                        class="fa fa-save"></span>
+                                                Enregistrer
+                                            </button>
                                         </div>
-                                        {#</div>#}
-                                    {% endif %}
-                                    {% if form.phone is defined %}
-                                        {{ form_row(form.phone) }}
-                                    {% endif %}
-                                    {% if form.homePhone is defined %}
-                                        {{ form_row(form.homePhone) }}
-                                    {% endif %}
-
-                                    {{ form_widget(form) }}
-
-                                </div>
-                                <div class="col-sm-12">
-                                    <hr>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="col-sm-3 ">
-                                        <button type="submit"
-                                                id="btn_submit" class="btn green btn-sm btn-block"><span
-                                                    class="fa fa-save"></span>
-                                            Enregistrer
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-3 ">
-                                        <a href="{{ path('app_account_edit') }}"
-                                           id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
-                                                    class="fa fa-remove"></span>
-                                            Annuler
-                                        </a>
+                                        <div class="col-sm-3 ">
+                                            <a href="{{ path('app_account_edit') }}"
+                                               id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                        class="fa fa-remove"></span>
+                                                Annuler
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-
-                            {{ form_end(form) }}
+                                {{ form_end(form) }}
+                            {% endif %}
                         </div>
 
-                        <div id="password"
-                                {% if routeName == "app_account_password" and page == null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
+                        <div id="password" {% if routeName == "app_account_password" and page == null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
 
-                            {{ form_start(formPassword, {'action': path('app_account_password'), 'attr': {'id': 'form_validation_password','autocomplete':'off'}}) }}
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div id="message-alert" class="alert alert-danger display-hide">
-                                        <button class="close" data-close="alert"></button>
-                                        <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
-                                    </div>
-                                </div>
+                            {% if formPassword is defined %}
+                                {{ form_start(formPassword, {'action': path('app_account_password'), 'attr': {'id': 'form_validation_password','autocomplete':'off'}}) }}
 
-                                <div class="col-sm-6">
-                                    {#   {% if form.current_password is defined %}
-                                    {{ form_row(form.current_password ) }}
-                                    {% endif %}
-                                    {% if form.plainPassword is defined %}
-                                    {{ form_row(form.plainPassword ) }}
-                                    {% endif %}
-                                    {% if form._token is defined %}
-                                        {{ form_row(form._token ) }}
-                                    {% endif %}#}
-                                    {{ form_widget(formPassword) }}
-                                </div>
-                                <div class="col-sm-12">
-                                    <hr>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="col-sm-3 ">
-                                        <button type="submit"
-                                                id="btn_submit" class="btn green btn-sm btn-block"><span
-                                                    class="fa fa-save"></span>
-                                            Enregistrer
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-3 ">
-                                        <a href="{{ path('app_account_edit') }}"
-                                           id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
-                                                    class="fa fa-remove"></span>
-                                            Annuler
-                                        </a>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="message-alert" class="alert alert-danger display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                        </div>
                                     </div>
 
+                                    <div class="col-sm-6">
+                                        {#   {% if form.current_password is defined %}
+                                        {{ form_row(form.current_password ) }}
+                                        {% endif %}
+                                        {% if form.plainPassword is defined %}
+                                        {{ form_row(form.plainPassword ) }}
+                                        {% endif %}
+                                        {% if form._token is defined %}
+                                            {{ form_row(form._token ) }}
+                                        {% endif %}#}
+                                        {{ form_widget(formPassword) }}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <hr>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-sm-3 ">
+                                            <button type="submit"
+                                                    id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                        class="fa fa-save"></span>
+                                                Enregistrer
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <a href="{{ path('app_account_password') }}"
+                                               id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                        class="fa fa-remove"></span>
+                                                Annuler
+                                            </a>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </div>
-                            {{ form_end(form) }}
+                                {{ form_end(form) }}
+                            {% endif %}
                         </div>
                         <div id="users" {% if routeName == "app_account_users" or page != null %} class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
                             {% if users is defined %}
@@ -281,8 +290,6 @@
                                                                 data-onstyle="success" data-offstyle="warning"
                                                                 data-toggle="toggle" type="checkbox"
                                                         >
-
-
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="" class="btn btn-xs btn-outline blue"><i
@@ -310,6 +317,106 @@
                                         </div>
                                     </div>
                                 </div>
+                            {% endif %}
+
+                        </div>
+                        <div id="add"
+                                {% if routeName == "app_account_add" and page == null %}
+                                    class="tab-pane active"
+                                {% else %}
+                                    class="tab-pane"
+                                {% endif %}
+                        >
+                            {{ form_start(formAdd, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_create','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                            {% if formAdd is defined %}
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="message-alert" class="alert alert-danger display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        {% if formAdd.lastName is defined %}
+                                            {{ form_row(formAdd.lastName) }}
+                                        {% endif %}
+                                        {% if formAdd.firstName is defined %}
+                                            {{ form_row(formAdd.firstName) }}
+                                        {% endif %}
+
+                                        {% if formAdd.email is defined %}
+                                            {#<div class="col-sm-12">#}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{ form_label(formAdd.email) }}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <small class="message-error font-red display-hide"></small>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {{ form_widget(formAdd.email) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {#</div>#}
+                                        {% endif %}
+
+
+                                        {% if formAdd.phone is defined %}
+                                            {{ form_row(formAdd.phone) }}
+                                        {% endif %}
+                                        {% if formAdd.homePhone is defined %}
+                                            {{ form_row(formAdd.homePhone) }}
+                                        {% endif %}
+
+
+                                    </div>
+                                    <div class="col-sm-6">
+
+                                        {% if formAdd.username is defined %}
+                                            {#<div class="col-sm-12">#}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{ form_label(formAdd.username) }}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <small class="message-error font-red display-hide"></small>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {{ form_widget(formAdd.username) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {#</div>#}
+                                        {% endif %}
+                                        {{ form_widget(formAdd) }}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <hr>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-sm-3 ">
+                                            <button type="submit"
+                                                    id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                        class="fa fa-save"></span>
+                                                Enregistrer
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <a href="{{ path('app_account_add') }}"
+                                               id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                        class="fa fa-remove"></span>
+                                                Annuler
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{ form_end(formAdd) }}
                             {% endif %}
 
                         </div>
@@ -350,8 +457,6 @@
     </div>
 
 
-
-
 {% endblock back_body %}
 
 {% block javascripts %}
@@ -361,7 +466,8 @@
     'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
     'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
     'bundles/app/js/account/edit.js'
-    'bundles/app/js/account/list.js' %}
+    'bundles/app/js/account/list.js'
+    'bundles/app/js/account/add.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

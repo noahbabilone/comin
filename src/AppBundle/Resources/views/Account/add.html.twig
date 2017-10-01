@@ -1,7 +1,196 @@
-{% extends "::base.html.twig" %}
+{% extends "AppBundle::layout.html.twig" %}
 
-{% block title %}AppBundle:Account:add{% endblock %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
 
-{% block body %}
-<h1>Welcome to the Account:add page</h1>
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+ {% endblock stylesheets %}
+
+
+{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
+
+{% block header_breadcrumb %}
+    <li>
+        <span>Mon Compte</span>
+    </li>
+{% endblock header_breadcrumb %}
+
+
+{% block action_toolbar %}
+    {% if app.user.lastLogin is defined and app.user.lastLogin %}
+        <div class="page-toolbar font-grey-silver">
+            <small><i class="fa fa-clock-o"></i> Dernière
+                connexion: {{ app.user.lastLogin | date('d M Y à H:m', "Europe/Paris") }}</small>
+        </div>
+    {% endif %}
+
+    {#<div class="btn-group pull-right">#}
+    {#<a type="button" class="btn green btn-sm btn-outline">#}
+    {#<i class="fa fa-user-plus"></i> Créer un compte#}
+    {#</a>#}
+    {#</div>#}
+
+{% endblock action_toolbar %}
+{% block back_body %}
+
+    <div class="row" id="page_account">
+        {#<div class="col-md-12 col-sm-12 col-xs-12">#}
+        <div class="portlet light">
+            {% set action=app.request.query.get("q") %}
+            {% set page =app.request.query.get("page") %}
+
+            {% set routeName = app.request.get('_route') %}
+            <div class="portlet-body">
+                <div class="tabbable-line tabbable-full-width"> {#tabbable-tabdrop#}
+                   
+
+                    <div class="tab-content">
+                        {% if app.request.hasPreviousSession %}
+                            <div class="row">
+                                {% for type, messages in app.session.flashbag.all() %}
+                                    {% for message in messages %}
+                                        <div class="col-md-12">
+                                            <div class="alert alert-{{ type }} alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-hidden="true"></button>
+                                                <strong>{{ type }}</strong>
+                                                {{ message }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+
+                        <div id="add"  >
+                            {{ form_start(formAdd, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_add','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                            {% if formAdd is defined %}
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="message-alert" class="alert alert-danger display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        {% if formAdd.lastName is defined %}
+                                            {{ form_row(formAdd.lastName) }}
+                                        {% endif %}
+                                        {% if formAdd.firstName is defined %}
+                                            {{ form_row(formAdd.firstName) }}
+                                        {% endif %}
+
+                                        {% if formAdd.email is defined %}
+                                            {#<div class="col-sm-12">#}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{ form_label(formAdd.email) }}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <small class="message-error font-red display-hide"></small>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {{ form_widget(formAdd.email) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {#</div>#}
+                                        {% endif %}
+
+                                        {% if formAdd.phone is defined %}
+                                            {{ form_row(formAdd.phone) }}
+                                        {% endif %}
+                                        {% if formAdd.homePhone is defined %}
+                                            {{ form_row(formAdd.homePhone) }}
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="col-sm-6">
+
+                                        {% if formAdd.username is defined %}
+                                            {#<div class="col-sm-12">#}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {{ form_label(formAdd.username) }}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <small class="message-error font-red display-hide"></small>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        {{ form_widget(formAdd.username) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {#</div>#}
+                                        {% endif %}
+                                        {{ form_widget(formAdd) }}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <hr>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-sm-3 ">
+                                            <button type="submit"
+                                                    id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                        class="fa fa-save"></span>
+                                                Enregistrer
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <a href="{{ path('app_account_add') }}"
+                                               id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                        class="fa fa-remove"></span>
+                                                Annuler
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{ form_end(formAdd) }}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#</div>#}
+    </div>
+
+
+   
+
+{% endblock back_body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+    'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+    'bundles/app/js/account/edit.js'
+    'bundles/app/js/account/list.js'
+    'bundles/app/js/account/add.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
+
+{#
+'bundles/back/theme/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'bundles/back/theme/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+
+    'bundles/back/theme/assets/global/plugins/select2/js/select2.full.min.js'
+    "bundles/back/theme/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
+#}
+

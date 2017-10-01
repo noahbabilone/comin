@@ -29,6 +29,7 @@ class AccountController extends Controller
      * @Route("/edit", name="app_account_edit")
      * @Route("/edit/password", name="app_account_password")
      * @Route("/edit/users", name="app_account_users")
+     * @Route("/create-user", name="app_account_add")
      * @param Request $request
      * @return RedirectResponse|null|\Symfony\Component\HttpFoundation\Response
      */
@@ -37,106 +38,104 @@ class AccountController extends Controller
 
 //        $user = $this->get('security.token_storage')->getToken()->getUser();
         $user = $this->getUser();
-
-//        dump($user) or die;
-
         if (!is_object($user) || !$user instanceof User) {
-            //throw new AccessDeniedException('This user does not have access to this section.');
             return $this->redirectToRoute('fos_user_security_logout');
         }
+
+        /** @var $userManager UserManagerInterface */
+        $userManager = $this->get('fos_user.user_manager');
+
         $numberPage = 1;
         $arrShow = array(10, 20, 50, 100);  // CHOIX DU NOMBRE D AFFICHAGE PAR PAGE
         $limitPage = ($request->get('show') !== null && in_array($request->get('show'), $arrShow)) ? $request->get('show') : 10;
 
 
         $em = $this->getDoctrine()->getManager();
-        $results = $em->getRepository('AppBundle:User')->findByCreator($user);
+        $results = $em->getRepository('AppBundle:User')->findBy(
+            array('creator' => $user),
+            array('id' => 'DESC')
+        );
 
         $users = $this->get('knp_paginator')->paginate(
             $results,
             $request->query->getInt('page', $numberPage),
             $limitPage
         );
-        //$form = $this->createForm(UserType::class, $user);
-        //$form->handleRequest($request);
-        /** @var $dispatcher EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
-
-
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_INITIALIZE, $event);
-
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
-//        /** @var $formFactory FactoryInterface */
-//        $formFactory = $this->get('fos_user.profile.form.factory');
-//
-//        $form = $formFactory->createForm();
-//        $form->setData($user);
 
         $form = $this->createForm(UserType::class, $user);
         $form->remove('plainPassword');
         $form->handleRequest($request);
 
-//        dump($form->createView()) or die;
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var $userManager UserManagerInterface */
-            $userManager = $this->get('fos_user.user_manager');
-            $userManager->updateUser($user);
-            $this->addFlash(
-                'success',
-                'Your changes were saved!'
-            );
-            return $this->redirectToRoute('app_account_edit', array('q' => 'edit'), 301);
-
-            /* $event = new FormEvent($form, $request);
-             $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
-             dump($event->getResponse()); die;
-             if (null === $response = $event->getResponse()) {
-                 $url = $this->generateUrl('app_account_edit');
-                 $response = new RedirectResponse($url);
-                 return $response;
-             }
-             $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-             return $response;*/
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $userManager->updateUser($user);
+                $this->addFlash(
+                    'success',
+                    'Your changes were saved!'
+                );
+                return $this->redirectToRoute('app_account_edit', array(), 301);
+            } else {
+                $this->addFlash(
+                    'success',
+                    'Veuillez corriger les champs non valide'
+                );
+            }
         }
-
-
-        // EditPassword
-        /** @var $dispatcher EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
-
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_INITIALIZE, $event);
-
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
-
+        /********  EditPassword ************/
         /** @var $formFactory FactoryInterface */
-        $formFactory = $this->get('fos_user.change_password.form.factory');
-
-        $formPassword = $formFactory->createForm();
+        $formFactoryPassword = $this->get('fos_user.change_password.form.factory');
+        $formPassword = $formFactoryPassword->createForm();
         $form->setData($user);
-
         $formPassword->handleRequest($request);
 
-        if ($formPassword->isSubmitted() && $formPassword->isValid()) {
-            /** @var $userManager UserManagerInterface */
-            $userManager = $this->get('fos_user.user_manager');
-            $userManager->updateUser($user);
-            $this->addFlash(
-                'success',
-                'Your changes were saved!'
-            );
+        if ($formPassword->isSubmitted()) {
+            if ($formPassword->isValid()) {
+                $userManager->updateUser($user);
+                $this->addFlash(
+                    'success',
+                    'Your changes were saved!'
+                );
+                return $this->redirectToRoute('app_account_password', array(), 301);
 
-            return $this->redirectToRoute('app_account_edit', array('q' => '_password'), 301);
+            } else {
+                $this->addFlash(
+                    'success',
+                    'Veuillez corriger les champs non valide'
+                );
+            }
         }
 
+        /********  Add USER ************/
+        $userAdd = $userManager->createUser();
+        //$userAdd = new User();
+        $userAdd->setEnabled(true);
+        $userAdd->setCreator($user);
+
+        $formFactoryRegistration = $this->get('fos_user.registration.form.factory');
+        $formAdd = $formFactoryRegistration->createForm();
+        $formAdd->setData($userAdd);
+
+        $formAdd->handleRequest($request);
+        if ($formAdd->isSubmitted()) {
+
+            if ($formAdd->isValid()) {
+                $userManager->updateUser($userAdd);
+                $this->addFlash(
+                    'success',
+                    'Your User were created!'
+                );
+                return $this->redirectToRoute('app_account_users', array(), 301);
+            } else {
+                $this->addFlash(
+                    'success',
+                    'Veuillez corriger les champs non valide'
+                );
+            }
+        }
         return $this->render('AppBundle:Account:edit.profile.html.twig', array(// ...
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView(),
+            'formAdd' => $formAdd->createView(),
             'users' => $users,
 
         ));
@@ -191,30 +190,10 @@ class AccountController extends Controller
 
             return $response;
         }
-//dump( $form->createView()) or die;
         return $this->render('AppBundle:Account:edit.password.html.twig', array(// ...
             'form' => $form->createView(),
-
         ));
     }
-
-    /**
-     * @Route("/add")
-     */
-    public function addAction()
-    {
-        return $this->render('AppBundle:Account:add.html.twig', array());
-    }
-
-    /**
-     * @Route("/list")
-     */
-    public function listAction()
-    {
-        return $this->render('AppBundle:Account:list.html.twig', array(// ...
-        ));
-    }
-
 
     /**
      * @Route("/check-username-or-email", name="app_user_check_username_or_email" ,options = {"expose"=true})
@@ -310,7 +289,7 @@ class AccountController extends Controller
                 $em->flush();
                 return new Response(json_encode(array(
                         "result" => "success",
-                        'enable' =>$user->isEnabled(),
+                        'enable' => $user->isEnabled(),
                         "message" => $message)
                 ), 200, ['Content-Type' => 'application/json']);
             }
