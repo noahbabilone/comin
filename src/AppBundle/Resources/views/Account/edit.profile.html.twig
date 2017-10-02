@@ -292,11 +292,14 @@
                                                         >
                                                     </td>
                                                     <td class="text-center">
-                                                        <a href="" class="btn btn-xs btn-outline blue"><i
+                                                        <a href="#"
+                                                           data-toggle="tooltip" title="Editer"
+                                                           class="btn btn-xs btn-outline blue"><i
                                                                     class="fa fa-edit"></i></a>
 
                                                         <button
                                                                 data-toggle="modal"
+                                                                data-toggle="tooltip" title="Suppression"
                                                                 data-target="#modal_remove"
                                                                 class="btn btn-xs btn-outline red btn_remove"
                                                                 data-name="{{ user.firstName | upper | e }} {{ user.lastName |capitalize }}"
@@ -375,7 +378,6 @@
 
                                     </div>
                                     <div class="col-sm-6">
-
                                         {% if formAdd.username is defined %}
                                             {#<div class="col-sm-12">#}
                                             <div class="form-group">
