@@ -2,7 +2,10 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +17,7 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+//        dump($options["data"]->isEnabled()) or die;
         $builder
             ->add('lastName', TextType::class, array(
                     'label' => 'Nom',
@@ -49,8 +53,44 @@ class UserType extends AbstractType
                         'placeholder' => '01 02 03 04 05',
                     ),
                 )
+            )
+            ->add('roles', ChoiceType::class, array(
+                    'label' => 'Rôle Utilisateur',
+                    'multiple' => true,
+                    'required' => true,
+                    'mapped' => false,
+                    'choices' => [
+//                        'SIMPLE UTILISATEUR' => User::ROLE_USER,
+                        'CLIENT' => User::ROLE_CUSTOMER,
+                        'ADMIN' => User::ROLE_ADMIN,
+                        'SUPER ADMIN' => User::ROLE_SUPER_ADMIN,
+                    ],
+                    'data' => isset($options['data']) ? $options['data']->getRoles() : null,
+                    'attr' => array(
+                        'class' => 'form-control bs-select',
+                    ),
+                )
+            )
+            ->add('enabled', CheckboxType::class, array(
+                    'label' => ' ',
+                    'required' => false,
+                    'required' => false,
+                    'mapped' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'class' => 'hide btn-switch',
+                        'data-size' => "mini",
+                        'data-on' => "ACTIF",
+                        'data-off' => "NON ACTIF",
+                        'data-onstyle' => "success",
+                        'data-offstyle' => "warning",
+                        'data-toggle' => "toggle",
+                    ),
+                    'data' => isset($options['data']) ? $options['data']->isEnabled() : true,
+                )
             );
     }
+
 
     /**
      * {@inheritdoc}

@@ -35,13 +35,15 @@ class AccountController extends Controller
      */
     public function editAction(Request $request)
     {
-
+        
 //        $user = $this->get('security.token_storage')->getToken()->getUser();
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof User) {
             return $this->redirectToRoute('fos_user_security_logout');
         }
 
+
+//        dump($user) or die;
         /** @var $userManager UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
 
@@ -132,6 +134,8 @@ class AccountController extends Controller
                 );
             }
         }
+        
+//        dump($formAdd->createView()) or die;
         return $this->render('AppBundle:Account:edit.profile.html.twig', array(// ...
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView(),
@@ -299,6 +303,17 @@ class AccountController extends Controller
             $message = "Error: isXmlHttpRequest";
         }
         return new response (json_encode(array('result' => 'error', "message" => $message)), 200, ['Content-Type' => 'application/json']);
+    }
+
+    public function getExistingRoles()
+    {
+        $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
+        $roles = array_keys($roleHierarchy);
+
+        foreach ($roles as $role) {
+            $theRoles[$role] = $role;
+        }
+        return $theRoles;
     }
 
 
