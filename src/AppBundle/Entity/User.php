@@ -13,10 +13,11 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser
 {
+    const ROLE_USER = 'ROLE_USER';
     const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-    
+
     /**
      * @var int
      *
@@ -52,8 +53,8 @@ class User extends BaseUser
      * @ORM\Column(name="home_phone", type="string", length=255, nullable=true)
      */
     protected $homePhone;
-    
-     /**
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
@@ -258,4 +259,8 @@ class User extends BaseUser
     {
         return $this->creator;
     }
+    
+
+
+
 }

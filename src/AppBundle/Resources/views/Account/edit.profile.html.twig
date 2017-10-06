@@ -4,13 +4,13 @@
      {{ parent() }}
      {% stylesheets
      'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
+
 
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
      {% endstylesheets %}
  {% endblock stylesheets %}
-
-
 {% block title %}Mon Compte |  {{ parent() }} {% endblock %}
 
 {% block header_breadcrumb %}
@@ -162,10 +162,18 @@
                                             {{ form_row(form.homePhone) }}
                                         {% endif %}
 
-                                        {{ form_widget(form) }}
 
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {% if form.roles is defined %}
+                                                {{ form_row(form.roles) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12">
+                                        {{ form_widget(form) }}
+
                                         <hr>
                                     </div>
                                     <div class="form-actions">
@@ -248,11 +256,11 @@
                                             <tr>
                                                 <th class="col-sm-2">Nom</th>
                                                 <th class="col-sm-1">Login</th>
-                                                <th class="col-sm-2">Email</th>
+                                                <th class="col-sm-1">Email</th>
                                                 <th class="col-sm-2">Date Création</th>
                                                 <th class="col-sm-2">Dernière Connextion</th>
                                                 <th class="col-sm-2 text-center"> Etat</th>
-                                                <th class="col-sm-2 text-center">Actions</th>
+                                                <th class="col-sm-1 text-center">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -288,24 +296,19 @@
                                                                 data-notify-name="{{ user.username }}"
                                                                 data-on="ACTIF" data-off="Bloquer"
                                                                 data-onstyle="success" data-offstyle="warning"
-                                                                data-toggle="toggle" type="checkbox"
-                                                        >
+                                                                data-toggle="toggle" type="checkbox">
                                                     </td>
                                                     <td class="text-center">
-                                                        <a href="#"
-                                                           data-toggle="tooltip" title="Editer"
+                                                        <a href="#" data-toggle="tooltip" title="Editer"
                                                            class="btn btn-xs btn-outline blue"><i
                                                                     class="fa fa-edit"></i></a>
-
-                                                        <button
-                                                                data-toggle="modal"
+                                                        <button data-toggle="modal"
                                                                 data-toggle="tooltip" title="Suppression"
                                                                 data-target="#modal_remove"
                                                                 class="btn btn-xs btn-outline red btn_remove"
                                                                 data-name="{{ user.firstName | upper | e }} {{ user.lastName |capitalize }}"
                                                                 data-id="{{ user.id }}"
                                                         ><i class="fa fa-trash"></i></button>
-
                                                     </td>
                                                 </tr>
                                             {% else %}
@@ -325,14 +328,12 @@
                         </div>
                         <div id="add"
                                 {% if routeName == "app_account_add" and page == null %}
-                                    class="tab-pane active"
-                                {% else %}
-                                    class="tab-pane"
-                                {% endif %}
-                        >
+                            class="tab-pane active"
+                        {% else %}
+                            class="tab-pane"
+                                {% endif %}>
                             {{ form_start(formAdd, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_create','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
                             {% if formAdd is defined %}
-
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div id="message-alert" class="alert alert-danger display-hide">
@@ -340,7 +341,6 @@
                                             <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
                                         </div>
                                     </div>
-
                                     <div class="col-sm-6">
                                         {% if formAdd.lastName is defined %}
                                             {{ form_row(formAdd.lastName) }}
@@ -367,17 +367,17 @@
                                             {#</div>#}
                                         {% endif %}
 
-
                                         {% if formAdd.phone is defined %}
                                             {{ form_row(formAdd.phone) }}
                                         {% endif %}
                                         {% if formAdd.homePhone is defined %}
                                             {{ form_row(formAdd.homePhone) }}
                                         {% endif %}
-
-
                                     </div>
                                     <div class="col-sm-6">
+                                       
+
+
                                         {% if formAdd.username is defined %}
                                             {#<div class="col-sm-12">#}
                                             <div class="form-group">
@@ -395,6 +395,32 @@
                                             </div>
                                             {#</div>#}
                                         {% endif %}
+                                        
+                                         {% if formAdd.plainPassword.first is defined %}
+                                            <div class="form-group">
+                                                {{ form_row(formAdd.plainPassword.first) }}
+                                            </div>
+                                        {% endif %} 
+                                        {% if formAdd.plainPassword.second is defined %}
+                                            <div class="form-group">
+                                                {{ form_row(formAdd.plainPassword.second) }}
+                                            </div>
+                                        {% endif %} 
+                                        {% if formAdd.roles is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(formAdd.roles) }}
+                                                {{ form_widget(formAdd.roles) }}
+                                            </div>
+                                        {% endif %}
+                                        {% if formAdd.enabled is defined %}
+                                            <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        {{ form_label(formAdd.enabled) }}
+                                                        {{ form_widget(formAdd.enabled) }}
+                                                    </div>
+                                            </div>
+                                        {% endif %}
+
                                         {{ form_widget(formAdd) }}
                                     </div>
                                     <div class="col-sm-12">
@@ -466,7 +492,7 @@
     {% javascripts
     'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
     'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
-    'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+    "public/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"
     'bundles/app/js/account/edit.js'
     'bundles/app/js/account/list.js'
     'bundles/app/js/account/add.js' %}
