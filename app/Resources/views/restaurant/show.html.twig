@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Restaurant</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ restaurant.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ restaurant.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ restaurant.description }}</td>
+            </tr>
+            <tr>
+                <th>Speciality</th>
+                <td>{{ restaurant.speciality }}</td>
+            </tr>
+            <tr>
+                <th>Onthespot</th>
+                <td>{% if restaurant.onTheSpot %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Rite</th>
+                <td>{{ restaurant.rite }}</td>
+            </tr>
+            <tr>
+                <th>Openinghours</th>
+                <td>{% if restaurant.openingHours %}{{ restaurant.openingHours|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datecreated</th>
+                <td>{% if restaurant.dateCreated %}{{ restaurant.dateCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Visible</th>
+                <td>{% if restaurant.visible %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('restaurant_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('restaurant_edit', { 'id': restaurant.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
