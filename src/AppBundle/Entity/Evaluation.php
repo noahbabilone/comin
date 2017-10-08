@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
 
 /**
  * Evaluation
@@ -30,14 +31,20 @@ class Evaluation
     private $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @var string
+     * @Gedmo\Slug(fields={"id"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="notes")
      * @Assert\NotBlank()
      */
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant")
-     * @Assert\NotBlank()
+     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="cards")
      */
     private $restaurant;
 
@@ -47,18 +54,11 @@ class Evaluation
      */
     private $comment;
 
-
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="datetime", nullable=true)
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
     /**
@@ -67,7 +67,7 @@ class Evaluation
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-
+    
     /**
      * Get id
      *
@@ -103,27 +103,27 @@ class Evaluation
     }
 
     /**
-     * Set created
+     * Set slug
      *
-     * @param \DateTime $created
+     * @param string $slug
      *
      * @return Evaluation
      */
-    public function setCreated($created)
+    public function setSlug($slug)
     {
-        $this->created = $created;
+        $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get created
+     * Get slug
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getCreated()
+    public function getSlug()
     {
-        return $this->created;
+        return $this->slug;
     }
 
     /**

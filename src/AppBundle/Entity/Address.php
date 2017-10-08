@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Gedmo\Mapping\Annotation As Gedmo;
 
 /**
  * Address
@@ -31,20 +31,34 @@ class Address
     private $street;
 
     /**
+     * @var string
+     * @Gedmo\Slug(fields={"street","id"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City")
      * @Assert\NotBlank()
      */
     private $city;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="addresses")
      * @Assert\NotBlank()
      */
     private $user;
     
+     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="address")
+     * @Assert\NotBlank()
+     */
+    private $restaurants;
+
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
@@ -52,6 +66,7 @@ class Address
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
@@ -62,7 +77,8 @@ class Address
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true})
      */
     private $visible;
-    
+
+
    
 
     /**
@@ -97,6 +113,30 @@ class Address
     public function getStreet()
     {
         return $this->street;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Address
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

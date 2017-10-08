@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
 
 /**
  * City
@@ -31,6 +32,13 @@ class City
 
     /**
      * @var string
+     * @Gedmo\Slug(fields={"name","code"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, nullable=true)
      */
@@ -44,6 +52,7 @@ class City
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
@@ -51,6 +60,7 @@ class City
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
@@ -61,8 +71,6 @@ class City
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-
-
 
     /**
      * Get id
@@ -96,6 +104,30 @@ class City
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return City
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

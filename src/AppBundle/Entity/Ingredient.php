@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
 
 /**
  * Ingredient
@@ -28,26 +29,28 @@ class Ingredient
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
+    
+       /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
      */
-    private $created;
+    private $slug;
 
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
-        /**
+    /**
      * @var bool
      *
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
+
 
     /**
      * Get id
@@ -84,27 +87,27 @@ class Ingredient
     }
 
     /**
-     * Set created
+     * Set slug
      *
-     * @param \DateTime $created
+     * @param string $slug
      *
      * @return Ingredient
      */
-    public function setCreated($created)
+    public function setSlug($slug)
     {
-        $this->created = $created;
+        $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get created
+     * Get slug
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getCreated()
+    public function getSlug()
     {
-        return $this->created;
+        return $this->slug;
     }
 
     /**

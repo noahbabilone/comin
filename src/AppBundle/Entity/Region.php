@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
 
 
 /**
@@ -29,6 +30,13 @@ class Region
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
+    
+     /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
     /**
      * @var string
@@ -41,11 +49,11 @@ class Region
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Department", mappedBy="region")
      */
     private $departments;
-
-
+    
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
@@ -53,6 +61,7 @@ class Region
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
@@ -64,6 +73,7 @@ class Region
      */
     private $visible;
 
+    
     /**
      * Constructor
      */
@@ -104,6 +114,30 @@ class Region
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Region
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

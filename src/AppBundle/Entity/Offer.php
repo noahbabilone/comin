@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
+
 
 /**
  * Offer
@@ -28,7 +30,17 @@ class Offer
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="offers")
+     */
+    private $user;
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="offers")
+     */
+    private $restaurant;
+    
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Product")
      */
@@ -48,20 +60,21 @@ class Offer
      */
     private $discount;
 
-    /**
+     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
-
     /**
      * @var bool
      *
@@ -69,7 +82,7 @@ class Offer
      */
     private $visible;
 
-
+   
     /**
      * Constructor
      */
@@ -230,6 +243,54 @@ class Offer
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Offer
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     *
+     * @return Offer
+     */
+    public function setRestaurant(\AppBundle\Entity\Restaurant $restaurant = null)
+    {
+        $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    /**
+     * Get restaurant
+     *
+     * @return \AppBundle\Entity\Restaurant
+     */
+    public function getRestaurant()
+    {
+        return $this->restaurant;
     }
 
     /**

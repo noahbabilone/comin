@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
 
 /**
  * Customer
@@ -28,10 +29,18 @@ class Customer
      * @ORM\Column(name="status", type="boolean", nullable=true ,options={ "default":true })
      */
     private $status;
-
+    
     /**
+     * @var string
+     * @Gedmo\Slug(fields={"id"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
@@ -39,6 +48,7 @@ class Customer
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;

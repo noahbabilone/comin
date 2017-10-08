@@ -1,3 +1,7 @@
+app_restaurant:
+    resource: "@AppBundle/Controller/RestaurantController.php"
+    type:     annotation
+
 back:
     resource: "@BackBundle/Controller/"
     type:     annotation

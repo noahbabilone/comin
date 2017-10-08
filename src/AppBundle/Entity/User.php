@@ -4,6 +4,9 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Gedmo\Mapping\Annotation As Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * User
@@ -62,35 +65,68 @@ class User extends BaseUser
     private $creator;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="user")
      */
-    protected $created;
+    private $restaurants;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="user")
+     * @Assert\NotBlank()
+     */
+    private $notes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Address", mappedBy="user")
+     * @Assert\NotBlank()
+     */
+    private $addresses;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card", inversedBy="user")
+     */
+    private $cards; 
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Offer", inversedBy="user")
+     */
+    private $offers;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Menu", inversedBy="user")
+     */
+    private $menus;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="user")
+     */
+    private $products;
+
 
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column( type="datetime", nullable=true)
      */
-    protected $updated;
+    private $updated;
+
 
     public function __construct()
     {
         parent::__construct();
         // your own logic
     }
+    
 
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set lastName
@@ -259,8 +295,202 @@ class User extends BaseUser
     {
         return $this->creator;
     }
-    
 
+    /**
+     * Add restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     *
+     * @return User
+     */
+    public function addRestaurant(\AppBundle\Entity\Restaurant $restaurant)
+    {
+        $this->restaurants[] = $restaurant;
 
+        return $this;
+    }
 
+    /**
+     * Remove restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     */
+    public function removeRestaurant(\AppBundle\Entity\Restaurant $restaurant)
+    {
+        $this->restaurants->removeElement($restaurant);
+    }
+
+    /**
+     * Get restaurants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRestaurants()
+    {
+        return $this->restaurants;
+    }
+
+    /**
+     * Add note
+     *
+     * @param \AppBundle\Entity\Evaluation $note
+     *
+     * @return User
+     */
+    public function addNote(\AppBundle\Entity\Evaluation $note)
+    {
+        $this->notes[] = $note;
+
+        return $this;
+    }
+
+    /**
+     * Remove note
+     *
+     * @param \AppBundle\Entity\Evaluation $note
+     */
+    public function removeNote(\AppBundle\Entity\Evaluation $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * Add address
+     *
+     * @param \AppBundle\Entity\Address $address
+     *
+     * @return User
+     */
+    public function addAddress(\AppBundle\Entity\Address $address)
+    {
+        $this->addresses[] = $address;
+
+        return $this;
+    }
+
+    /**
+     * Remove address
+     *
+     * @param \AppBundle\Entity\Address $address
+     */
+    public function removeAddress(\AppBundle\Entity\Address $address)
+    {
+        $this->addresses->removeElement($address);
+    }
+
+    /**
+     * Get addresses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * Set cards
+     *
+     * @param \AppBundle\Entity\Card $cards
+     *
+     * @return User
+     */
+    public function setCards(\AppBundle\Entity\Card $cards = null)
+    {
+        $this->cards = $cards;
+
+        return $this;
+    }
+
+    /**
+     * Get cards
+     *
+     * @return \AppBundle\Entity\Card
+     */
+    public function getCards()
+    {
+        return $this->cards;
+    }
+
+    /**
+     * Set offers
+     *
+     * @param \AppBundle\Entity\Offer $offers
+     *
+     * @return User
+     */
+    public function setOffers(\AppBundle\Entity\Offer $offers = null)
+    {
+        $this->offers = $offers;
+
+        return $this;
+    }
+
+    /**
+     * Get offers
+     *
+     * @return \AppBundle\Entity\Offer
+     */
+    public function getOffers()
+    {
+        return $this->offers;
+    }
+
+    /**
+     * Set menus
+     *
+     * @param \AppBundle\Entity\Menu $menus
+     *
+     * @return User
+     */
+    public function setMenus(\AppBundle\Entity\Menu $menus = null)
+    {
+        $this->menus = $menus;
+
+        return $this;
+    }
+
+    /**
+     * Get menus
+     *
+     * @return \AppBundle\Entity\Menu
+     */
+    public function getMenus()
+    {
+        return $this->menus;
+    }
+
+    /**
+     * Set products
+     *
+     * @param \AppBundle\Entity\Product $products
+     *
+     * @return User
+     */
+    public function setProducts(\AppBundle\Entity\Product $products = null)
+    {
+        $this->products = $products;
+
+        return $this;
+    }
+
+    /**
+     * Get products
+     *
+     * @return \AppBundle\Entity\Product
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
 }

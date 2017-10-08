@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation As Gedmo;
+
 
 /**
  * Restaurant
@@ -30,28 +32,11 @@ class Restaurant
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Evaluation")
-     * @Assert\NotBlank()
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
      */
-    private $evaluation;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Offer")
-     * @Assert\NotBlank()
-     */
-    private $offer;
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Menu")
-     * @Assert\NotBlank()
-     */
-    private $menu;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Card")
-     * @Assert\NotBlank()
-     */
-    private $card;
+    private $slug;
 
     /**
      * @var string
@@ -66,14 +51,12 @@ class Restaurant
      * @ORM\Column(name="speciality", type="string", length=255, nullable=true)
      */
     private $speciality;
-
     /**
      * @var bool
      *
      * @ORM\Column(name="onTheSpot", type="boolean", nullable=true)
      */
     private $onTheSpot;
-
     /**
      * @var string
      *
@@ -88,13 +71,59 @@ class Restaurant
      */
     private $openingHours;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="restaurants")
+     */
+    private $owner;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="restaurant")
+     * @Assert\NotBlank()
+     */
+    private $offers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Menu", mappedBy="restaurant")
+     * @Assert\NotBlank()
+     */
+    private $menus;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="restaurant")
+     * @Assert\NotBlank()
+     */
+    private $cards;
+    
+   /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Address", inversedBy="restaurants")
+     */
+    private $address;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
+     * @Assert\NotBlank()
+     */
+    private $evaluation;
+
+
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateCreated;
+    private $created;
 
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column( type="datetime", nullable=true)
+     */
+    private $updated;
+    
     /**
      * @var bool
      *
@@ -103,4 +132,3 @@ class Restaurant
     private $visible;
 
 }
-
