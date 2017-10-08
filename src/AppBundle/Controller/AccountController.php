@@ -67,6 +67,7 @@ class AccountController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->remove('plainPassword');
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -136,6 +137,7 @@ class AccountController extends Controller
         }
         
 //        dump($formAdd->createView()) or die;
+//        dump($formPassword->createView()) or die;
         return $this->render('AppBundle:Account:edit.profile.html.twig', array(// ...
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView(),

@@ -8,6 +8,17 @@
 
 
      filter='cssrewrite' %}
+     <style type="text/css">
+         .checkbox label .toggle, .checkbox-inline .toggle {
+             margin-left: 0 !important;
+         }
+
+         .form-section {
+             margin: 10px 0;
+             padding-bottom: 5px;
+             border-bottom: 1px solid #e7ecf1;
+         }
+     </style>
      <link rel="stylesheet" href="{{ asset_url }}"/>
      {% endstylesheets %}
  {% endblock stylesheets %}
@@ -51,13 +62,11 @@
                             class="pull-right tabdrop active"
                         {% else %}
                             class="pull-right tabdrop"
-                        {% endif %}
-                        >
-
+                        {% endif %} >
                             <a class="btn" data-toggle="tab" href="#add"> <i class="fa fa-user-plus fa-fw"></i>
                                 Créer un compte </a></li>
                         <li {% if routeName == "app_account_edit" and page == null %}class="active" {% endif %} >
-                            <a href="#profile" class="btn" data-toggle="tab"><i class="fa fa-user"></i> Mon Compte </a>
+                            <a href="#profile" class="btn" data-toggle="tab"><i class="fa fa-user"></i> Profile </a>
                         </li>
                         <li {% if routeName == "app_account_password" and page == null %}class="active" {% endif %} >
                             <a href="#password" data-toggle="tab"><i class="fa fa-key"></i> Mot
@@ -94,7 +103,7 @@
                              {% if routeName == "app_account_edit" and page == null %}class="tab-pane active" {% else %} class="tab-pane"{% endif %} >
 
                             {% if form is defined %}
-                                {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation_account','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                                {{ form_start(form, { 'action': path('app_account_edit'), 'attr': { 'id': 'form_validation_account','autocomplete':'off', 'class': '' } }) }}
 
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -106,20 +115,30 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
+
+                                        <h4 class="form form-section">Édition Compte</h4>
+
                                         {% if form.lastName is defined %}
-                                            {{ form_row(form.lastName) }}
+                                            <div class="form-group">
+                                                {{ form_label(form.lastName) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ form_widget(form.lastName) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
+
+
+
                                         {% if form.firstName is defined %}
-                                            {{ form_row(form.firstName) }}
+                                            <div class="form-group">
+                                                {{ form_label(form.firstName) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ form_widget(form.firstName) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
-                                        {#{% if form.email is defined %}#}
-                                        {#{{ form_row(form.email) }}#}
-                                        {#{% endif %}#}
-
-                                        {#{% if form.username is defined %}#}
-                                        {#{{ form_row(form.username) }}#}
-                                        {#{% endif %}#}
-
                                         {% if form.email is defined %}
                                             {#<div class="col-sm-12">#}
                                             <div class="form-group">
@@ -131,7 +150,10 @@
                                                         <small class="message-error font-red display-hide"></small>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        {{ form_widget(form.email) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-envelope"></i>
+                                                            {{ form_widget(form.email) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,31 +171,53 @@
                                                         <small class="message-error font-red display-hide"></small>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        {{ form_widget(form.username) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-user-secret"></i>
+                                                            {{ form_widget(form.username) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {#</div>#}
                                         {% endif %}
-                                        {% if form.phone is defined %}
-                                            {{ form_row(form.phone) }}
-                                        {% endif %}
-                                        {% if form.homePhone is defined %}
-                                            {{ form_row(form.homePhone) }}
-                                        {% endif %}
 
-
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            {% if form.roles is defined %}
-                                                {{ form_row(form.roles) }}
+                                        {% if form.roles is defined %}
+                                            {{ form_row(form.roles) }}
+                                        {% endif %}
+                                        <div class="hide">
+                                            {% if form.enabled is defined %}
+                                                {{ form_row(form.enabled) }}
                                             {% endif %}
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="form form-section">Inforamtion Utilisateur</h4>
+                                        {% if form.phone is defined %}
+                                            {#{{ form_row(form.phone) }}#}
+                                            <div class="form-group">
+                                                {{ form_label(form.phone) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-mobile"></i>
+                                                    {{ form_widget(form.phone) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if form.homePhone is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.homePhone) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-phone"></i>
+                                                    {{ form_widget(form.homePhone) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+
+                                    </div>
+
+
                                     <div class="col-sm-12">
                                         {{ form_widget(form) }}
-
                                         <hr>
                                     </div>
                                     <div class="form-actions">
@@ -212,16 +256,34 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        {#   {% if form.current_password is defined %}
-                                        {{ form_row(form.current_password ) }}
+                                        {% if formPassword.current_password is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(formPassword.current_password) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-key"></i>
+                                                    {{ form_widget(formPassword.current_password) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
-                                        {% if form.plainPassword is defined %}
-                                        {{ form_row(form.plainPassword ) }}
+                                        {% if formPassword.plainPassword.first is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(formPassword.plainPassword.first) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-unlock-alt"></i>
+                                                    {{ form_widget(formPassword.plainPassword.first) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
-                                        {% if form._token is defined %}
-                                            {{ form_row(form._token ) }}
-                                        {% endif %}#}
-                                        {{ form_widget(formPassword) }}
+                                        {% if formPassword.plainPassword.second is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(formPassword.plainPassword.second) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-unlock-alt"></i>
+                                                    {{ form_widget(formPassword.plainPassword.second) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {#{{ form_widget(formPassword) }}#}
                                     </div>
                                     <div class="col-sm-12">
                                         <hr>
@@ -294,9 +356,10 @@
                                                                 data-size="mini"
                                                                 data-notify-id="{{ user.id }}"
                                                                 data-notify-name="{{ user.username }}"
-                                                                data-on="ACTIF" data-off="Bloquer"
+                                                                data-on="ACTIF" data-off="DÉSACTIVÉ"
                                                                 data-onstyle="success" data-offstyle="warning"
-                                                                data-toggle="toggle" type="checkbox">
+                                                                data-toggle="toggle" type="checkbox"
+                                                                data-width="90">
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="#" data-toggle="tooltip" title="Editer"
@@ -332,9 +395,9 @@
                         {% else %}
                             class="tab-pane"
                                 {% endif %}>
-                            {{ form_start(formAdd, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_create','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                            {{ form_start(formAdd, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_create','autocomplete':'off', 'class': '' } }) }}
                             {% if formAdd is defined %}
-                                <div class="row">
+                                <div class="form-body row">
                                     <div class="col-sm-12">
                                         <div id="message-alert" class="alert alert-danger display-hide">
                                             <button class="close" data-close="alert"></button>
@@ -343,10 +406,23 @@
                                     </div>
                                     <div class="col-sm-6">
                                         {% if formAdd.lastName is defined %}
-                                            {{ form_row(formAdd.lastName) }}
+                                            <div class="form-group">
+                                                {{ form_label(formAdd.lastName) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ form_widget(formAdd.lastName) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
                                         {% if formAdd.firstName is defined %}
-                                            {{ form_row(formAdd.firstName) }}
+                                            {#{{ form_row(formAdd.firstName) }}#}
+                                            <div class="form-group">
+                                                {{ form_label(formAdd.firstName) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ form_widget(formAdd.firstName) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
 
                                         {% if formAdd.email is defined %}
@@ -360,24 +436,36 @@
                                                         <small class="message-error font-red display-hide"></small>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        {{ form_widget(formAdd.email) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-envelope"></i>
+                                                            {{ form_widget(formAdd.email) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {#</div>#}
                                         {% endif %}
-
+                                        <h4 class="form form-section">Inforamtion Utilisateur</h4>
                                         {% if formAdd.phone is defined %}
-                                            {{ form_row(formAdd.phone) }}
+                                            <div class="form-group">
+                                                {{ form_label(formAdd.phone) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-mobile"></i>
+                                                    {{ form_widget(formAdd.phone) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
                                         {% if formAdd.homePhone is defined %}
-                                            {{ form_row(formAdd.homePhone) }}
+                                            <div class="form-group">
+                                                {{ form_label(formAdd.homePhone) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-phone"></i>
+                                                    {{ form_widget(formAdd.homePhone) }}
+                                                </div>
+                                            </div>
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-6">
-                                       
-
-
                                         {% if formAdd.username is defined %}
                                             {#<div class="col-sm-12">#}
                                             <div class="form-group">
@@ -389,23 +477,34 @@
                                                         <small class="message-error font-red display-hide"></small>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        {{ form_widget(formAdd.username) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-user-secret"></i>
+                                                            {{ form_widget(formAdd.username) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {#</div>#}
                                         {% endif %}
-                                        
-                                         {% if formAdd.plainPassword.first is defined %}
+
+                                        {% if formAdd.plainPassword.first is defined %}
                                             <div class="form-group">
-                                                {{ form_row(formAdd.plainPassword.first) }}
+                                                {{ form_label(formAdd.plainPassword.first) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-key"></i>
+                                                    {{ form_widget(formAdd.plainPassword.first) }}
+                                                </div>
                                             </div>
-                                        {% endif %} 
+                                        {% endif %}
                                         {% if formAdd.plainPassword.second is defined %}
                                             <div class="form-group">
-                                                {{ form_row(formAdd.plainPassword.second) }}
+                                                {{ form_label(formAdd.plainPassword.second) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-key"></i>
+                                                    {{ form_widget(formAdd.plainPassword.second) }}
+                                                </div>
                                             </div>
-                                        {% endif %} 
+                                        {% endif %}
                                         {% if formAdd.roles is defined %}
                                             <div class="form-group">
                                                 {{ form_label(formAdd.roles) }}
@@ -414,11 +513,10 @@
                                         {% endif %}
                                         {% if formAdd.enabled is defined %}
                                             <div class="form-group">
-                                                    <div class="col-sm-12">
-                                                        {{ form_label(formAdd.enabled) }}
-                                                        {{ form_widget(formAdd.enabled) }}
-                                                    </div>
+                                                {{ form_label(formAdd.enabled) }}
+                                                {{ form_widget(formAdd.enabled) }}
                                             </div>
+
                                         {% endif %}
 
                                         {{ form_widget(formAdd) }}

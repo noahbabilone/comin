@@ -58,7 +58,7 @@ class UserType extends AbstractType
                     'label' => 'Rôle Utilisateur',
                     'multiple' => true,
                     'required' => true,
-                    'mapped' => false,
+//                    'mapped' => false,
                     'choices' => [
 //                        'SIMPLE UTILISATEUR' => User::ROLE_USER,
                         'CLIENT' => User::ROLE_CUSTOMER,
@@ -67,7 +67,7 @@ class UserType extends AbstractType
                     ],
                     'data' => isset($options['data']) ? $options['data']->getRoles() : null,
                     'attr' => array(
-                        'class' => 'form-control bs-select',
+                        'class' => 'form-control hide bs-select',
                     ),
                 )
             )
@@ -75,16 +75,17 @@ class UserType extends AbstractType
                     'label' => ' ',
                     'required' => false,
                     'required' => false,
-                    'mapped' => false,
+//                    'mapped' => false,
                     'attr' => array(
                         'class' => '',
                         'class' => 'hide btn-switch',
                         'data-size' => "mini",
-                        'data-on' => "ACTIF",
-                        'data-off' => "NON ACTIF",
+                        'data-on' => "COMPTE ACTIF",
+                        'data-off' => "COMPTE DÉSACTIVÉ",
                         'data-onstyle' => "success",
                         'data-offstyle' => "warning",
                         'data-toggle' => "toggle",
+                        'data-width'=>"150",
                     ),
                     'data' => isset($options['data']) ? $options['data']->isEnabled() : true,
                 )
