@@ -77,10 +77,7 @@ class Address
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true})
      */
     private $visible;
-
-
-   
-
+    
     /**
      * Get id
      *

@@ -17,7 +17,7 @@ class RestaurantController extends Controller
     /**
      * Lists all restaurant entities.
      *
-     * @Route("/", name="restaurant_index")
+     * @Route("/all", name="restaurant_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -26,7 +26,7 @@ class RestaurantController extends Controller
 
         $restaurants = $em->getRepository('AppBundle:Restaurant')->findAll();
 
-        return $this->render('restaurant/index.html.twig', array(
+        return $this->render('AppBundle:Restaurant:index.html.twig', array(
             'restaurants' => $restaurants,
         ));
     }
@@ -36,6 +36,8 @@ class RestaurantController extends Controller
      *
      * @Route("/new", name="restaurant_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -44,6 +46,8 @@ class RestaurantController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            die("Add Restaurant");
             $em = $this->getDoctrine()->getManager();
             $em->persist($restaurant);
             $em->flush();
@@ -51,7 +55,7 @@ class RestaurantController extends Controller
             return $this->redirectToRoute('restaurant_show', array('id' => $restaurant->getId()));
         }
 
-        return $this->render('restaurant/new.html.twig', array(
+        return $this->render('AppBundle:Restaurant:new.html.twig', array(
             'restaurant' => $restaurant,
             'form' => $form->createView(),
         ));
@@ -67,7 +71,7 @@ class RestaurantController extends Controller
     {
         $deleteForm = $this->createDeleteForm($restaurant);
 
-        return $this->render('restaurant/show.html.twig', array(
+        return $this->render('AppBundle:Restaurant:show.html.twig', array(
             'restaurant' => $restaurant,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -91,7 +95,7 @@ class RestaurantController extends Controller
             return $this->redirectToRoute('restaurant_edit', array('id' => $restaurant->getId()));
         }
 
-        return $this->render('restaurant/edit.html.twig', array(
+        return $this->render('AppBundle:Restaurant:edit.html.twig', array(
             'restaurant' => $restaurant,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

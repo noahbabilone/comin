@@ -138,7 +138,7 @@ class AccountController extends Controller
         
 //        dump($formAdd->createView()) or die;
 //        dump($formPassword->createView()) or die;
-        return $this->render('AppBundle:Account:edit.profile.html.twig', array(// ...
+        return $this->render('AppBundle:Account:index.html.twig', array(// ...
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView(),
             'formAdd' => $formAdd->createView(),

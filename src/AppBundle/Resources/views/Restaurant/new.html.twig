@@ -1,0 +1,123 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+ {% endblock stylesheets %}
+
+
+{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
+
+{% block header_breadcrumb %}
+    <li>
+        <span>Liste Restaurants</span>
+        <i class="fa fa-circle"></i>
+    </li>
+
+    <li>
+        <span>Création</span>
+    </li>
+{% endblock header_breadcrumb %}
+
+
+{% block action_toolbar %}
+    <div class="btn-group pull-right">
+        <a type="button" class="btn red btn-sm btn-outline">
+            <i class="fa fa-arrow-left"></i> Tous les restaurants
+        </a>
+    </div>
+
+{% endblock action_toolbar %}
+{% block back_body %}
+
+    <div class="row" id="page_account">
+        {#<div class="col-md-12 col-sm-12 col-xs-12">#}
+        <div class="portlet light">
+
+            {% set routeName = app.request.get('_route') %}
+            <div class="portlet-body">
+                <div class="tabbable-line tabbable-full-width"> {#tabbable-tabdrop#}
+
+
+                    <div class="tab-content">
+                        {% if app.request.hasPreviousSession %}
+                            <div class="row">
+                                {% for type, messages in app.session.flashbag.all() %}
+                                    {% for message in messages %}
+                                        <div class="col-md-12">
+                                            <div class="alert alert-{{ type }} alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-hidden="true"></button>
+                                                <strong>{{ type }}</strong>
+                                                {{ message }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+
+                        <div id="add">
+                            {{ form_start(form, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_add','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
+                            {% if form is defined %}
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="message-alert" class="alert alert-danger display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-actions">
+                                        <div class="col-sm-3 ">
+                                            <button type="submit"
+                                                    id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                        class="fa fa-save"></span>
+                                                Enregistrer
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <a href="{{ path('app_account_add') }}"
+                                               id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                        class="fa fa-remove"></span>
+                                                Annuler
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{ form_end(form) }}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+{% endblock back_body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+    'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+    'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+    'bundles/app/js/restaurant/add.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
