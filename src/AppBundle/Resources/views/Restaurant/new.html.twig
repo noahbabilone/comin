@@ -31,7 +31,6 @@
             <i class="fa fa-arrow-left"></i> Tous les restaurants
         </a>
     </div>
-
 {% endblock action_toolbar %}
 {% block back_body %}
 
@@ -41,7 +40,7 @@
 
             {% set routeName = app.request.get('_route') %}
             <div class="portlet-body">
-                <div class="tabbable-line tabbable-full-width"> {#tabbable-tabdrop#}
+                <div class="tabbable-full-width"> {#tabbable-tabdrop#}
 
 
                     <div class="tab-content">
@@ -63,9 +62,8 @@
                         {% endif %}
 
 
-                        <div id="add">
-                            {{ form_start(form, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_add','autocomplete':'off', 'class': 'fos_user_change_password' } }) }}
                             {% if form is defined %}
+                                {{ form_start(form, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_add','autocomplete':'off', 'class': '' } }) }}
 
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -73,6 +71,66 @@
                                             <button class="close" data-close="alert"></button>
                                             <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
                                         </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        {% if form.name is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.name) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-home"></i>
+                                                    {{ form_widget(form.name) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if form.speciality is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.speciality) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-cutlery"></i>
+                                                    {{ form_widget(form.speciality) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if form.onTheSpot is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.onTheSpot) }}
+                                                {{ form_widget(form.onTheSpot) }}
+                                            </div>
+                                        {% endif %}
+                                        
+
+
+                                        {% if form.description is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.description) }}
+                                                {{ form_widget(form.description) }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        
+                                        {% if form.openingHours is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.openingHours) }}
+                                                {{ form_widget(form.openingHours) }}
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if form.rite is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.rite) }}
+                                                {{ form_widget(form.rite) }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <hr>
                                     </div>
 
 
@@ -97,13 +155,13 @@
                                 {{ form_end(form) }}
                             {% endif %}
 
-                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+
 
 
 

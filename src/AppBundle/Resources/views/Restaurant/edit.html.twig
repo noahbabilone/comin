@@ -1,6 +1,38 @@
-{% extends 'base.html.twig' %}
+{% extends "AppBundle::layout.html.twig" %}
 
-{% block body %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+ {% endblock stylesheets %}
+
+
+{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
+
+{% block header_breadcrumb %}
+    <li>
+        <span>Liste Restaurants</span>
+        <i class="fa fa-circle"></i>
+    </li>
+
+    <li>
+        <span>Création</span>
+    </li>
+{% endblock header_breadcrumb %}
+
+
+{% block action_toolbar %}
+    <div class="btn-group pull-right">
+        <a type="button" class="btn red btn-sm btn-outline">
+            <i class="fa fa-arrow-left"></i> Tous les restaurants
+        </a>
+    </div>
+{% endblock action_toolbar %}
+{% block back_body %}
     <h1>Restaurant edit</h1>
 
     {{ form_start(edit_form) }}
@@ -18,4 +50,11 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+{% endblock back_body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

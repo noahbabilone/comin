@@ -103,4 +103,20 @@ stof_doctrine_extensions:
             timestampable: true
             tree: true
             
-            
+#ivory_ck_editor:
+#    configs:
+#        my_config_1:
+#            toolbar: "full"
+#            uiColor: "#EDEDED"
+#
+#        my_config_1:
+#            toolbar: "toolbar_2"
+#            uiColor: "#ffffff"
+#            # ...
+#        my_config_2:
+#            toolbar: "toolbar_1"
+#            uiColor: "#EDEDED"
+#    toolbars:
+#        configs:
+#            toolbar_1: [ [ "Source", "-", "Save" ], "/", [ "Anchor" ], "/", [ "Maximize" ] ]
+#            toolbar_            

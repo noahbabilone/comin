@@ -77,7 +77,6 @@ class UserType extends AbstractType
                     'required' => false,
 //                    'mapped' => false,
                     'attr' => array(
-                        'class' => '',
                         'class' => 'hide btn-switch',
                         'data-size' => "mini",
                         'data-on' => "COMPTE ACTIF",
