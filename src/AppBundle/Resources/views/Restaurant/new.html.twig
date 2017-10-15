@@ -4,6 +4,8 @@
      {{ parent() }}
      {% stylesheets
      'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
+
 
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
@@ -62,98 +64,107 @@
                         {% endif %}
 
 
-                            {% if form is defined %}
-                                {{ form_start(form, { 'action': path('app_account_add'), 'attr': { 'id': 'form_validation_add','autocomplete':'off', 'class': '' } }) }}
+                        {% if form is defined %}
+                            {{ form_start(form, { 'attr': { 'id': 'form_restaurant_add','autocomplete':'off', 'class': '' } }) }}
 
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div id="message-alert" class="alert alert-danger display-hide">
-                                            <button class="close" data-close="alert"></button>
-                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        {% if form.name is defined %}
-                                            <div class="form-group">
-                                                {{ form_label(form.name) }}
-                                                <div class="input-icon">
-                                                    <i class="fa fa-home"></i>
-                                                    {{ form_widget(form.name) }}
-                                                </div>
-                                            </div>
-                                        {% endif %}
-
-                                        {% if form.speciality is defined %}
-                                            <div class="form-group">
-                                                {{ form_label(form.speciality) }}
-                                                <div class="input-icon">
-                                                    <i class="fa fa-cutlery"></i>
-                                                    {{ form_widget(form.speciality) }}
-                                                </div>
-                                            </div>
-                                        {% endif %}
-
-                                        {% if form.onTheSpot is defined %}
-                                            <div class="form-group">
-                                                {{ form_label(form.onTheSpot) }}
-                                                {{ form_widget(form.onTheSpot) }}
-                                            </div>
-                                        {% endif %}
-                                        
-
-
-                                        {% if form.description is defined %}
-                                            <div class="form-group">
-                                                {{ form_label(form.description) }}
-                                                {{ form_widget(form.description) }}
-                                            </div>
-                                        {% endif %}
-
-                                    </div>
-                                    
-                                    <div class="col-sm-6">
-                                        
-                                        {% if form.openingHours is defined %}
-                                            <div class="form-group">
-                                                {{ form_label(form.openingHours) }}
-                                                {{ form_widget(form.openingHours) }}
-                                            </div>
-                                        {% endif %}
-                                        
-                                        {% if form.rite is defined %}
-                                            <div class="form-group">
-                                                {{ form_label(form.rite) }}
-                                                {{ form_widget(form.rite) }}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-
-                                    <div class="col-sm-12">
-                                        <hr>
-                                    </div>
-
-
-                                    <div class="form-actions">
-                                        <div class="col-sm-3 ">
-                                            <button type="submit"
-                                                    id="btn_submit" class="btn green btn-sm btn-block"><span
-                                                        class="fa fa-save"></span>
-                                                Enregistrer
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-3 ">
-                                            <a href="{{ path('app_account_add') }}"
-                                               id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
-                                                        class="fa fa-remove"></span>
-                                                Annuler
-                                            </a>
-                                        </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="message-alert" class="alert alert-danger display-hide">
+                                        <button class="close" data-close="alert"></button>
+                                        <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
                                     </div>
                                 </div>
 
-                                {{ form_end(form) }}
-                            {% endif %}
+                                <div class="col-sm-6">
+                                    {% if form.name is defined %}
+                                        <div class="form-group">
+                                            {{ form_label(form.name) }}
+                                            <div class="input-icon">
+                                                <i class="fa fa-home"></i>
+                                                {{ form_widget(form.name) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.speciality is defined %}
+                                        <div class="form-group">
+                                            {{ form_label(form.speciality) }}
+                                            <div class="input-icon">
+                                                <i class="fa fa-cutlery"></i>
+                                                {{ form_widget(form.speciality) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="row">
+
+                                        {% if form.onTheSpot is defined %}
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.onTheSpot) }}
+                                                    {{ form_widget(form.onTheSpot) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if form.rite is defined %}
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.rite) }}
+                                                    {{ form_widget(form.rite) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    {% if form.description is defined %}
+                                        <div class="form-group">
+                                            {{ form_label(form.description) }}
+                                            {{ form_widget(form.description) }}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="col-sm-6">
+
+                                    {% if form.openingHours is defined %}
+                                        <div class="form-group">
+                                            {{ form_label(form.openingHours) }}
+                                            {{ form_widget(form.openingHours) }}
+                                        </div>
+                                    {% endif %}
+
+
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <hr>
+                                </div>
+
+
+                                <div class="form-actions">
+                                    <div class="col-sm-3 ">
+                                        <button type="submit"
+                                                id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                    class="fa fa-save"></span>
+                                            Enregistrer
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <a href="{{ path('app_account_add') }}"
+                                           id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                    class="fa fa-remove"></span>
+                                            Annuler
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form_end(form) }}
+                        {% endif %}
 
                     </div>
                 </div>
@@ -173,7 +184,7 @@
     {% javascripts
     'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
     'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
-    'public/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
+    'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
     'bundles/app/js/restaurant/add.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

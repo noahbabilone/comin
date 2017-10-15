@@ -65,13 +65,11 @@ class Restaurant
     private $rite;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="OpeningHours", type="datetime")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
+     * @Assert\NotBlank()
      */
     private $openingHours;
-
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="restaurants")
      */
@@ -95,12 +93,12 @@ class Restaurant
      * @Assert\NotBlank()
      */
     private $cards;
-    
-   /**
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Address", inversedBy="restaurants")
      */
     private $address;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
      * @Assert\NotBlank()
@@ -123,7 +121,7 @@ class Restaurant
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
-    
+
     /**
      * @var bool
      *
@@ -136,6 +134,7 @@ class Restaurant
      */
     public function __construct()
     {
+        $this->openingHours = new \Doctrine\Common\Collections\ArrayCollection();
         $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cards = new \Doctrine\Common\Collections\ArrayCollection();
@@ -297,30 +296,6 @@ class Restaurant
     }
 
     /**
-     * Set openingHours
-     *
-     * @param \DateTime $openingHours
-     *
-     * @return Restaurant
-     */
-    public function setOpeningHours($openingHours)
-    {
-        $this->openingHours = $openingHours;
-
-        return $this;
-    }
-
-    /**
-     * Get openingHours
-     *
-     * @return \DateTime
-     */
-    public function getOpeningHours()
-    {
-        return $this->openingHours;
-    }
-
-    /**
      * Set created
      *
      * @param \DateTime $created
@@ -390,6 +365,40 @@ class Restaurant
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * Add openingHour
+     *
+     * @param \AppBundle\Entity\OpeningHours $openingHour
+     *
+     * @return Restaurant
+     */
+    public function addOpeningHour(\AppBundle\Entity\OpeningHours $openingHour)
+    {
+        $this->openingHours[] = $openingHour;
+
+        return $this;
+    }
+
+    /**
+     * Remove openingHour
+     *
+     * @param \AppBundle\Entity\OpeningHours $openingHour
+     */
+    public function removeOpeningHour(\AppBundle\Entity\OpeningHours $openingHour)
+    {
+        $this->openingHours->removeElement($openingHour);
+    }
+
+    /**
+     * Get openingHours
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOpeningHours()
+    {
+        return $this->openingHours;
     }
 
     /**

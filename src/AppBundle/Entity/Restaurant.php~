@@ -65,13 +65,11 @@ class Restaurant
     private $rite;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="OpeningHours", type="datetime")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
+     * @Assert\NotBlank()
      */
     private $openingHours;
-
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="restaurants")
      */
@@ -95,12 +93,12 @@ class Restaurant
      * @Assert\NotBlank()
      */
     private $cards;
-    
-   /**
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Address", inversedBy="restaurants")
      */
     private $address;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
      * @Assert\NotBlank()
@@ -123,7 +121,7 @@ class Restaurant
      * @ORM\Column( type="datetime", nullable=true)
      */
     private $updated;
-    
+
     /**
      * @var bool
      *

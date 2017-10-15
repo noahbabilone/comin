@@ -6,6 +6,7 @@ use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,13 +52,17 @@ class RestaurantType extends AbstractType
                     ),
                 )
             )
-            ->add('openingHours', TextType::class, array(
+            ->add('openingHours', CollectionType::class, array(
                     'label' => "Heure d'ouverture",
                     'required' => false,
+                    'entry_type' => OpeningHoursType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'delete_empty' => true,
                     'attr' => array(
-                        'class' => '',
-                        'placeholder' => 'Heure',
-                    ),
+                        'class' => "form-item"
+                    )
+                    
                 )
             )
             ->add('rite', TextType::class, array(
@@ -78,7 +83,6 @@ class RestaurantType extends AbstractType
                         'autocomplete' => 'off',
                         'rows' => '4'
                     ),
-                    'autoload' => true,
                     'config' => array(
                         'toolbar' => array(
                             array(
