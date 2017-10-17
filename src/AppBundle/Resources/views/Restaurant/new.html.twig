@@ -5,13 +5,28 @@
      {% stylesheets
      'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
      'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
-
-
+     "public/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
+     "public/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
      {% endstylesheets %}
- {% endblock stylesheets %}
+     <style type="text/css">
+         .margin-top-25 {
+             margin-top: 25px !important;
+         }
 
+         .form-section {
+             margin: 10px 0;
+             padding-bottom: 5px;
+             border-bottom: 1px solid #e7ecf1;
+         }
+
+         .form-opening-hours .form-group {
+             /*margin-bottom: 0 !important;*/
+         }
+
+     </style>
+ {% endblock stylesheets %}
 
 {% block title %}Mon Compte |  {{ parent() }} {% endblock %}
 
@@ -26,7 +41,6 @@
     </li>
 {% endblock header_breadcrumb %}
 
-
 {% block action_toolbar %}
     <div class="btn-group pull-right">
         <a type="button" class="btn red btn-sm btn-outline">
@@ -34,8 +48,8 @@
         </a>
     </div>
 {% endblock action_toolbar %}
-{% block back_body %}
 
+{% block back_body %}
     <div class="row" id="page_account">
         {#<div class="col-md-12 col-sm-12 col-xs-12">#}
         <div class="portlet light">
@@ -43,7 +57,6 @@
             {% set routeName = app.request.get('_route') %}
             <div class="portlet-body">
                 <div class="tabbable-full-width"> {#tabbable-tabdrop#}
-
 
                     <div class="tab-content">
                         {% if app.request.hasPreviousSession %}
@@ -65,7 +78,7 @@
 
 
                         {% if form is defined %}
-                            {{ form_start(form, { 'attr': { 'id': 'form_restaurant_add','autocomplete':'off', 'class': '' } }) }}
+                            {{ form_start(form, { 'attr': { 'id': 'form_restaurant_add','autocomplete':'off', 'class': 'forms' } }) }}
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -115,29 +128,65 @@
                                                 </div>
                                             </div>
                                         {% endif %}
-
                                     </div>
 
+                                    {% if form.address is defined %}
+                                        <h4 class="form-section">Adresse </h4>
+                                        {{ form_label(form.address,null,{'label_attr':{'class':'sr-only'}}) }}
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    {{ form_row(form.address.street) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    {{ form_row(form.address.city) }}
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                    {% endif %}
                                     {% if form.description is defined %}
-                                        <div class="form-group">
+                                        <div class="form-group hide" id="input_description">
                                             {{ form_label(form.description) }}
                                             {{ form_widget(form.description) }}
                                         </div>
                                     {% endif %}
-
                                 </div>
 
                                 <div class="col-sm-6">
-
                                     {% if form.openingHours is defined %}
+                                        <h4 class="form-section">Heures d'Ouverture
+                                            <button type="button" class="btn btn-sm green pull-right"
+                                                    id="bntOpeningHours"><i
+                                                        class="fa fa-clock-o fa-fw"></i> Ajout Heure D'ouverture
+                                            </button>
+                                        </h4>
+                                        <div class="row margin-top-40 margin-bottom-20 text-center loading">
+                                            <div class="col-sm-12">
+                                                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
-                                            {{ form_label(form.openingHours) }}
+                                            {{ form_label(form.openingHours,null,{'label_attr':{'class':'sr-only'}}) }}
                                             {{ form_widget(form.openingHours) }}
                                         </div>
                                     {% endif %}
 
+                                    {% if form.exceptionalClosure is defined %}
+                                        <h4 class="form-section">Fermeture Exceptionnelle
+                                            <button type="button" class="btn btn-sm red pull-right"
+                                                    id="bntExceptionalClosure"><i
+                                                        class="fa fa-clock-o fa-fw"></i> Ajout Heure Fermeture
+                                            </button>
+                                        </h4>
 
+                                        <div class="form-group">
+                                            {{ form_label(form.exceptionalClosure,null,{'label_attr':{'class':'sr-only'}}) }}
+                                            {{ form_widget(form.exceptionalClosure) }}
+                                        </div>
+                                    {% endif %}
                                 </div>
 
                                 <div class="col-sm-12">
@@ -173,10 +222,6 @@
         </div>
     </div>
 
-
-
-
-
 {% endblock back_body %}
 
 {% block javascripts %}
@@ -184,7 +229,10 @@
     {% javascripts
     'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
     'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
-    'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
+    "public/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"
+    "public/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+    "public/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
+    "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
     'bundles/app/js/restaurant/add.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

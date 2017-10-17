@@ -69,7 +69,13 @@ class Restaurant
      * @Assert\NotBlank()
      */
     private $openingHours;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
+     * @Assert\NotBlank()
+     */
+    private $exceptionalClosure;
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="restaurants")
      */
@@ -129,12 +135,14 @@ class Restaurant
      */
     private $visible;
 
+   
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->openingHours = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->exceptionalClosure = new \Doctrine\Common\Collections\ArrayCollection();
         $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cards = new \Doctrine\Common\Collections\ArrayCollection();
@@ -399,6 +407,40 @@ class Restaurant
     public function getOpeningHours()
     {
         return $this->openingHours;
+    }
+
+    /**
+     * Add exceptionalClosure
+     *
+     * @param \AppBundle\Entity\OpeningHours $exceptionalClosure
+     *
+     * @return Restaurant
+     */
+    public function addExceptionalClosure(\AppBundle\Entity\OpeningHours $exceptionalClosure)
+    {
+        $this->exceptionalClosure[] = $exceptionalClosure;
+
+        return $this;
+    }
+
+    /**
+     * Remove exceptionalClosure
+     *
+     * @param \AppBundle\Entity\OpeningHours $exceptionalClosure
+     */
+    public function removeExceptionalClosure(\AppBundle\Entity\OpeningHours $exceptionalClosure)
+    {
+        $this->exceptionalClosure->removeElement($exceptionalClosure);
+    }
+
+    /**
+     * Get exceptionalClosure
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExceptionalClosure()
+    {
+        return $this->exceptionalClosure;
     }
 
     /**

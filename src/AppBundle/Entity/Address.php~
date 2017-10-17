@@ -44,10 +44,16 @@ class Address
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="addresses")
      * @Assert\NotBlank()
      */
     private $user;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="address")
+     * @Assert\NotBlank()
+     */
+    private $restaurants;
 
     /**
      * @var \DateTime
@@ -71,7 +77,6 @@ class Address
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true})
      */
     private $visible;
-
-
-   
+    
+    
 }

@@ -50,7 +50,7 @@ class Address
     private $user;
     
      /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="address")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="address")
      * @Assert\NotBlank()
      */
     private $restaurants;
@@ -78,6 +78,15 @@ class Address
      */
     private $visible;
     
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->restaurants = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -254,5 +263,39 @@ class Address
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     *
+     * @return Address
+     */
+    public function addRestaurant(\AppBundle\Entity\Restaurant $restaurant)
+    {
+        $this->restaurants[] = $restaurant;
+
+        return $this;
+    }
+
+    /**
+     * Remove restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     */
+    public function removeRestaurant(\AppBundle\Entity\Restaurant $restaurant)
+    {
+        $this->restaurants->removeElement($restaurant);
+    }
+
+    /**
+     * Get restaurants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRestaurants()
+    {
+        return $this->restaurants;
     }
 }

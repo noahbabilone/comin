@@ -31,32 +31,58 @@ class OpeningHours
     private $day;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="morningStartTime", type="integer", nullable=true)
+     * @ORM\Column(name="morningStartTime", type="datetime", nullable=true)
      */
     private $morningStartTime;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="morningEndTime", type="integer", nullable=true)
+     * @ORM\Column(name="morningEndTime", type="datetime", nullable=true)
      */
     private $morningEndTime;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="eveningStartTime", type="integer", nullable=true)
+     * @ORM\Column(name="eveningStartTime", type="datetime", nullable=true)
      */
     private $eveningStartTime;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="eveningEndTime", type="integer", nullable=true)
+     * @ORM\Column(name="eveningEndTime", type="datetime", nullable=true)
      */
     private $eveningEndTime;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="exceptionalClosure", type="datetime", nullable=true)
+     */
+    private $exceptionalClosure;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="noOpeningStartTime", type="datetime", nullable=true)
+     */
+    private $noOpeningStartTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="noOpeningEndTime", type="datetime", nullable=true)
+     */
+    private $noOpeningEndTime;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours")
+     */
+    private $restaurant;
 
     /**
      * @var bool
@@ -65,25 +91,6 @@ class OpeningHours
      */
     private $open;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="noOpeningStartTime", type="integer", nullable=true)
-     */
-    private $noOpeningStartTime;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="noOpeningEndTime", type="integer", nullable=true)
-     */
-    private $noOpeningEndTime;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours")
-     */
-    private $restaurant;
-    
     /**
      * @var \DateTime
      *
@@ -106,8 +113,6 @@ class OpeningHours
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-
-
     
 
     /**
@@ -147,7 +152,7 @@ class OpeningHours
     /**
      * Set morningStartTime
      *
-     * @param integer $morningStartTime
+     * @param \DateTime $morningStartTime
      *
      * @return OpeningHours
      */
@@ -161,7 +166,7 @@ class OpeningHours
     /**
      * Get morningStartTime
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getMorningStartTime()
     {
@@ -171,7 +176,7 @@ class OpeningHours
     /**
      * Set morningEndTime
      *
-     * @param integer $morningEndTime
+     * @param \DateTime $morningEndTime
      *
      * @return OpeningHours
      */
@@ -185,7 +190,7 @@ class OpeningHours
     /**
      * Get morningEndTime
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getMorningEndTime()
     {
@@ -195,7 +200,7 @@ class OpeningHours
     /**
      * Set eveningStartTime
      *
-     * @param integer $eveningStartTime
+     * @param \DateTime $eveningStartTime
      *
      * @return OpeningHours
      */
@@ -209,7 +214,7 @@ class OpeningHours
     /**
      * Get eveningStartTime
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getEveningStartTime()
     {
@@ -219,7 +224,7 @@ class OpeningHours
     /**
      * Set eveningEndTime
      *
-     * @param integer $eveningEndTime
+     * @param \DateTime $eveningEndTime
      *
      * @return OpeningHours
      */
@@ -233,11 +238,83 @@ class OpeningHours
     /**
      * Get eveningEndTime
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getEveningEndTime()
     {
         return $this->eveningEndTime;
+    }
+
+    /**
+     * Set exceptionalClosure
+     *
+     * @param \DateTime $exceptionalClosure
+     *
+     * @return OpeningHours
+     */
+    public function setExceptionalClosure($exceptionalClosure)
+    {
+        $this->exceptionalClosure = $exceptionalClosure;
+
+        return $this;
+    }
+
+    /**
+     * Get exceptionalClosure
+     *
+     * @return \DateTime
+     */
+    public function getExceptionalClosure()
+    {
+        return $this->exceptionalClosure;
+    }
+
+    /**
+     * Set noOpeningStartTime
+     *
+     * @param \DateTime $noOpeningStartTime
+     *
+     * @return OpeningHours
+     */
+    public function setNoOpeningStartTime($noOpeningStartTime)
+    {
+        $this->noOpeningStartTime = $noOpeningStartTime;
+
+        return $this;
+    }
+
+    /**
+     * Get noOpeningStartTime
+     *
+     * @return \DateTime
+     */
+    public function getNoOpeningStartTime()
+    {
+        return $this->noOpeningStartTime;
+    }
+
+    /**
+     * Set noOpeningEndTime
+     *
+     * @param \DateTime $noOpeningEndTime
+     *
+     * @return OpeningHours
+     */
+    public function setNoOpeningEndTime($noOpeningEndTime)
+    {
+        $this->noOpeningEndTime = $noOpeningEndTime;
+
+        return $this;
+    }
+
+    /**
+     * Get noOpeningEndTime
+     *
+     * @return \DateTime
+     */
+    public function getNoOpeningEndTime()
+    {
+        return $this->noOpeningEndTime;
     }
 
     /**
@@ -262,54 +339,6 @@ class OpeningHours
     public function getOpen()
     {
         return $this->open;
-    }
-
-    /**
-     * Set noOpeningStartTime
-     *
-     * @param integer $noOpeningStartTime
-     *
-     * @return OpeningHours
-     */
-    public function setNoOpeningStartTime($noOpeningStartTime)
-    {
-        $this->noOpeningStartTime = $noOpeningStartTime;
-
-        return $this;
-    }
-
-    /**
-     * Get noOpeningStartTime
-     *
-     * @return integer
-     */
-    public function getNoOpeningStartTime()
-    {
-        return $this->noOpeningStartTime;
-    }
-
-    /**
-     * Set noOpeningEndTime
-     *
-     * @param integer $noOpeningEndTime
-     *
-     * @return OpeningHours
-     */
-    public function setNoOpeningEndTime($noOpeningEndTime)
-    {
-        $this->noOpeningEndTime = $noOpeningEndTime;
-
-        return $this;
-    }
-
-    /**
-     * Get noOpeningEndTime
-     *
-     * @return integer
-     */
-    public function getNoOpeningEndTime()
-    {
-        return $this->noOpeningEndTime;
     }
 
     /**

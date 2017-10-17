@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,7 +25,7 @@ class RestaurantType extends AbstractType
                     'required' => true,
                     'attr' => array(
                         'class' => '',
-                        'placeholder' => 'Nom de l\établissement',
+                        'placeholder' => 'Nom de l\'établissement',
                     ),
                 )
             )
@@ -60,13 +61,32 @@ class RestaurantType extends AbstractType
                     'allow_delete' => true,
                     'delete_empty' => true,
                     'attr' => array(
-                        'class' => "form-item"
+                        'class' => "form-opening-hours"
                     )
-                    
+                )
+            ) ->add('exceptionalClosure', CollectionType::class, array(
+                    'label' => "Fermeture Exceptionnelle",
+                    'required' => false,
+                    'entry_type' => ExceptionalClosureType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'delete_empty' => true,
+                    'attr' => array(
+                        'class' => "form-exceptional-closure"
+                    )
                 )
             )
+          
             ->add('rite', TextType::class, array(
                     'label' => 'Rite',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'rite',
+                    ),
+                )
+            )->add('address', AddressType::class, array(
+                    'label' => 'Adresse',
                     'required' => false,
                     'attr' => array(
                         'class' => '',
