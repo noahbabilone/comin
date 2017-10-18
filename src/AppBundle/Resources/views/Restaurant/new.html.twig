@@ -4,6 +4,7 @@
      {{ parent() }}
      {% stylesheets
      'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     'public/plugins/payment-font/css/paymentfont.min.css'
      'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
      "public/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
      "public/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
@@ -23,6 +24,17 @@
 
          .form-opening-hours .form-group {
              /*margin-bottom: 0 !important;*/
+         }
+
+         .list-show-icons > div > i {
+             display: inline-block;
+             margin: 0 0 5px;
+             padding: 5px;
+             font-size: 30px;
+             border-radius: 3px;
+             -webkit-transition: all 250ms ease;
+             -o-transition: all 250ms ease;
+             transition: all 250ms ease;
          }
 
      </style>
@@ -134,19 +146,101 @@
                                         <h4 class="form-section">Adresse </h4>
                                         {{ form_label(form.address,null,{'label_attr':{'class':'sr-only'}}) }}
                                         <div class="row">
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    {{ form_row(form.address.street) }}
+                                            {% if form.address.street %}
+                                                <div class="col-sm-2">
+                                                    <div class="form-group">
+                                                        {{ form_row(form.address.street) }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    {{ form_row(form.address.city) }}
+                                            {% endif %}
+                                            {% if form.address.region %}
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        {{ form_row(form.address.region) }}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% endif %}
                                         </div>
 
                                     {% endif %}
+
+                                    <h4 class="form-section">Moyens de paiement </h4>
+
+                                    <div class="row list-show-icons">
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-bitcoin"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-visa"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-mastercard"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-american-express"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-diners"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-discover"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-jcb"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-maestro"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-paypal"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-stripe"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-bank-transfer"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                            <i class="pf pf-cash-on-delivery"></i>
+                                        </div>
+
+
+                                    </div>
+                                   
+                                    {% if form.bankCard %}
+
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.bankCard) }}
+                                            <i class="fa fa-credit-card fa-3x"></i>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.ticketRestaurant %}
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.ticketRestaurant) }}
+                                            <i class="fa fa-paypal fa-3x"></i>
+
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.cash %}
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.cash) }}
+                                            <i class="fa fa-money fa-3x"></i>
+
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.paypal %}
+                                        <div class="col-sm-6">
+                                            {{ form_widget(form.paypal) }}
+                                            <i class="fa fa-paypal fa-3x"></i>
+                                        </div>
+                                        {#{{ form_label(form.paypal,null,{'label_attr':{'class':'mt-checkbox mt-checkbox-outline'}}) }}#}
+
+
+                                    {% endif %}
+
                                     {% if form.description is defined %}
                                         <div class="form-group hide" id="input_description">
                                             {{ form_label(form.description) }}

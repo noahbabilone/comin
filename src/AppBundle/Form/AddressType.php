@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +16,7 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-           ->add('street', TextType::class, array(
+            ->add('street', TextType::class, array(
                     'label' => 'Rue',
                     'required' => true,
                     'attr' => array(
@@ -24,7 +25,13 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('city')
+            ->add('region', EntityType::class, [
+                'class' => 'AppBundle\Entity\Region',
+                'placeholder' => 'Sélectionnez votre région',
+                'mapped' => false,
+                'required' => false
+            ])
+//            ->add('city')
 //            ->add('created')
 //            ->add('updated')
 //            ->add('visible')

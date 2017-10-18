@@ -128,6 +128,35 @@ class Restaurant
      */
     private $updated;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="bank_card", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $bankCard;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="paypal", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $paypal;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="cash", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $cash;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="ticket_restaurant", type="boolean", nullable=true ,options={ "default":false })
+     */
+    private $ticketRestaurant;
+
     /**
      * @var bool
      *
@@ -135,7 +164,7 @@ class Restaurant
      */
     private $visible;
 
-   
+
     /**
      * Constructor
      */
@@ -625,5 +654,101 @@ class Restaurant
     public function getEvaluation()
     {
         return $this->evaluation;
+    }
+
+    /**
+     * Set bankCard
+     *
+     * @param boolean $bankCard
+     *
+     * @return Restaurant
+     */
+    public function setBankCard($bankCard)
+    {
+        $this->bankCard = $bankCard;
+
+        return $this;
+    }
+
+    /**
+     * Get bankCard
+     *
+     * @return boolean
+     */
+    public function getBankCard()
+    {
+        return $this->bankCard;
+    }
+
+    /**
+     * Set paypal
+     *
+     * @param boolean $paypal
+     *
+     * @return Restaurant
+     */
+    public function setPaypal($paypal)
+    {
+        $this->paypal = $paypal;
+
+        return $this;
+    }
+
+    /**
+     * Get paypal
+     *
+     * @return boolean
+     */
+    public function getPaypal()
+    {
+        return $this->paypal;
+    }
+
+    /**
+     * Set cash
+     *
+     * @param boolean $cash
+     *
+     * @return Restaurant
+     */
+    public function setCash($cash)
+    {
+        $this->cash = $cash;
+
+        return $this;
+    }
+
+    /**
+     * Get cash
+     *
+     * @return boolean
+     */
+    public function getCash()
+    {
+        return $this->cash;
+    }
+
+    /**
+     * Set ticketRestaurant
+     *
+     * @param boolean $ticketRestaurant
+     *
+     * @return Restaurant
+     */
+    public function setTicketRestaurant($ticketRestaurant)
+    {
+        $this->ticketRestaurant = $ticketRestaurant;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketRestaurant
+     *
+     * @return boolean
+     */
+    public function getTicketRestaurant()
+    {
+        return $this->ticketRestaurant;
     }
 }

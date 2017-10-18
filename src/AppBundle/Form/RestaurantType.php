@@ -64,7 +64,7 @@ class RestaurantType extends AbstractType
                         'class' => "form-opening-hours"
                     )
                 )
-            ) ->add('exceptionalClosure', CollectionType::class, array(
+            )->add('exceptionalClosure', CollectionType::class, array(
                     'label' => "Fermeture Exceptionnelle",
                     'required' => false,
                     'entry_type' => ExceptionalClosureType::class,
@@ -76,7 +76,6 @@ class RestaurantType extends AbstractType
                     )
                 )
             )
-          
             ->add('rite', TextType::class, array(
                     'label' => 'Rite',
                     'required' => false,
@@ -85,7 +84,38 @@ class RestaurantType extends AbstractType
                         'placeholder' => 'rite',
                     ),
                 )
-            )->add('address', AddressType::class, array(
+            )
+            ->add('bankCard', CheckboxType::class, array(
+                    'label' => 'Carte Bancaire',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                    ),
+                )
+            )->add('paypal', CheckboxType::class, array(
+                    'label' => 'Paypal',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'mt-checkbox mt-checkbox-outline',
+                    ),
+                )
+            )->add('cash', CheckboxType::class, array(
+                    'label' => 'Espèce',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                    ),
+                )
+            )->add('ticketRestaurant', CheckboxType::class, array(
+                    'label' => 'Titre Restaurant',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'rite',
+                    ),
+                )
+            )
+            ->add('address', AddressType::class, array(
                     'label' => 'Adresse',
                     'required' => false,
                     'attr' => array(

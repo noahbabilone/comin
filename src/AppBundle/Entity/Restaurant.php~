@@ -128,6 +128,35 @@ class Restaurant
      */
     private $updated;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="bank_card", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $bankCard;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="paypal", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $paypal;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="cash", type="boolean", nullable=true ,options={ "default":true })
+     */
+    private $cash;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="ticket_restaurant", type="boolean", nullable=true ,options={ "default":false })
+     */
+    private $ticketRestaurant;
+
     /**
      * @var bool
      *
@@ -135,7 +164,7 @@ class Restaurant
      */
     private $visible;
 
-   
+
     /**
      * Constructor
      */

@@ -3,8 +3,8 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Region;
-use AppBundle\Entity\Departement;
-use AppBundle\Entity\Ville;
+use AppBundle\Entity\Department;
+use AppBundle\Entity\City;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,18 +40,19 @@ class ImportCityCommand extends ContainerAwareCommand
 
         // On vide les 3 tables
         $connection = $em->getConnection();
-        $platform = $connection->getDatabasePlatform();
-        $connection->executeUpdate($platform->getTruncateTableSQL('ville', true /* whether to cascade */));
-        $connection->executeUpdate($platform->getTruncateTableSQL('region', true /* whether to cascade */));
-        $connection->executeUpdate($platform->getTruncateTableSQL('departement', true /* whether to cascade */));
+//        $platform = $connection->getDatabasePlatform();
+//        $connection->executeUpdate($platform->getTruncateTableSQL('city', true /* whether to cascade */));
+//        $connection->executeUpdate($platform->getTruncateTableSQL('region', true /* whether to cascade */));
+//        $connection->executeUpdate($platform->getTruncateTableSQL('department', true /* whether to cascade */));
 
         $csv = dirname($this->getContainer()->get('kernel')->getRootDir()) . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'cities.csv';
         $lines = explode("\n", file_get_contents($csv));
         $regions = [];
         $departements = [];
-        $villes = []; 
+        $villes = [];
 
         foreach ($lines as $k => $line) {
+
             $line = explode(';', $line);
             if (count($line) > 10 && $k > 0) {
                 // On sauvegarde la region
@@ -59,6 +60,8 @@ class ImportCityCommand extends ContainerAwareCommand
                     $region = new Region();
                     $region->setCode($line[1]);
                     $region->setName($line[2]);
+                    $output->writeln('Region : ' . $region->getName());
+
                     $regions[$line[1]] = $region;
                     $em->persist($region);
                 } else {
@@ -67,24 +70,31 @@ class ImportCityCommand extends ContainerAwareCommand
 
                 // On sauvegarde le departement
                 if (!key_exists($line[4], $departements)) {
-                    $departement = new Departement();
+                    $departement = new Department();
                     $departement->setName($line[5]);
                     $departement->setCode($line[4]);
                     $departement->setRegion($region);
                     $departements[$line[4]] = $departement;
                     $em->persist($departement);
+                    $output->writeln('Dept : ' . $departement->getName());
+
                 } else {
                     $departement = $departements[$line[4]];
                 }
 
                 // On sauvegarde la ville
-                $ville = new Ville();
+                $ville = new City();
                 $ville->setName($line[8]);
                 $ville->setCode($line[9]);
-                $ville->setDepartement($departement);
+                $ville->setDepartment($departement);
                 $villes[] = $line[8];
                 $em->persist($ville);
+                $output->writeln('N°: '.$k.' ==> ' . $ville->getName());
+
             }
+
+            if ($k % 20 == 0)
+                $em->flush();
         }
         $em->flush();
         $output->writeln(count($villes) . ' villes importées');
