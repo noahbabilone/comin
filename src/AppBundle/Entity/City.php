@@ -249,4 +249,10 @@ class City
     {
         return $this->department;
     }
+    
+    function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return $this->name;
+    }
 }

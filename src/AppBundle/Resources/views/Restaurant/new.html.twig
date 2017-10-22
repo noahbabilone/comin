@@ -146,17 +146,31 @@
                                         <h4 class="form-section">Adresse </h4>
                                         {{ form_label(form.address,null,{'label_attr':{'class':'sr-only'}}) }}
                                         <div class="row">
-                                            {% if form.address.street %}
+                                            {% if form.address.street is defined %}
                                                 <div class="col-sm-2">
                                                     <div class="form-group">
                                                         {{ form_row(form.address.street) }}
                                                     </div>
                                                 </div>
                                             {% endif %}
-                                            {% if form.address.region %}
+                                            {% if form.address.region is defined %}
                                                 <div class="col-sm-3">
                                                     <div class="form-group">
                                                         {{ form_row(form.address.region) }}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if form.address.department is defined %}
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        {{ form_row(form.address.department) }}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if form.address.city is defined %}
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        {{ form_row(form.address.city) }}
                                                     </div>
                                                 </div>
                                             {% endif %}

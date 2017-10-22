@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation As Gedmo;
 
-
 /**
  * Region
  *
@@ -30,8 +29,8 @@ class Region
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
-    
-     /**
+
+    /**
      * @var string
      * @Gedmo\Slug(fields={"name"}, updatable=false)
      * @ORM\Column(length=128, unique=true)
@@ -49,7 +48,7 @@ class Region
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Department", mappedBy="region")
      */
     private $departments;
-    
+
     /**
      * @var \DateTime
      *
@@ -73,7 +72,7 @@ class Region
      */
     private $visible;
 
-    
+
     /**
      * Constructor
      */
@@ -268,5 +267,12 @@ class Region
     public function getDepartments()
     {
         return $this->departments;
+    }
+
+    /* -----  ----- --- -----------*/
+    function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return $this->name;
     }
 }

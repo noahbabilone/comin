@@ -29,7 +29,7 @@ class Department
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
-    
+
     /**
      * @var string
      * @Gedmo\Slug(fields={"name"}, updatable=false)
@@ -43,7 +43,7 @@ class Department
      * @ORM\Column(name="code", type="string", length=255, nullable=true)
      */
     private $code;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Region", inversedBy="departments")
      */
@@ -54,7 +54,7 @@ class Department
      */
     private $city;
 
-     /**
+    /**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
@@ -76,7 +76,7 @@ class Department
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-    
+
     /**
      * Constructor
      */
@@ -295,5 +295,11 @@ class Department
     public function getCity()
     {
         return $this->city;
+    }
+
+    function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return $this->name;
     }
 }
