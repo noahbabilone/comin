@@ -300,6 +300,6 @@ class Department
     function __toString()
     {
         // TODO: Implement __toString() method.
-        return $this->name;
+        return $this->name. " (".$this->code.")";
     }
 }

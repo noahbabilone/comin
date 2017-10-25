@@ -2,14 +2,15 @@
 
 namespace AppBundle\Form;
 
+use FOS\UserBundle\Event\FormEvent;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RestaurantType extends AbstractType
@@ -84,6 +85,23 @@ class RestaurantType extends AbstractType
                         'placeholder' => 'rite',
                     ),
                 )
+            ) 
+            ->add('phone', TextType::class, array(
+                    'label' => 'Téléphone',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => '01 02 03 04 05',
+                    ),
+                )
+            ) ->add('fax', TextType::class, array(
+                    'label' => 'Fax',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => '01 02 03 04 05',
+                    ),
+                )
             )
             ->add('bankCard', CheckboxType::class, array(
                     'label' => 'Carte Bancaire',
@@ -108,15 +126,6 @@ class RestaurantType extends AbstractType
                 )
             )->add('ticketRestaurant', CheckboxType::class, array(
                     'label' => 'Titre Restaurant',
-                    'required' => false,
-                    'attr' => array(
-                        'class' => '',
-                        'placeholder' => 'rite',
-                    ),
-                )
-            )
-            ->add('address', AddressType::class, array(
-                    'label' => 'Adresse',
                     'required' => false,
                     'attr' => array(
                         'class' => '',
@@ -162,7 +171,18 @@ class RestaurantType extends AbstractType
 //            ->add('offer')
 //            ->add('menu')
 //            ->add('card')
-        ;
+
+            ->add('address', AddressType::class, array(
+                    'label' => 'Adresse',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'rite',
+                    ),
+                )
+            );
+
+       
     }
 
     /**

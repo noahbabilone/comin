@@ -29,6 +29,12 @@ class Address
      * @ORM\Column(name="street", type="string", length=255, nullable=true)
      */
     private $street;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content", type="string", length=255, nullable=true)
+     */
+    private $content;
 
     /**
      * @var string
@@ -48,8 +54,8 @@ class Address
      * @Assert\NotBlank()
      */
     private $user;
-    
-     /**
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="address")
      * @Assert\NotBlank()
      */
@@ -77,8 +83,8 @@ class Address
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true})
      */
     private $visible;
-    
-    
+
+
     /**
      * Constructor
      */
@@ -119,6 +125,30 @@ class Address
     public function getStreet()
     {
         return $this->street;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     *
+     * @return Address
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
     /**

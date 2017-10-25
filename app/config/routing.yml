@@ -1,3 +1,7 @@
+app_address:
+    resource: "@AppBundle/Controller/AddressController.php"
+    type:     annotation
+
 app_restaurant:
     resource: "@AppBundle/Controller/RestaurantController.php"
     type:     annotation

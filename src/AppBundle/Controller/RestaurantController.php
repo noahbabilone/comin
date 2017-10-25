@@ -42,6 +42,7 @@ class RestaurantController extends Controller
     public function newAction(Request $request)
     {
         $restaurant = new Restaurant();
+
         $form = $this->createForm('AppBundle\Form\RestaurantType', $restaurant);
         $form->handleRequest($request);
 

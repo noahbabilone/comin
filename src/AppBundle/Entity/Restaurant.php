@@ -63,6 +63,19 @@ class Restaurant
      * @ORM\Column(name="rite", type="string", length=255, nullable=true)
      */
     private $rite;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fax", type="string", length=255, nullable=true)
+     */
+    private $fax;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
@@ -149,7 +162,7 @@ class Restaurant
      * @ORM\Column(name="cash", type="boolean", nullable=true ,options={ "default":true })
      */
     private $cash;
-    
+
     /**
      * @var bool
      *
@@ -750,5 +763,53 @@ class Restaurant
     public function getTicketRestaurant()
     {
         return $this->ticketRestaurant;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return Restaurant
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set fax
+     *
+     * @param string $fax
+     *
+     * @return Restaurant
+     */
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
+
+        return $this;
+    }
+
+    /**
+     * Get fax
+     *
+     * @return string
+     */
+    public function getFax()
+    {
+        return $this->fax;
     }
 }
