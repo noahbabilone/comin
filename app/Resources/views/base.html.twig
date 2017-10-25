@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
+
+<!--[if IE 8]>
+<html lang="fr" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="fr" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="fr">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head lang="">
     <meta charset="UTF-8"/>
     <title>{% block title %} Comin' {% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name=""/>
-    <meta content="" name="B2B"/>
-    <meta content="" name="YanNs"/>
+    <meta content="Comin Project" name="description"/>
+    <meta content="Yannick" name="author"/>
 
     {% block stylesheets %}
         {#<!-- BEGIN GLOBAL MANDATORY STYLES -->#}
         {% stylesheets
+        'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all'
         'public/assets/global/plugins/font-awesome/css/font-awesome.min.css'
         'public/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
         'public/assets/global/plugins/bootstrap/css/bootstrap.min.css'

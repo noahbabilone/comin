@@ -137,16 +137,16 @@ var Login = function () {
            // handleRegister();    
 
             // init background slide images
-		    $.backstretch([
-		        "../bundles/back/theme/assets/pages/media/bg/1.jpg",
-		        "../bundles/back/theme/assets/pages/media/bg/2.jpg",
-		        "../bundles/back/theme/assets/pages/media/bg/3.jpg",
-		        "../bundles/back/theme/assets/pages/media/bg/4.jpg"
-		        ], {
-		          fade: 1000,
-		          duration: 8000
-		    	}
-        	);
+            // $.backstretch([
+		     //    "../bundles/back/theme/assets/pages/media/bg/1.jpg",
+		     //    "../bundles/back/theme/assets/pages/media/bg/2.jpg",
+		     //    "../bundles/back/theme/assets/pages/media/bg/3.jpg",
+		     //    "../bundles/back/theme/assets/pages/media/bg/4.jpg"
+		     //    ], {
+		     //      fade: 1000,
+		     //      duration: 8000
+		    	// }
+            // );
         }
     };
 

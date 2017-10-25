@@ -1,16 +1,16 @@
-var Login = function () {
+var Login = function() {
 
-    var handleLogin = function () {
+    var handleLogin = function() {
 
         $('.login-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                _username: {
+                username: {
                     required: true
                 },
-                _password: {
+                password: {
                     required: true
                 },
                 remember: {
@@ -19,38 +19,38 @@ var Login = function () {
             },
 
             messages: {
-                _username: {
-                    required: "Login est obligatoire."
+                username: {
+                    required: "Username is required."
                 },
-                _username: {
-                    required: "Mot de passe est obligatoire."
+                password: {
+                    required: "Password is required."
                 }
             },
 
-            invalidHandler: function (event, validator) { //display error alert on form submit   
+            invalidHandler: function(event, validator) { //display error alert on form submit   
                 $('.alert-danger', $('.login-form')).show();
             },
 
-            highlight: function (element) { // hightlight error inputs
+            highlight: function(element) { // hightlight error inputs
                 $(element)
                     .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
 
-            success: function (label) {
+            success: function(label) {
                 label.closest('.form-group').removeClass('has-error');
                 label.remove();
             },
 
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.insertAfter(element.closest('.input-icon'));
             },
 
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 form.submit(); // form validation success, call ajax form submit
             }
         });
 
-        $('.login-form input').keypress(function (e) {
+        $('.login-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.login-form').validate().form()) {
                     $('.login-form').submit(); //form validation success, call ajax form submit
@@ -60,7 +60,7 @@ var Login = function () {
         });
     }
 
-    var handleForgetPassword = function () {
+    var handleForgetPassword = function() {
         $('.forget-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -75,34 +75,34 @@ var Login = function () {
 
             messages: {
                 email: {
-                    required: "Adresse mail est obligatoire."
+                    required: "Email is required."
                 }
             },
 
-            invalidHandler: function (event, validator) { //display error alert on form submit   
+            invalidHandler: function(event, validator) { //display error alert on form submit   
 
             },
 
-            highlight: function (element) { // hightlight error inputs
+            highlight: function(element) { // hightlight error inputs
                 $(element)
                     .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
 
-            success: function (label) {
+            success: function(label) {
                 label.closest('.form-group').removeClass('has-error');
                 label.remove();
             },
 
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.insertAfter(element.closest('.input-icon'));
             },
 
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 form.submit();
             }
         });
 
-        $('.forget-form input').keypress(function (e) {
+        $('.forget-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.forget-form').validate().form()) {
                     $('.forget-form').submit();
@@ -111,149 +111,147 @@ var Login = function () {
             }
         });
 
-        jQuery('#forget-password').click(function () {
+        jQuery('#forget-password').click(function() {
             jQuery('.login-form').hide();
             jQuery('.forget-form').show();
         });
 
-        jQuery('#back-btn').click(function () {
+        jQuery('#back-btn').click(function() {
             jQuery('.login-form').show();
             jQuery('.forget-form').hide();
         });
 
     }
-    //
-    // var handleRegister = function () {
-    //
-    //     function format(state) {
-    //         if (!state.id) {
-    //             return state.text;
-    //         }
-    //         var $state = $(
-    //             '<span><img src="../assets/global/img/flags/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>'
-    //         );
-    //
-    //         return $state;
-    //     }
-    //
-    //     if (jQuery().select2 && $('#country_list').size() > 0) {
-    //         $("#country_list").select2({
-    //             placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a Country',
-    //             templateResult: format,
-    //             templateSelection: format,
-    //             width: 'auto',
-    //             escapeMarkup: function (m) {
-    //                 return m;
-    //             }
-    //         });
-    //
-    //
-    //         $('#country_list').change(function () {
-    //             $('.register-form').validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
-    //         });
-    //     }
-    //
-    //     $('.register-form').validate({
-    //         errorElement: 'span', //default input error message container
-    //         errorClass: 'help-block', // default input error message class
-    //         focusInvalid: false, // do not focus the last invalid input
-    //         ignore: "",
-    //         rules: {
-    //
-    //             fullname: {
-    //                 required: true
-    //             },
-    //             email: {
-    //                 required: true,
-    //                 email: true
-    //             },
-    //             address: {
-    //                 required: true
-    //             },
-    //             city: {
-    //                 required: true
-    //             },
-    //             country: {
-    //                 required: true
-    //             },
-    //
-    //             username: {
-    //                 required: true
-    //             },
-    //             password: {
-    //                 required: true
-    //             },
-    //             rpassword: {
-    //                 equalTo: "#register_password"
-    //             },
-    //
-    //             tnc: {
-    //                 required: true
-    //             }
-    //         },
-    //
-    //         messages: { // custom messages for radio buttons and checkboxes
-    //             tnc: {
-    //                 required: "Please accept TNC first."
-    //             }
-    //         },
-    //
-    //         invalidHandler: function (event, validator) { //display error alert on form submit   
-    //
-    //         },
-    //
-    //         highlight: function (element) { // hightlight error inputs
-    //             $(element)
-    //                 .closest('.form-group').addClass('has-error'); // set error class to the control group
-    //         },
-    //
-    //         success: function (label) {
-    //             label.closest('.form-group').removeClass('has-error');
-    //             label.remove();
-    //         },
-    //
-    //         errorPlacement: function (error, element) {
-    //             if (element.attr("name") == "tnc") { // insert checkbox errors after the container                  
-    //                 error.insertAfter($('#register_tnc_error'));
-    //             } else if (element.closest('.input-icon').size() === 1) {
-    //                 error.insertAfter(element.closest('.input-icon'));
-    //             } else {
-    //                 error.insertAfter(element);
-    //             }
-    //         },
-    //
-    //         submitHandler: function (form) {
-    //             form[0].submit();
-    //         }
-    //     });
-    //
-    //     $('.register-form input').keypress(function (e) {
-    //         if (e.which == 13) {
-    //             if ($('.register-form').validate().form()) {
-    //                 $('.register-form').submit();
-    //             }
-    //             return false;
-    //         }
-    //     });
-    //
-    //     jQuery('#register-btn').click(function () {
-    //         jQuery('.login-form').hide();
-    //         jQuery('.register-form').show();
-    //     });
-    //
-    //     jQuery('#register-back-btn').click(function () {
-    //         jQuery('.login-form').show();
-    //         jQuery('.register-form').hide();
-    //     });
-    // }
+
+    var handleRegister = function() {
+
+        function format(state) {
+            if (!state.id) { return state.text; }
+            var $state = $(
+             '<span><img src="../assets/global/img/flags/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>'
+            );
+            
+            return $state;
+        }
+
+        if (jQuery().select2 && $('#country_list').size() > 0) {
+            $("#country_list").select2({
+	            placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a Country',
+	            templateResult: format,
+                templateSelection: format,
+                width: 'auto', 
+	            escapeMarkup: function(m) {
+	                return m;
+	            }
+	        });
+
+
+	        $('#country_list').change(function() {
+	            $('.register-form').validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
+	        });
+    	}
+
+        $('.register-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+
+                fullname: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                address: {
+                    required: true
+                },
+                city: {
+                    required: true
+                },
+                country: {
+                    required: true
+                },
+
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                },
+                rpassword: {
+                    equalTo: "#register_password"
+                },
+
+                tnc: {
+                    required: true
+                }
+            },
+
+            messages: { // custom messages for radio buttons and checkboxes
+                tnc: {
+                    required: "Please accept TNC first."
+                }
+            },
+
+            invalidHandler: function(event, validator) { //display error alert on form submit   
+
+            },
+
+            highlight: function(element) { // hightlight error inputs
+                $(element)
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+            },
+
+            success: function(label) {
+                label.closest('.form-group').removeClass('has-error');
+                label.remove();
+            },
+
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "tnc") { // insert checkbox errors after the container                  
+                    error.insertAfter($('#register_tnc_error'));
+                } else if (element.closest('.input-icon').size() === 1) {
+                    error.insertAfter(element.closest('.input-icon'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function(form) {
+                form[0].submit();
+            }
+        });
+
+        $('.register-form input').keypress(function(e) {
+            if (e.which == 13) {
+                if ($('.register-form').validate().form()) {
+                    $('.register-form').submit();
+                }
+                return false;
+            }
+        });
+
+        jQuery('#register-btn').click(function() {
+            jQuery('.login-form').hide();
+            jQuery('.register-form').show();
+        });
+
+        jQuery('#register-back-btn').click(function() {
+            jQuery('.login-form').show();
+            jQuery('.register-form').hide();
+        });
+    }
 
     return {
         //main function to initiate the module
-        init: function () {
+        init: function() {
 
             handleLogin();
             handleForgetPassword();
-            //  handleRegister();
+            handleRegister();
 
         }
 
@@ -261,32 +259,6 @@ var Login = function () {
 
 }();
 
-jQuery(document).ready(function () {
+jQuery(document).ready(function() {
     Login.init();
-    $(".btn-forget-form").click(function (e) {
-        if ($("#heck_email").val() != 1) {
-            $("form.forget-form").find('.alert-danger').removeClass('display-hide');
-            e.preventDefault();
-
-        }
-    });
-
-    $("#input_email").keyup(function () {
-        var email = $(this).val();
-        var checkEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        console.log(checkEmail.test(email));
-        if (checkEmail.test(email)) {
-            var href = Routing.generate('back_user_check_username_or_email');
-            $.getJSON(href, {"user": email}).done(function (data) {
-                // console.log(data);
-                if (data.type == "success" && data.response == true) {
-                    $("#heck_email").val(1);
-                } else {
-                    $("#heck_email").val(0);
-                }
-            });
-        }
-    });
-
-
 });
