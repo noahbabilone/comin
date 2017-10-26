@@ -20,24 +20,25 @@ class AddressType extends AbstractType
                     'label' => 'Rue',
                     'required' => true,
                     'attr' => array(
-                        'class' => '',
-                        'placeholder' => '11a',
+                        'class' => 'input_street',
+                        'placeholder' => '11',
                     ),
                 )
-            )->add('city', TextType::class, array(
-                    'label' => 'Rue',
+            )
+            ->add('city', TextType::class, array(
+                    'label' => 'Ville',
                     'required' => false,
                     'mapped' => false,
                     'attr' => array(
-                        'class' => '',
-                        'placeholder' => 'Metz',
+                        'class' => 'input_city',
+                        'placeholder' => 'Gérardmer',
                     ),
                 )
             )->add('content', TextType::class, array(
                     'label' => 'Adresse',
                     'required' => true,
                     'attr' => array(
-                        'class' => '',
+                        'class' => 'input_address',
                         'placeholder' => 'Charles De Gaulle',
                     ),
                 )
@@ -51,7 +52,10 @@ class AddressType extends AbstractType
                         'class' => 'bs-select'
                     ]
                 ]
-            )->add('department', EntityType::class, [
+            )
+            
+            
+            ->add('department', EntityType::class, [
                     'label' => 'Département',
                     'class' => 'AppBundle:Department',
                     'placeholder' => 'Sélectionnez votre département',
@@ -62,16 +66,7 @@ class AddressType extends AbstractType
                     ]
                 ]
             )
-            /*->add('city', EntityType::class, [
-                    'class' => 'AppBundle:City',
-                    'placeholder' => 'Sélectionnez votre Ville',
-                    'mapped' => false,
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'bs-select'
-                    ]
-                ]
-            )*/
+         
         ;
 
 
@@ -85,7 +80,7 @@ class AddressType extends AbstractType
 //                $this->addDepartmentField($form->getParent(), $form->getData());
 //            }
 //        );
-//
+
 //        //EDITION
 //        $builder->addEventListener(
 //            FormEvents::POST_SET_DATA,

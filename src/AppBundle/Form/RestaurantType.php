@@ -2,15 +2,14 @@
 
 namespace AppBundle\Form;
 
-use FOS\UserBundle\Event\FormEvent;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RestaurantType extends AbstractType
@@ -40,17 +39,42 @@ class RestaurantType extends AbstractType
                 )
             )
             ->add('onTheSpot', ChoiceType::class, array(
-                    'label' => 'Sur Place',
+                    'label' => 'À emporter',
                     'required' => true,
                     'choices' => [
-                        'Non' => 0,
-                        'Oui' => 1,
-                        'Les deux' => 2,
+                        'Oui' => true,
+                        'Non' => false,
                     ],
-                    'data' => 1,
+                    'data' => true,
                     'attr' => array(
                         'class' => 'bs-select',
                         'placeholder' => 'Restaurant',
+                    ),
+                )
+            )
+            ->add('onTheSpotOrderMin', NumberType::class, array(
+                    'label' => 'Minimum de commande',
+                    'required' => true,
+                    'data' => 0,
+                    'attr' => array(
+                        'placeholder' => '0.00',
+                    ),
+                )
+            )
+            ->add('onTheSpotDurationMin', NumberType::class, array(
+                    'label' => 'Min',
+                    'required' => true,
+//                    'data' => 10,
+                    'attr' => array(
+                        'placeholder' => 'Min',
+                    ),
+                )
+            )->add('onTheSpotDurationMax', NumberType::class, array(
+                    'label' => 'Max',
+                    'required' => true,
+//                    'data' => 10,
+                    'attr' => array(
+                        'placeholder' => 'Max',
                     ),
                 )
             )
@@ -65,7 +89,36 @@ class RestaurantType extends AbstractType
                         'class' => "form-opening-hours"
                     )
                 )
-            )->add('exceptionalClosure', CollectionType::class, array(
+            )
+            ->add('communesDelivered', TextType::class, array(
+                    'label' => 'Communes livrées',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'Villes, ect.',
+                    ),
+                )
+            )
+            ->add('deliveryDistance', NumberType::class, array(
+                    'label' => 'Distance de livraison (Km)',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => '10',
+                    ),
+                )
+            )
+            ->add('delivery', DeliveryType::class, array(
+                    'label' => 'Distance de livraison (km',
+                    'required' => false,
+                    'mapped' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'rite',
+                    ),
+                )
+            )
+            ->add('exceptionalClosure', CollectionType::class, array(
                     'label' => "Fermeture Exceptionnelle",
                     'required' => false,
                     'entry_type' => ExceptionalClosureType::class,
@@ -85,7 +138,7 @@ class RestaurantType extends AbstractType
                         'placeholder' => 'rite',
                     ),
                 )
-            ) 
+            )
             ->add('phone', TextType::class, array(
                     'label' => 'Téléphone',
                     'required' => false,
@@ -94,7 +147,7 @@ class RestaurantType extends AbstractType
                         'placeholder' => '01 02 03 04 05',
                     ),
                 )
-            ) ->add('fax', TextType::class, array(
+            )->add('fax', TextType::class, array(
                     'label' => 'Fax',
                     'required' => false,
                     'attr' => array(
@@ -104,35 +157,71 @@ class RestaurantType extends AbstractType
                 )
             )
             ->add('bankCard', CheckboxType::class, array(
-                    'label' => 'Carte Bancaire',
+                    'label' => ' ',
                     'required' => false,
+                    'required' => false,
+//                    'mapped' => false,
                     'attr' => array(
-                        'class' => '',
+                        'class' => 'btn-switch',
+                        'data-size' => "mini",
+                        'data-on' => "<i class='fa fa-check'></i> Carte bancaire",
+                        'data-off' => "<i class='fa fa-remove'></i> Carte bancaire",
+                        'data-onstyle' => "success",
+                        'data-offstyle' => "default",
+                        'data-toggle' => "toggle",
+                        'data-width' => "150",
                     ),
                 )
-            )->add('paypal', CheckboxType::class, array(
-                    'label' => 'Paypal',
+            ) ->add('paypal', CheckboxType::class, array(
+                    'label' => ' ',
                     'required' => false,
+                    'required' => false,
+//                    'mapped' => false,
                     'attr' => array(
-                        'class' => 'mt-checkbox mt-checkbox-outline',
+                        'class' => 'btn-switch',
+                        'data-size' => "mini",
+                        'data-on' => "<i class='fa fa-check'></i> Paypal",
+                        'data-off' => "<i class='fa fa-remove'></i> Paypal",
+                        'data-onstyle' => "success",
+                        'data-offstyle' => "default",
+                        'data-toggle' => "toggle",
+                        'data-width' => "120",
                     ),
                 )
             )->add('cash', CheckboxType::class, array(
-                    'label' => 'Espèce',
+                    'label' => ' ',
                     'required' => false,
+                    'required' => false,
+//                    'mapped' => false,
                     'attr' => array(
-                        'class' => '',
+                        'class' => 'btn-switch',
+                        'data-size' => "mini",
+                        'data-on' => "<i class='fa fa-check'></i> Espèces",
+                        'data-off' => "<i class='fa fa-remove'></i> Espèces",
+                        'data-onstyle' => "success",
+                        'data-offstyle' => "default",
+                        'data-toggle' => "toggle",
+                        'data-width' => "120",
                     ),
                 )
             )->add('ticketRestaurant', CheckboxType::class, array(
-                    'label' => 'Titre Restaurant',
+                    'label' => ' ',
                     'required' => false,
+                    'required' => false,
+//                    'mapped' => false,
                     'attr' => array(
-                        'class' => '',
-                        'placeholder' => 'rite',
+                        'class' => 'btn-switch',
+                        'data-size' => "mini",
+                        'data-on' => "<i class='fa fa-check'></i> Titre restaurant",
+                        'data-off' => "<i class='fa fa-remove'></i> Titre restaurant",
+                        'data-onstyle' => "success",
+                        'data-offstyle' => "default",
+                        'data-toggle' => "toggle",
+                        'data-width' => "150",
                     ),
                 )
             )
+            
             ->add('description', CKEditorType::class, array(
                     'label' => 'Description',
                     'required' => true,
@@ -166,12 +255,6 @@ class RestaurantType extends AbstractType
                     )
                 )
             )
-            //            ->add('visible')
-//            ->add('evaluation')
-//            ->add('offer')
-//            ->add('menu')
-//            ->add('card')
-
             ->add('address', AddressType::class, array(
                     'label' => 'Adresse',
                     'required' => false,
@@ -182,7 +265,7 @@ class RestaurantType extends AbstractType
                 )
             );
 
-       
+
     }
 
     /**

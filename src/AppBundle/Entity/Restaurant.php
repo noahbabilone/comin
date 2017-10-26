@@ -51,12 +51,7 @@ class Restaurant
      * @ORM\Column(name="speciality", type="string", length=255, nullable=true)
      */
     private $speciality;
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="onTheSpot", type="boolean", nullable=true)
-     */
-    private $onTheSpot;
+
     /**
      * @var string
      *
@@ -78,6 +73,53 @@ class Restaurant
     private $fax;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="on_the_spot", type="boolean", nullable=true)
+     */
+    private $onTheSpot;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="on_the_spot_order_min", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $onTheSpotOrderMin;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="on_the_spot_duration_min", type="integer", nullable=true)
+     */
+    private $onTheSpotDurationMin;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="on_the_spot_duration_max", type="integer", nullable=true)
+     */
+    private $onTheSpotDurationMax;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\City", mappedBy="restaurant")
+     */
+    private $communesDelivered;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_distance", type="integer", nullable=true)
+     */
+    private $deliveryDistance;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Delivery", mappedBy="restaurant")
+     * @Assert\NotBlank()
+     */
+    private $deliveries;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
      * @Assert\NotBlank()
      */
@@ -93,7 +135,6 @@ class Restaurant
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="restaurants")
      */
     private $owner;
-
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="restaurant")
@@ -122,25 +163,7 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
      * @Assert\NotBlank()
      */
-    private $evaluation;
-
-
-    /**
-     * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column( type="datetime", nullable=true)
-     */
-    private $updated;
-
+    private $evaluations;
 
     /**
      * @var bool
@@ -171,6 +194,22 @@ class Restaurant
     private $ticketRestaurant;
 
     /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column( type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
@@ -183,12 +222,14 @@ class Restaurant
      */
     public function __construct()
     {
+        $this->communesDelivered = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->deliveries = new \Doctrine\Common\Collections\ArrayCollection();
         $this->openingHours = new \Doctrine\Common\Collections\ArrayCollection();
         $this->exceptionalClosure = new \Doctrine\Common\Collections\ArrayCollection();
         $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cards = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->evaluation = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->evaluations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -298,6 +339,78 @@ class Restaurant
     }
 
     /**
+     * Set rite
+     *
+     * @param string $rite
+     *
+     * @return Restaurant
+     */
+    public function setRite($rite)
+    {
+        $this->rite = $rite;
+
+        return $this;
+    }
+
+    /**
+     * Get rite
+     *
+     * @return string
+     */
+    public function getRite()
+    {
+        return $this->rite;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return Restaurant
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set fax
+     *
+     * @param string $fax
+     *
+     * @return Restaurant
+     */
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
+
+        return $this;
+    }
+
+    /**
+     * Get fax
+     *
+     * @return string
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
+
+    /**
      * Set onTheSpot
      *
      * @param boolean $onTheSpot
@@ -322,27 +435,171 @@ class Restaurant
     }
 
     /**
-     * Set rite
+     * Set onTheSpotOrderMin
      *
-     * @param string $rite
+     * @param float $onTheSpotOrderMin
      *
      * @return Restaurant
      */
-    public function setRite($rite)
+    public function setOnTheSpotOrderMin($onTheSpotOrderMin)
     {
-        $this->rite = $rite;
+        $this->onTheSpotOrderMin = $onTheSpotOrderMin;
 
         return $this;
     }
 
     /**
-     * Get rite
+     * Get onTheSpotOrderMin
      *
-     * @return string
+     * @return float
      */
-    public function getRite()
+    public function getOnTheSpotOrderMin()
     {
-        return $this->rite;
+        return $this->onTheSpotOrderMin;
+    }
+
+    /**
+     * Set onTheSpotDurationMin
+     *
+     * @param integer $onTheSpotDurationMin
+     *
+     * @return Restaurant
+     */
+    public function setOnTheSpotDurationMin($onTheSpotDurationMin)
+    {
+        $this->onTheSpotDurationMin = $onTheSpotDurationMin;
+
+        return $this;
+    }
+
+    /**
+     * Get onTheSpotDurationMin
+     *
+     * @return integer
+     */
+    public function getOnTheSpotDurationMin()
+    {
+        return $this->onTheSpotDurationMin;
+    }
+
+    /**
+     * Set onTheSpotDurationMax
+     *
+     * @param integer $onTheSpotDurationMax
+     *
+     * @return Restaurant
+     */
+    public function setOnTheSpotDurationMax($onTheSpotDurationMax)
+    {
+        $this->onTheSpotDurationMax = $onTheSpotDurationMax;
+
+        return $this;
+    }
+
+    /**
+     * Get onTheSpotDurationMax
+     *
+     * @return integer
+     */
+    public function getOnTheSpotDurationMax()
+    {
+        return $this->onTheSpotDurationMax;
+    }
+
+    /**
+     * Set bankCard
+     *
+     * @param boolean $bankCard
+     *
+     * @return Restaurant
+     */
+    public function setBankCard($bankCard)
+    {
+        $this->bankCard = $bankCard;
+
+        return $this;
+    }
+
+    /**
+     * Get bankCard
+     *
+     * @return boolean
+     */
+    public function getBankCard()
+    {
+        return $this->bankCard;
+    }
+
+    /**
+     * Set paypal
+     *
+     * @param boolean $paypal
+     *
+     * @return Restaurant
+     */
+    public function setPaypal($paypal)
+    {
+        $this->paypal = $paypal;
+
+        return $this;
+    }
+
+    /**
+     * Get paypal
+     *
+     * @return boolean
+     */
+    public function getPaypal()
+    {
+        return $this->paypal;
+    }
+
+    /**
+     * Set cash
+     *
+     * @param boolean $cash
+     *
+     * @return Restaurant
+     */
+    public function setCash($cash)
+    {
+        $this->cash = $cash;
+
+        return $this;
+    }
+
+    /**
+     * Get cash
+     *
+     * @return boolean
+     */
+    public function getCash()
+    {
+        return $this->cash;
+    }
+
+    /**
+     * Set ticketRestaurant
+     *
+     * @param boolean $ticketRestaurant
+     *
+     * @return Restaurant
+     */
+    public function setTicketRestaurant($ticketRestaurant)
+    {
+        $this->ticketRestaurant = $ticketRestaurant;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketRestaurant
+     *
+     * @return boolean
+     */
+    public function getTicketRestaurant()
+    {
+        return $this->ticketRestaurant;
     }
 
     /**
@@ -415,6 +672,74 @@ class Restaurant
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * Add communesDelivered
+     *
+     * @param \AppBundle\Entity\City $communesDelivered
+     *
+     * @return Restaurant
+     */
+    public function addCommunesDelivered(\AppBundle\Entity\City $communesDelivered)
+    {
+        $this->communesDelivered[] = $communesDelivered;
+
+        return $this;
+    }
+
+    /**
+     * Remove communesDelivered
+     *
+     * @param \AppBundle\Entity\City $communesDelivered
+     */
+    public function removeCommunesDelivered(\AppBundle\Entity\City $communesDelivered)
+    {
+        $this->communesDelivered->removeElement($communesDelivered);
+    }
+
+    /**
+     * Get communesDelivered
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommunesDelivered()
+    {
+        return $this->communesDelivered;
+    }
+
+    /**
+     * Add delivery
+     *
+     * @param \AppBundle\Entity\Delivery $delivery
+     *
+     * @return Restaurant
+     */
+    public function addDelivery(\AppBundle\Entity\Delivery $delivery)
+    {
+        $this->deliveries[] = $delivery;
+
+        return $this;
+    }
+
+    /**
+     * Remove delivery
+     *
+     * @param \AppBundle\Entity\Delivery $delivery
+     */
+    public function removeDelivery(\AppBundle\Entity\Delivery $delivery)
+    {
+        $this->deliveries->removeElement($delivery);
+    }
+
+    /**
+     * Get deliveries
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeliveries()
+    {
+        return $this->deliveries;
     }
 
     /**
@@ -644,7 +969,7 @@ class Restaurant
      */
     public function addEvaluation(\AppBundle\Entity\Evaluation $evaluation)
     {
-        $this->evaluation[] = $evaluation;
+        $this->evaluations[] = $evaluation;
 
         return $this;
     }
@@ -656,160 +981,41 @@ class Restaurant
      */
     public function removeEvaluation(\AppBundle\Entity\Evaluation $evaluation)
     {
-        $this->evaluation->removeElement($evaluation);
+        $this->evaluations->removeElement($evaluation);
     }
 
     /**
-     * Get evaluation
+     * Get evaluations
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEvaluation()
+    public function getEvaluations()
     {
-        return $this->evaluation;
+        return $this->evaluations;
     }
 
+
     /**
-     * Set bankCard
+     * Set deliveryDistance
      *
-     * @param boolean $bankCard
+     * @param integer $deliveryDistance
      *
-     * @return Restaurant
+     * @return Delivery
      */
-    public function setBankCard($bankCard)
+    public function setDeliveryDistance($deliveryDistance)
     {
-        $this->bankCard = $bankCard;
+        $this->deliveryDistance = $deliveryDistance;
 
         return $this;
     }
 
     /**
-     * Get bankCard
+     * Get deliveryDistance
      *
-     * @return boolean
+     * @return integer
      */
-    public function getBankCard()
+    public function getDeliveryDistance()
     {
-        return $this->bankCard;
-    }
-
-    /**
-     * Set paypal
-     *
-     * @param boolean $paypal
-     *
-     * @return Restaurant
-     */
-    public function setPaypal($paypal)
-    {
-        $this->paypal = $paypal;
-
-        return $this;
-    }
-
-    /**
-     * Get paypal
-     *
-     * @return boolean
-     */
-    public function getPaypal()
-    {
-        return $this->paypal;
-    }
-
-    /**
-     * Set cash
-     *
-     * @param boolean $cash
-     *
-     * @return Restaurant
-     */
-    public function setCash($cash)
-    {
-        $this->cash = $cash;
-
-        return $this;
-    }
-
-    /**
-     * Get cash
-     *
-     * @return boolean
-     */
-    public function getCash()
-    {
-        return $this->cash;
-    }
-
-    /**
-     * Set ticketRestaurant
-     *
-     * @param boolean $ticketRestaurant
-     *
-     * @return Restaurant
-     */
-    public function setTicketRestaurant($ticketRestaurant)
-    {
-        $this->ticketRestaurant = $ticketRestaurant;
-
-        return $this;
-    }
-
-    /**
-     * Get ticketRestaurant
-     *
-     * @return boolean
-     */
-    public function getTicketRestaurant()
-    {
-        return $this->ticketRestaurant;
-    }
-
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     *
-     * @return Restaurant
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set fax
-     *
-     * @param string $fax
-     *
-     * @return Restaurant
-     */
-    public function setFax($fax)
-    {
-        $this->fax = $fax;
-
-        return $this;
-    }
-
-    /**
-     * Get fax
-     *
-     * @return string
-     */
-    public function getFax()
-    {
-        return $this->fax;
+        return $this->deliveryDistance;
     }
 }
