@@ -156,6 +156,7 @@ class Restaurant
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Address", inversedBy="restaurants")
+     * @Assert\NotBlank()
      */
     private $address;
 
