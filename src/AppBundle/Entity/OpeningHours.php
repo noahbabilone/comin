@@ -80,7 +80,7 @@ class OpeningHours
     private $noOpeningEndTime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours,exceptionalClosure")
      */
     private $restaurant;
 

@@ -48,6 +48,11 @@ class City
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department", inversedBy="city")
      */
     private $department;
+    
+  /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="communesDelivered")
+     */
+    private $restaurant;
 
     /**
      * @var \DateTime
@@ -71,4 +76,188 @@ class City
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return City
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return City
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return City
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return City
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return City
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return City
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * Set department
+     *
+     * @param \AppBundle\Entity\Department $department
+     *
+     * @return City
+     */
+    public function setDepartment(\AppBundle\Entity\Department $department = null)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return \AppBundle\Entity\Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+    
+    function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return $this->name;
+    }
 }

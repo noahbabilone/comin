@@ -65,7 +65,7 @@ class User extends BaseUser
     private $creator;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="owner")
      */
     private $restaurants;
 
@@ -83,22 +83,22 @@ class User extends BaseUser
     private $addresses;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="user")
      */
     private $cards; 
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Offer", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="user")
      */
     private $offers;
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Menu", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Menu", mappedBy="user")
      */
     private $menus;
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="user")
      */
     private $products;
 
@@ -119,12 +119,5 @@ class User extends BaseUser
      */
     private $updated;
 
-
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
-    
 
 }

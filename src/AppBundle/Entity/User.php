@@ -65,7 +65,7 @@ class User extends BaseUser
     private $creator;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="owner")
      */
     private $restaurants;
 
@@ -83,22 +83,22 @@ class User extends BaseUser
     private $addresses;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="user")
      */
     private $cards; 
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Offer", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="user")
      */
     private $offers;
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Menu", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Menu", mappedBy="user")
      */
     private $menus;
     
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="user")
      */
     private $products;
 
@@ -119,13 +119,6 @@ class User extends BaseUser
      */
     private $updated;
 
-
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
-    
 
 
     /**
@@ -399,23 +392,33 @@ class User extends BaseUser
     }
 
     /**
-     * Set cards
+     * Add card
      *
-     * @param \AppBundle\Entity\Card $cards
+     * @param \AppBundle\Entity\Card $card
      *
      * @return User
      */
-    public function setCards(\AppBundle\Entity\Card $cards = null)
+    public function addCard(\AppBundle\Entity\Card $card)
     {
-        $this->cards = $cards;
+        $this->cards[] = $card;
 
         return $this;
     }
 
     /**
+     * Remove card
+     *
+     * @param \AppBundle\Entity\Card $card
+     */
+    public function removeCard(\AppBundle\Entity\Card $card)
+    {
+        $this->cards->removeElement($card);
+    }
+
+    /**
      * Get cards
      *
-     * @return \AppBundle\Entity\Card
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCards()
     {
@@ -423,23 +426,33 @@ class User extends BaseUser
     }
 
     /**
-     * Set offers
+     * Add offer
      *
-     * @param \AppBundle\Entity\Offer $offers
+     * @param \AppBundle\Entity\Offer $offer
      *
      * @return User
      */
-    public function setOffers(\AppBundle\Entity\Offer $offers = null)
+    public function addOffer(\AppBundle\Entity\Offer $offer)
     {
-        $this->offers = $offers;
+        $this->offers[] = $offer;
 
         return $this;
     }
 
     /**
+     * Remove offer
+     *
+     * @param \AppBundle\Entity\Offer $offer
+     */
+    public function removeOffer(\AppBundle\Entity\Offer $offer)
+    {
+        $this->offers->removeElement($offer);
+    }
+
+    /**
      * Get offers
      *
-     * @return \AppBundle\Entity\Offer
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOffers()
     {
@@ -447,23 +460,33 @@ class User extends BaseUser
     }
 
     /**
-     * Set menus
+     * Add menu
      *
-     * @param \AppBundle\Entity\Menu $menus
+     * @param \AppBundle\Entity\Menu $menu
      *
      * @return User
      */
-    public function setMenus(\AppBundle\Entity\Menu $menus = null)
+    public function addMenu(\AppBundle\Entity\Menu $menu)
     {
-        $this->menus = $menus;
+        $this->menus[] = $menu;
 
         return $this;
     }
 
     /**
+     * Remove menu
+     *
+     * @param \AppBundle\Entity\Menu $menu
+     */
+    public function removeMenu(\AppBundle\Entity\Menu $menu)
+    {
+        $this->menus->removeElement($menu);
+    }
+
+    /**
      * Get menus
      *
-     * @return \AppBundle\Entity\Menu
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMenus()
     {
@@ -471,23 +494,33 @@ class User extends BaseUser
     }
 
     /**
-     * Set products
+     * Add product
      *
-     * @param \AppBundle\Entity\Product $products
+     * @param \AppBundle\Entity\Product $product
      *
      * @return User
      */
-    public function setProducts(\AppBundle\Entity\Product $products = null)
+    public function addProduct(\AppBundle\Entity\Product $product)
     {
-        $this->products = $products;
+        $this->products[] = $product;
 
         return $this;
     }
 
     /**
+     * Remove product
+     *
+     * @param \AppBundle\Entity\Product $product
+     */
+    public function removeProduct(\AppBundle\Entity\Product $product)
+    {
+        $this->products->removeElement($product);
+    }
+
+    /**
      * Get products
      *
-     * @return \AppBundle\Entity\Product
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProducts()
     {

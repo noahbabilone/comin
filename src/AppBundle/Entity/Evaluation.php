@@ -44,7 +44,7 @@ class Evaluation
     private $user;
 
      /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="evaluations")
      */
     private $restaurant;
 

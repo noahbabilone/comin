@@ -71,7 +71,7 @@ class Restaurant
      * @ORM\Column(name="fax", type="string", length=255, nullable=true)
      */
     private $fax;
-    
+
     /**
      * @var bool
      *
@@ -104,8 +104,15 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\City", mappedBy="restaurant")
      */
     private $communesDelivered;
-    
-    
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_distance", type="integer", nullable=true)
+     */
+    private $deliveryDistance;
+
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Delivery", mappedBy="restaurant")
      * @Assert\NotBlank()
@@ -128,7 +135,7 @@ class Restaurant
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="restaurants")
      */
     private $owner;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="restaurant")
      * @Assert\NotBlank()
@@ -208,6 +215,5 @@ class Restaurant
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-
-
+    
 }

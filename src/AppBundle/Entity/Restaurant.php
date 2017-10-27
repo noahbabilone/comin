@@ -215,8 +215,7 @@ class Restaurant
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-
-
+    
     /**
      * Constructor
      */
@@ -504,6 +503,30 @@ class Restaurant
     public function getOnTheSpotDurationMax()
     {
         return $this->onTheSpotDurationMax;
+    }
+
+    /**
+     * Set deliveryDistance
+     *
+     * @param integer $deliveryDistance
+     *
+     * @return Restaurant
+     */
+    public function setDeliveryDistance($deliveryDistance)
+    {
+        $this->deliveryDistance = $deliveryDistance;
+
+        return $this;
+    }
+
+    /**
+     * Get deliveryDistance
+     *
+     * @return integer
+     */
+    public function getDeliveryDistance()
+    {
+        return $this->deliveryDistance;
     }
 
     /**
@@ -992,30 +1015,5 @@ class Restaurant
     public function getEvaluations()
     {
         return $this->evaluations;
-    }
-
-
-    /**
-     * Set deliveryDistance
-     *
-     * @param integer $deliveryDistance
-     *
-     * @return Delivery
-     */
-    public function setDeliveryDistance($deliveryDistance)
-    {
-        $this->deliveryDistance = $deliveryDistance;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryDistance
-     *
-     * @return integer
-     */
-    public function getDeliveryDistance()
-    {
-        return $this->deliveryDistance;
     }
 }

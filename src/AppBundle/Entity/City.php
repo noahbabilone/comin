@@ -48,6 +48,11 @@ class City
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department", inversedBy="city")
      */
     private $department;
+    
+  /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="communesDelivered")
+     */
+    private $restaurant;
 
     /**
      * @var \DateTime
@@ -254,5 +259,29 @@ class City
     {
         // TODO: Implement __toString() method.
         return $this->name;
+    }
+
+    /**
+     * Set restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     *
+     * @return City
+     */
+    public function setRestaurant(\AppBundle\Entity\Restaurant $restaurant = null)
+    {
+        $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    /**
+     * Get restaurant
+     *
+     * @return \AppBundle\Entity\Restaurant
+     */
+    public function getRestaurant()
+    {
+        return $this->restaurant;
     }
 }
