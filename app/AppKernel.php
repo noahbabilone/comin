@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
 
             //new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 

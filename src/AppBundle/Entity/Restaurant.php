@@ -115,19 +115,16 @@ class Restaurant
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Delivery", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $deliveries;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $openingHours;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $exceptionalClosure;
 
@@ -138,19 +135,16 @@ class Restaurant
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $offers;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Menu", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $menus;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $cards;
 
@@ -162,7 +156,6 @@ class Restaurant
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
-     * @Assert\NotBlank()
      */
     private $evaluations;
 

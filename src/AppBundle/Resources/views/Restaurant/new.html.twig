@@ -61,11 +61,11 @@
      </style>
  {% endblock stylesheets %}
 
-{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
+{% block title %}Création Restaurant |  {{ parent() }} {% endblock %}
 
 {% block header_breadcrumb %}
     <li>
-        <span>Liste Restaurants</span>
+        <a href="" alt="Tous les restaurants" title="Tous les restaurants">Liste Restaurants</a>
         <i class="fa fa-circle"></i>
     </li>
 
@@ -76,7 +76,7 @@
 
 {% block action_toolbar %}
     <div class="btn-group pull-right">
-        <a type="button" class="btn red btn-sm btn-outline">
+        <a href="" type="button" class="btn red btn-sm btn-outline">
             <i class="fa fa-arrow-left"></i> Tous les restaurants
         </a>
     </div>
@@ -101,15 +101,15 @@
                                     Horaires d'ouverture</a>
                             </li>
                             <li>
-                                <a class="btn" data-toggle="tab" href="#payments"> <i class="fa fa-calendar fa-fw"></i>
+                                <a class="btn" data-toggle="tab" href="#payments"> <i class="fa fa-credit-card fa-fw"></i>
                                     Moyens de paiement</a>
                             </li>
                             <li>
-                                <a class="btn" data-toggle="tab" href="#delivery"> <i class="fa fa-calendar fa-fw"></i>
+                                <a class="btn" data-toggle="tab" href="#delivery"> <i class="fa fa-motorcycle fa-fw"></i>
                                     Livraisons</a>
                             </li>
                             <li>
-                                <a class="btn" data-toggle="tab" href="#images"> <i class="fa fa-calendar fa-fw"></i>
+                                <a class="btn" data-toggle="tab" href="#images"> <i class="fa fa-camera fa-fw"></i>
                                     Photos</a>
                             </li>
                         </ul>
@@ -208,19 +208,24 @@
                                         <div class="row">
                                             {% if form.street is defined %}
                                                 <div class="col-sm-3">
-                                                    {{ form_label(form.street) }}
-                                                    <div class="input-icon">
-                                                        <i class="fa fa-road"></i>
-                                                        {{ form_widget(form.street) }}
+                                                    <div class="form-group">
+
+                                                        {{ form_label(form.street) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-road"></i>
+                                                            {{ form_widget(form.street) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             {% endif %}
                                             {% if form.content is defined %}
                                                 <div class="col-sm-9">
-                                                    {{ form_label(form.content) }}
-                                                    <div class="input-icon">
-                                                        <i class="fa fa-map-signs"></i>
-                                                        {{ form_widget(form.content) }}
+                                                    <div class="form-group">
+                                                        {{ form_label(form.content) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-map-signs"></i>
+                                                            {{ form_widget(form.content) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             {% endif %}
@@ -238,7 +243,7 @@
                                                 </div>
                                             {% endif %}
                                             {% if form.city is defined %}
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-12">
                                                     {{ form_row(form.city) }}
                                                 </div>
                                             {% endif %}
@@ -336,17 +341,20 @@
                                         {% if form.communesDelivered is defined %}
                                             <h4 class="form-section"><i class="fa fa-map-o fa-fw"></i>Communes
                                                 livrées</h4>
-                                            {{ form_label(form.communesDelivered,null,{'label_attr':{'class':'sr-only'}}) }}
-                                            {{ form_widget(form.communesDelivered) }}
+                                            <div class="form-group">
+                                                {{ form_label(form.communesDelivered,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.communesDelivered) }}
+                                            </div>
                                         {% endif %}
 
                                         {% if form.deliveryDistance is defined %}
                                             <h4 class="form-section margin-top-20"><i
                                                         class="fa fa-street-view fa-fw"></i>Distance de
                                                 livraison (km)</h4>
-
-                                            {{ form_label(form.deliveryDistance,null,{'label_attr':{'class':'sr-only'}}) }}
-                                            {{ form_widget(form.deliveryDistance) }}
+                                            <div class="form-group">
+                                                {{ form_label(form.deliveryDistance,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.deliveryDistance) }}
+                                            </div>
                                         {% endif %}
                                         {% if form.delivery is defined %}
 
@@ -531,33 +539,9 @@
         "public/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
         "public/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
         "public/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
-        "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" %}
+        "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
+        'bundles/app/js/restaurant/add.js' %}
         <script src="{{ asset_url }}"></script>
-        <script type="text/javascript">
-
-            /*
-            *         'bundles/app/js/restaurant/add.js'
-            * */
-            $(document).on('change', '#appbundle_restaurant_region, #appbundle_restaurant_department', function () {
-                let $field = $(this)
-                let $regionField = $('#appbundle_restaurant_region')
-                let $form = $field.closest('form')
-                let target = '#' + $field.attr('id').replace('department', 'city').replace('region', 'department')
-                // Les données à envoyer en Ajax
-                let data = {}
-                data[$regionField.attr('name')] = $regionField.val()
-                data[$field.attr('name')] = $field.val()
-                // On soumet les données
-                $.post($form.attr('action'), data).then(function (data) {
-                    // On récupère le nouveau <select>
-                    let $input = $(data).find(target)
-                    // On remplace notre <select> actuel
-                    $(target).replaceWith($input)
-                })
-            })
-        </script>
         {% endjavascripts %}
+
     {% endblock %}
-
-
-{#"http://maps.google.com/maps/api/js?sensor=false"#}
