@@ -57,14 +57,14 @@ class OpeningHours
      * @ORM\Column(name="eveningEndTime", type="datetime", nullable=true)
      */
     private $eveningEndTime;
-    
+
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="exceptionalClosure", type="datetime", nullable=true)
      */
     private $exceptionalClosure;
-    
+
     /**
      * @var \DateTime
      *
@@ -80,9 +80,14 @@ class OpeningHours
     private $noOpeningEndTime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours,exceptionalClosure")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours")
      */
-    private $restaurant;
+    private $restaurantOpen;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="exceptionalClosure")
+     */
+    private $restaurantClose;
 
     /**
      * @var bool
@@ -113,7 +118,12 @@ class OpeningHours
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-    
+
+    public function __construct()
+    {
+        $this->open= true;
+    }
+
 
     /**
      * Get id
@@ -414,26 +424,50 @@ class OpeningHours
     }
 
     /**
-     * Set restaurant
+     * Set restaurantOpen
      *
-     * @param \AppBundle\Entity\Restaurant $restaurant
+     * @param \AppBundle\Entity\Restaurant $restaurantOpen
      *
      * @return OpeningHours
      */
-    public function setRestaurant(\AppBundle\Entity\Restaurant $restaurant = null)
+    public function setRestaurantOpen(\AppBundle\Entity\Restaurant $restaurantOpen = null)
     {
-        $this->restaurant = $restaurant;
+        $this->restaurantOpen = $restaurantOpen;
 
         return $this;
     }
 
     /**
-     * Get restaurant
+     * Get restaurantOpen
      *
      * @return \AppBundle\Entity\Restaurant
      */
-    public function getRestaurant()
+    public function getRestaurantOpen()
     {
-        return $this->restaurant;
+        return $this->restaurantOpen;
+    }
+
+    /**
+     * Set restaurantClose
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurantClose
+     *
+     * @return OpeningHours
+     */
+    public function setRestaurantClose(\AppBundle\Entity\Restaurant $restaurantClose = null)
+    {
+        $this->restaurantClose = $restaurantClose;
+
+        return $this;
+    }
+
+    /**
+     * Get restaurantClose
+     *
+     * @return \AppBundle\Entity\Restaurant
+     */
+    public function getRestaurantClose()
+    {
+        return $this->restaurantClose;
     }
 }

@@ -50,7 +50,7 @@ class City
     private $department;
     
   /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="communesDelivered")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="city,communesDelivered")
      */
     private $restaurant;
 

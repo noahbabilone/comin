@@ -28,7 +28,7 @@ class RestaurantType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                    'label' => 'Resturant',
+                    'label' => 'Resturant*',
                     'required' => true,
                     'attr' => array(
                         'class' => '',
@@ -37,7 +37,7 @@ class RestaurantType extends AbstractType
                 )
             )
             ->add('speciality', TextType::class, array(
-                    'label' => 'Spécialité',
+                    'label' => 'Spécialité*',
                     'required' => true,
                     'attr' => array(
                         'class' => '',
@@ -61,7 +61,7 @@ class RestaurantType extends AbstractType
             )
             ->add('onTheSpotOrderMin', NumberType::class, array(
                     'label' => 'Minimum de commande',
-                    'required' => true,
+                    'required' => false,
                     'data' => 0,
                     'attr' => array(
                         'placeholder' => '0.00',
@@ -70,7 +70,7 @@ class RestaurantType extends AbstractType
             )
             ->add('onTheSpotDurationMin', NumberType::class, array(
                     'label' => 'Min',
-                    'required' => true,
+                    'required' => false,
 //                    'data' => 10,
                     'attr' => array(
                         'placeholder' => 'Min',
@@ -78,7 +78,7 @@ class RestaurantType extends AbstractType
                 )
             )->add('onTheSpotDurationMax', NumberType::class, array(
                     'label' => 'Max',
-                    'required' => true,
+                    'required' => false,
 //                    'data' => 10,
                     'attr' => array(
                         'placeholder' => 'Max',
@@ -169,8 +169,6 @@ class RestaurantType extends AbstractType
             ->add('bankCard', CheckboxType::class, array(
                     'label' => ' ',
                     'required' => false,
-                    'required' => false,
-//                    'mapped' => false,
                     'attr' => array(
                         'class' => 'btn-switch',
                         'data-size' => "mini",
@@ -185,8 +183,6 @@ class RestaurantType extends AbstractType
             )->add('paypal', CheckboxType::class, array(
                     'label' => ' ',
                     'required' => false,
-                    'required' => false,
-//                    'mapped' => false,
                     'attr' => array(
                         'class' => 'btn-switch',
                         'data-size' => "mini",
@@ -201,8 +197,6 @@ class RestaurantType extends AbstractType
             )->add('cash', CheckboxType::class, array(
                     'label' => ' ',
                     'required' => false,
-                    'required' => false,
-//                    'mapped' => false,
                     'attr' => array(
                         'class' => 'btn-switch',
                         'data-size' => "mini",
@@ -217,8 +211,6 @@ class RestaurantType extends AbstractType
             )->add('ticketRestaurant', CheckboxType::class, array(
                     'label' => ' ',
                     'required' => false,
-                    'required' => false,
-//                    'mapped' => false,
                     'attr' => array(
                         'class' => 'btn-switch',
                         'data-size' => "mini",
@@ -232,7 +224,7 @@ class RestaurantType extends AbstractType
                 )
             )
             ->add('description', CKEditorType::class, array(
-                    'label' => 'Description',
+                    'label' => 'Description*',
                     'required' => true,
                     'attr' => array(
                         'class' => 'form-control form_information_content',
@@ -264,22 +256,12 @@ class RestaurantType extends AbstractType
                     )
                 )
             )
-            ->add('street', TextType::class, array(
-                    'label' => 'Rue',
-                    'mapped' => false,
-                    'required' => false, 'attr' => array(
-                        'class' => 'input_street',
-                        'placeholder' => '11',
-                    ),
-                )
-            )
-            ->add('content', TextType::class, array(
-                    'label' => 'Adresse',
-                    'mapped' => false,
-                    'required' => false,
+            ->add('address', TextType::class, array(
+                    'label' => 'Adresse*',
+                    'required' => true,
                     'attr' => array(
-                        'class' => 'input_content',
-                        'placeholder' => 'Charles De Gaulle',
+                        'class' => 'input_address',
+                        'placeholder' => '1 Rue Marchande',
                     ),
                 )
             )
@@ -300,6 +282,7 @@ class RestaurantType extends AbstractType
             function (FormEvent $event) {
 //                dump($event->getForm(), $event->getData());
                 $form = $event->getForm();
+//                dump($form->getParent());
                 $this->addDepartmentField($form->getParent(), $form->getData());
             }
         );
@@ -312,11 +295,9 @@ class RestaurantType extends AbstractType
                 $data = $event->getData();
                 $form = $event->getForm();
 
-                /** @var Address $address */
-                $address = $data->getAddress();
-                if ($address) {
-                    /** @var City $city */
-                    $city = $address->getCity();
+                /** @var City $city */
+                $city = $data->getCity();
+                if ($city) {
                     /** @var Department $department */
                     $department = $city->getDepartment();
                     /** @var Region $region */
@@ -327,8 +308,8 @@ class RestaurantType extends AbstractType
                     // On set les données
                     $form->get('region')->setData($region);
                     $form->get('department')->setData($department);
-                    $form->get('street')->setData($address->getStreet());
-                    $form->get('content')->setData($address->getContent());
+//                    $form->get('street')->setData($address->getStreet());
+//                    $form->get('content')->setData($address->getContent());
 
                 } else {
                     $this->addDepartmentField($form, null);
@@ -341,7 +322,7 @@ class RestaurantType extends AbstractType
 
 
     private
-    function addDepartmentField(FormInterface $form, Region $region=null)
+    function addDepartmentField(FormInterface $form, Region $region = null)
     {
 
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
@@ -372,15 +353,14 @@ class RestaurantType extends AbstractType
         $form->add($builder->getForm());
     }
 
-    private function addCityField(FormInterface $form, Department $department=null)
+    private function addCityField(FormInterface $form, Department $department = null)
     {
         $form->add('city', EntityType::class, [
-            'label' => 'Ville',
+            'label' => 'Ville*',
             'class' => 'AppBundle\Entity\City',
-            'mapped' => false,
+            'mapped' => true,
             'required' => false,
             'auto_initialize' => false,
-
             'placeholder' => $department ? 'Sélectionnez votre ville' : 'Sélectionnez votre département',
             'choices' => $department ? $department->getCity() : [],
             'attr' => [
@@ -389,13 +369,14 @@ class RestaurantType extends AbstractType
         ]);
     }
 
-    private function addCommunesDeliveredField(FormInterface $form, Department $department=null)
+    private function addCommunesDeliveredField(FormInterface $form, Department $department = null)
     {
         $form->add('communesDelivered', EntityType::class, [
-            'label' => 'Communes livrées',
+            'label' => 'Communes livrées*',
             'class' => 'AppBundle\Entity\City',
-            'required' => true,
+            'required' => false,
             'mapped' => false,
+
             'auto_initialize' => false,
 //            'multiple' => true,
             'placeholder' => $department ? 'Sélectionnez des villes' : 'Sélectionnez votre département',

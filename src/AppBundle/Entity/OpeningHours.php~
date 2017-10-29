@@ -57,14 +57,14 @@ class OpeningHours
      * @ORM\Column(name="eveningEndTime", type="datetime", nullable=true)
      */
     private $eveningEndTime;
-    
+
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="exceptionalClosure", type="datetime", nullable=true)
      */
     private $exceptionalClosure;
-    
+
     /**
      * @var \DateTime
      *
@@ -82,7 +82,12 @@ class OpeningHours
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="openingHours")
      */
-    private $restaurant;
+    private $restaurantOpen;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="exceptionalClosure")
+     */
+    private $restaurantClose;
 
     /**
      * @var bool
@@ -113,5 +118,6 @@ class OpeningHours
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-    
+
+
 }

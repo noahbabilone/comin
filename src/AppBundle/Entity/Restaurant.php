@@ -41,10 +41,17 @@ class Restaurant
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     */
+    private $address;
+    
     /**
      * @var string
      *
@@ -119,12 +126,12 @@ class Restaurant
     private $deliveries;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurantOpen",cascade={"persist", "remove"})
      */
     private $openingHours;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpeningHours", mappedBy="restaurantClose",cascade={"persist", "remove"})
      */
     private $exceptionalClosure;
 
@@ -134,32 +141,32 @@ class Restaurant
     private $owner;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="restaurant",cascade={"persist", "remove"})
      */
     private $offers;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Menu", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Menu", mappedBy="restaurant",cascade={"persist", "remove"})
      */
     private $menus;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Card", mappedBy="restaurant",cascade={"persist", "remove"})
      */
     private $cards;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Address", inversedBy="restaurants")
-     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City", inversedBy="restaurants")
+     * @Assert\NotBlank(message = "La ville ne doit pas être vide.")
      */
-    private $address;
+    private $city;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
      */
-    private $evaluations; 
+    private $evaluations;
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="restaurant",cascade={"persist", "remove"})
      */
     private $images;
 
@@ -213,7 +220,8 @@ class Restaurant
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
     private $visible;
-    
+
+
     /**
      * Constructor
      */
@@ -227,6 +235,7 @@ class Restaurant
         $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cards = new \Doctrine\Common\Collections\ArrayCollection();
         $this->evaluations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->images = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -309,6 +318,30 @@ class Restaurant
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Restaurant
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 
     /**
@@ -958,27 +991,27 @@ class Restaurant
     }
 
     /**
-     * Set address
+     * Set city
      *
-     * @param \AppBundle\Entity\Address $address
+     * @param \AppBundle\Entity\City $city
      *
      * @return Restaurant
      */
-    public function setAddress(\AppBundle\Entity\Address $address = null)
+    public function setCity(\AppBundle\Entity\City $city = null)
     {
-        $this->address = $address;
+        $this->city = $city;
 
         return $this;
     }
 
     /**
-     * Get address
+     * Get city
      *
-     * @return \AppBundle\Entity\Address
+     * @return \AppBundle\Entity\City
      */
-    public function getAddress()
+    public function getCity()
     {
-        return $this->address;
+        return $this->city;
     }
 
     /**

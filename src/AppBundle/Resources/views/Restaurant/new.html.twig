@@ -9,7 +9,6 @@
      'public/assets/global/plugins/bootstrap-sweetalert/sweetalert.css'
      "public/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
      "public/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
-     "public/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
      {% endstylesheets %}
@@ -66,6 +65,12 @@
 
          .image-border {
              border: 1px solid #e7ecf1 !important;
+         }
+
+         .control-label .required, .form-group .required {
+             color: #333;
+              font-size: 14px; 
+             padding-left: 2px;
          }
 
      </style>
@@ -143,6 +148,12 @@
                                 </div>
                             {% endif %}
 
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {{ form_errors(form) }}
+                                </div>
+                            </div>
+
                             <div id="info" class="tab-pane fade in active">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -218,25 +229,13 @@
                                         <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Adresse </h4>
 
                                         <div class="row">
-                                            {% if form.street is defined %}
-                                                <div class="col-sm-3">
+                                            {% if form.address is defined %}
+                                                <div class="col-sm-12">
                                                     <div class="form-group">
-
-                                                        {{ form_label(form.street) }}
-                                                        <div class="input-icon">
-                                                            <i class="fa fa-road"></i>
-                                                            {{ form_widget(form.street) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                            {% if form.content is defined %}
-                                                <div class="col-sm-9">
-                                                    <div class="form-group">
-                                                        {{ form_label(form.content) }}
+                                                        {{ form_label(form.address) }}
                                                         <div class="input-icon">
                                                             <i class="fa fa-map-signs"></i>
-                                                            {{ form_widget(form.content) }}
+                                                            {{ form_widget(form.address) }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -570,8 +569,6 @@
         "public/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
         "public/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
         "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
-        "public/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
-
         'bundles/app/js/restaurant/add.js' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}

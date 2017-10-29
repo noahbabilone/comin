@@ -48,13 +48,29 @@ class RestaurantController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            die("Add Restaurant");
+//            dump($restaurant) or die;
             $em = $this->getDoctrine()->getManager();
             $em->persist($restaurant);
             $em->flush();
 
-            return $this->redirectToRoute('restaurant_show', array('id' => $restaurant->getId()));
+            if ($restaurant->getId()) {
+//                /** @var Image $image */
+                foreach ($restaurant->getImages() as $key => $image) {
+                    if ($image->getFile()) {
+                        $image->setName($restaurant->getName());
+                        $path = $this->get('app.upload_service')->upload($image->getFile(), 'restaurant', $restaurant->getId());
+                        $image->setPath($path);
+                        $image->setPosition($key);
+                        if ($key % 10 == 0)
+                            $em->flush();
+                    }
+                    $em->flush();
+                }
+
+            }
+
+            return $this->redirectToRoute('restaurant_index');
+//            return $this->redirectToRoute('restaurant_show', array('id' => $restaurant->getId()));
         }
 
         return $this->render('AppBundle:Restaurant:new.html.twig', array(
@@ -136,7 +152,6 @@ class RestaurantController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('restaurant_delete', array('id' => $restaurant->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

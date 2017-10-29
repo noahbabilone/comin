@@ -90,7 +90,7 @@ class OpeningHoursType extends AbstractType
                     ),
                 )
             )
-//            ->add('open')
+//           ->add('open')
 //            ->add('noOpeningStartTime')
 //            ->add('noOpeningEndTime')
 //            ->add('created')
