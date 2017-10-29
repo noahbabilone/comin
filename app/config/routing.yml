@@ -1,3 +1,15 @@
+app_image:
+    resource: "@AppBundle/Controller/ImageController.php"
+    type:     annotation
+
+app_image:
+    resource: "@AppBundle/Controller/ImageController.php"
+    type:     annotation
+
+app_image:
+    resource: "@AppBundle/Controller/ImageController.php"
+    type:     annotation
+
 app_address:
     resource: "@AppBundle/Controller/AddressController.php"
     type:     annotation

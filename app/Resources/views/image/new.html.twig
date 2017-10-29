@@ -1,0 +1,82 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     'public/plugins/payment-font/css/paymentfont.min.css'
+     'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
+     'public/assets/global/plugins/bootstrap-sweetalert/sweetalert.css'
+     "public/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
+     "public/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+     "public/assets/global/plugins/dropzone/dropzone.min.css"
+     "public/assets/global/plugins/dropzone/basic.min.css"
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+
+ {% endblock stylesheets %}
+
+{% block title %}Création Restaurant |  {{ parent() }} {% endblock %}
+
+{% block header_breadcrumb %}
+    <li>
+        <a href="{{ path('image_index') }}" alt="Tous les restaurants" title="Tous les restaurants">Back to the list</a>
+        <i class="fa fa-circle"></i>
+    </li>
+
+    <li>
+        <span>Création</span>
+    </li>
+{% endblock header_breadcrumb %}
+
+{% block action_toolbar %}
+    <div class="btn-group pull-right">
+        <a href="" type="button" class="btn red btn-sm btn-outline">
+            <i class="fa fa-arrow-left"></i> Tous les restaurants
+        </a>
+    </div>
+{% endblock action_toolbar %}
+
+{% block back_body %}
+    <h1>Image creation</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <hr>
+    <button type="submit" class="btn btn-sm green"> Ajouter</button>
+    {{ form_end(form) }}
+
+    <form action="../assets/global/plugins/dropzone/upload.php" class="dropzone dropzone-file-area" id="my-dropzone"
+          style="width: 500px; margin-top: 50px;">
+        <h3 class="sbold">Drop files here or click to upload</h3>
+        <p> This is just a demo dropzone. Selected files are not actually uploaded. </p>
+    </form>
+
+
+{% endblock back_body %}
+
+    {% block javascripts %}
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback"
+        ></script>
+
+        {#<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback"
+               ></script>#}
+        {{ parent() }}
+        {% javascripts
+        "public/assets/global/plugins/gmaps/gmaps.min.js"
+        'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+        'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+        "public/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"
+        "public/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
+        "public/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        "public/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
+        "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
+        "public/assets/global/plugins/dropzone/dropzone.min.js" %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        
+        
+
+    {% endblock %}

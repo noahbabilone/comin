@@ -128,6 +128,18 @@ class RestaurantType extends AbstractType
                     )
                 )
             )
+            ->add('images', CollectionType::class, array(
+                    'label' => "Fermeture Exceptionnelle",
+                    'required' => false,
+                    'entry_type' => ImageType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'delete_empty' => true,
+                    'attr' => array(
+                        'class' => "form-images"
+                    )
+                )
+            )
             ->add('rite', TextType::class, array(
                     'label' => 'Rite',
                     'required' => false,
@@ -329,7 +341,7 @@ class RestaurantType extends AbstractType
 
 
     private
-    function addDepartmentField(FormInterface $form, ?Region $region)
+    function addDepartmentField(FormInterface $form, Region $region=null)
     {
 
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
@@ -360,7 +372,7 @@ class RestaurantType extends AbstractType
         $form->add($builder->getForm());
     }
 
-    private function addCityField(FormInterface $form, ?Department $department)
+    private function addCityField(FormInterface $form, Department $department=null)
     {
         $form->add('city', EntityType::class, [
             'label' => 'Ville',
@@ -377,7 +389,7 @@ class RestaurantType extends AbstractType
         ]);
     }
 
-    private function addCommunesDeliveredField(FormInterface $form, ?Department $department)
+    private function addCommunesDeliveredField(FormInterface $form, Department $department=null)
     {
         $form->add('communesDelivered', EntityType::class, [
             'label' => 'Communes livrées',

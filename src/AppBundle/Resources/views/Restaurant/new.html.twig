@@ -9,6 +9,7 @@
      'public/assets/global/plugins/bootstrap-sweetalert/sweetalert.css'
      "public/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
      "public/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+     "public/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
      {% endstylesheets %}
@@ -58,6 +59,15 @@
              min-height: 450px
          }
 
+         .img-preview {
+             max-width: 100% !important;
+             height: 9vw !important;
+         }
+
+         .image-border {
+             border: 1px solid #e7ecf1 !important;
+         }
+
      </style>
  {% endblock stylesheets %}
 
@@ -101,11 +111,13 @@
                                     Horaires d'ouverture</a>
                             </li>
                             <li>
-                                <a class="btn" data-toggle="tab" href="#payments"> <i class="fa fa-credit-card fa-fw"></i>
+                                <a class="btn" data-toggle="tab" href="#payments"> <i
+                                            class="fa fa-credit-card fa-fw"></i>
                                     Moyens de paiement</a>
                             </li>
                             <li>
-                                <a class="btn" data-toggle="tab" href="#delivery"> <i class="fa fa-motorcycle fa-fw"></i>
+                                <a class="btn" data-toggle="tab" href="#delivery"> <i
+                                            class="fa fa-motorcycle fa-fw"></i>
                                     Livraisons</a>
                             </li>
                             <li>
@@ -486,7 +498,25 @@
                                 </div>
 
                             </div>
-                            <div id="images" class="tab-pane fade"></div>
+                            <div id="images" class="tab-pane fade">
+
+
+                                {% if form.images is defined %}
+                                    <h4 class="form-section">Images
+                                        <button type="button" class="btn btn-sm green pull-right"
+                                                id="btnImageAdd"><i
+                                                    class="fa fa-plus fa-fw"></i> Ajout une Image
+                                        </button>
+                                    </h4>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            {{ form_label(form.images,null,{'label_attr':{'class':'sr-only'}}) }}
+                                            {{ form_widget(form.images) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -540,6 +570,8 @@
         "public/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
         "public/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
         "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
+        "public/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
+
         'bundles/app/js/restaurant/add.js' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
