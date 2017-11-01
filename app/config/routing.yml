@@ -1,3 +1,7 @@
+app_menu:
+    resource: "@AppBundle/Controller/MenuController.php"
+    type:     annotation
+
 app_image:
     resource: "@AppBundle/Controller/ImageController.php"
     type:     annotation

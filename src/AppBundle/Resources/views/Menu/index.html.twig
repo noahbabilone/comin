@@ -1,0 +1,96 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     'public/plugins/payment-font/css/paymentfont.min.css'
+     'bundles/app/css/restaurant.css'
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+
+ {% endblock stylesheets %}
+
+
+{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
+
+{% block header_breadcrumb %}
+    <li>
+        <span>Liste Restaurants</span>
+        <i class="fa fa-circle"></i>
+    </li>
+
+
+{% endblock header_breadcrumb %}
+
+
+{% block action_toolbar %}
+    <div class="btn-group pull-right">
+        <a href="{{ path('menu_new') }}" class="btn red btn-sm btn-outline">
+            <i class="fa fa-plus"></i> Création Menu
+        </a>
+    </div>
+{% endblock action_toolbar %}
+{% block back_body %}
+    <div class="row">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <h1>Menus list</h1>
+            </div>
+            <div class="portlet-body">
+
+
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Visible</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for menu in menus %}
+                        <tr>
+                            <td><a href="{{ path('menu_show', { 'id': menu.id }) }}">{{ menu.id }}</a></td>
+                            <td>{{ menu.name }}</td>
+                            <td>{{ menu.slug }}</td>
+                            <td>{% if menu.created %}{{ menu.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{% if menu.updated %}{{ menu.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{% if menu.visible %}Yes{% else %}No{% endif %}</td>
+                            <td>
+                                <ul>
+                                    <li>
+                                        <a href="{{ path('menu_show', { 'id': menu.id }) }}">show</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('menu_edit', { 'id': menu.id }) }}">edit</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <ul>
+            <li>
+                <a href="{{ path('menu_new') }}">Create a new menu</a>
+            </li>
+        </ul>
+    </div>
+
+{% endblock back_body %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
