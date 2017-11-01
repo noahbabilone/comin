@@ -10,7 +10,9 @@ services:
         tags: ['controller.service_arguments']
     app.upload_service:
         class: AppBundle\Service\UploadService
-        arguments: ['@service_container']
+        arguments: ['@service_container']    
+    app.date:
+        class: AppBundle\Service\DateTimeService
 
     app.form.registration:
         class: AppBundle\Form\UserType

@@ -33,7 +33,7 @@
     <div class="btn-group pull-right">
 
         <a href="{{ path('restaurant_index') }}" type="button" class="btn red btn-sm btn-outline">
-            <i class="fa fa-arrow-left"></i> Retour à la liste de restaurants
+            <i class="fa fa-arrow-left"></i> Retour à la liste des restaurants
         </a>
     </div>
 {% endblock action_toolbar %}
@@ -77,7 +77,7 @@
                                     {% for type, messages in app.session.flashbag.all() %}
                                         {% for message in messages %}
                                             <div class="col-md-12">
-                                                <div class="alert alert-{{ type }} alert-dismissable">
+                                                <div class="alert alert-{{ type }} fade in  alert-dismissable">
                                                     <button type="button" class="close" data-dismiss="alert"
                                                             aria-hidden="true"></button>
                                                     <strong>{{ type }}</strong>
@@ -316,8 +316,8 @@
                                         {% endif %}
                                         {% if form.delivery is defined %}
 
-                                            <h4 class="form-section margin-top-20"><i class="fa fa-map-signs fa-fw"></i>À
-                                                Emporter {% if form.delivery.takeAway is defined %}
+                                            <h4 class="form-section margin-top-20"><i class="fa motorcycle fa-fw"></i>À
+                                                Commandes {% if form.delivery.takeAway is defined %}
                                                     <div class="pull-right block-inline">
                                                         {{ form_label(form.delivery.takeAway,null,{'label_attr':{'class':'sr-only'}}) }}
                                                         {{ form_widget(form.delivery.takeAway) }}
@@ -384,7 +384,7 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <h4 class="form-section"><i class="fa fa-map-signs fa-fw"></i>À
+                                        <h4 class="form-section"><i class="fa fa-map-marker fa-fw"></i>À
                                             Emporter {% if form.onTheSpot is defined %}
                                                 <div class="pull-right block-inline">
                                                     {{ form_label(form.onTheSpot,null,{'label_attr':{'class':'sr-only'}}) }}
@@ -526,7 +526,7 @@
     {% block javascripts %}
         <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback"
         ></script>
-        
+
         {{ parent() }}
         {% javascripts
         "public/assets/global/plugins/gmaps/gmaps.min.js"

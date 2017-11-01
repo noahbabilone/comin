@@ -24,11 +24,14 @@ class RestaurantController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $date = new \DateTime("now");
+        $date->setTimezone(new \DateTimeZone("Europe/Paris"));
 
         $restaurants = $em->getRepository('AppBundle:Restaurant')->findAll();
-
+        
         return $this->render('AppBundle:Restaurant:index.html.twig', array(
             'restaurants' => $restaurants,
+            'date' => $date,
         ));
     }
 
@@ -105,25 +108,38 @@ class RestaurantController extends Controller
     /**
      * Displays a form to edit an existing restaurant entity.
      *
-     * @Route("/{id}/edit", name="restaurant_edit")
+     * @Route("/{slug}/edit", name="restaurant_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Restaurant $restaurant)
+    public function editAction(Request $request, $slug)
     {
-        $deleteForm = $this->createDeleteForm($restaurant);
+//        $deleteForm = $this->createDeleteForm($restaurant);
+        $em = $this->getDoctrine()->getManager();
+        $restaurant = $em->getRepository('AppBundle:Restaurant')->findOneBySlug($slug);
+        if (!$restaurant instanceof Restaurant) {
+            $this->setFlash('custom-alerts alert alert-danger fade in', '<i class="fa fa-warning"></i>  n\'a pu être trouvée!');
+
+            $this->addFlash(
+                'error',
+                'Restaurant not found!'
+            );
+            return $this->redirectToRoute('restaurant_index');
+        }
+
         $editForm = $this->createForm('AppBundle\Form\RestaurantType', $restaurant);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            dump($restaurant) or die;
+            $em->flush($restaurant);
 
             return $this->redirectToRoute('restaurant_edit', array('id' => $restaurant->getId()));
         }
 
         return $this->render('AppBundle:Restaurant:edit.html.twig', array(
             'restaurant' => $restaurant,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form' => $editForm->createView(),
         ));
     }
 

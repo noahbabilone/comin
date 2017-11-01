@@ -48,17 +48,29 @@
             </div>
             <div class="portlet-body">
                 <div class="row">
+                    {% if restaurants is defined %}
+                    {% for index, restaurant in restaurants %}
 
+                    {% if index>0 %}
+                        <div class="col-sm-12">
+                            <hr>
+                        </div>
+                    {% endif %}
                     <div class="portlet light ">
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
-                                <span class="caption-subject font-blue-madison bold uppercase">Nom Resto</span>
+                                <span class="caption-subject font-blue-madison bold uppercase">{{ restaurant.name }}</span>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
                                     <a class="btn" data-toggle="tab" href="#info"> <i
                                                 class="fa fa-info-circle fa-fw"></i>
                                         Restaurant</a>
+                                </li>
+                                <li class="">
+                                    <a class="btn" data-toggle="tab" href="#description"> <i
+                                                class="fa fa-pencil-square-o fa-fw"></i>
+                                        Description</a>
                                 </li>
                                 <li>
                                     <a class="btn" data-toggle="tab" href="#images"> <i
@@ -68,7 +80,7 @@
                                 <li class="">
                                     <a class="btn" data-toggle="tab" href="#comments"> <i
                                                 class="fa fa-comments-o fa-fw"></i>
-                                        Commentaires (0)</a>
+                                        Commentaires ({{ restaurant.evaluations| length }})</a>
                                 </li>
                             </ul>
                         </div>
@@ -76,12 +88,19 @@
                         <div class="portlet-body">
                             <div class="row">
                                 <div class="col-sm-2 thumbnail">
-                                    <img src="{{ asset('public/img/no_image.png') }}"
-                                         alt="Pas d'image"
-                                         class="img-responsive img-logo"/>
+                                    {% if restaurant.logo is not null %}
+                                        <img src="{{ asset(restaurant.logo) }}"
+                                             alt="Pas d'image"
+                                             class="img-logo"/>
+                                    {% else %}
+                                        <img src="{{ asset('public/img/no_image.png') }}"
+                                             alt="Pas d'image"
+                                             class="img-responsive img-logo"/>
+                                    {% endif %}
 
                                     <div class="group btn-group-justified">
-                                        <a href="" class="btn btn-xs green"><i
+                                        <a href="{{ path('restaurant_edit',{'slug': restaurant.slug}) }}"
+                                           class="btn btn-xs green"><i
                                                     class="fa fa-edit fa-faw"></i>Editer</a>
                                         <a href="" class="btn btn-xs red"><i
                                                     class="fa fa-lock fa-faw"></i>Désactiver</a>
@@ -97,56 +116,128 @@
                                                         <div class="col-sm-12">
                                                             <h4 class="title-section">Informations</h4>
                                                             <ul class="list-unstyled">
-                                                                <li><strong><i class="fa fa-cutlery fa-fw"></i>Spécialité:
-                                                                    </strong></li>
-                                                                <li><strong><i class="fa fa-phone fa-fw"></i>Téléphone:
-                                                                    </strong></li>
-                                                                <li><strong><i class="fa fa-fax fa-fw"></i>Fax:
-                                                                    </strong></li>
-                                                                <li><strong><i class="fa  fa-globe fa-fw"></i>Rite</strong>
+                                                                <li>
+                                                                    <strong><i class="fa fa-cutlery fa-fw"></i>Spécialité:</strong> {{ restaurant.speciality | capitalize }}
+
+                                                                <li>
+                                                                    <strong><i class="fa  fa-globe fa-fw"></i>Rite
+                                                                        :</strong> {{ restaurant.rite  | capitalize }}
+                                                                    <br>
                                                                 </li>
                                                             </ul>
-                                                            <h4 class="title-section">Livraisons</h4>
 
                                                             <address>
-                                                                <strong>Twitter, Inc.</strong><br>
-                                                                1355 Market Street, Suite 900<br>
-                                                                San Francisco, CA 94103<br>
-                                                                <abbr title="Phone">P:</abbr> (123) 456-7890
+                                                                <strong><i class="fa fa-map-marker fa-fw"></i>Adresse:
+                                                                </strong> {{ restaurant.address }}
+                                                                ,{{ restaurant.city.name }} 94103, France <br>
+                                                                <strong><i class="fa fa-phone fa-fw"></i>Téléphone:
+                                                                </strong> {{ restaurant.phone }} <br>
+                                                                <strong><i class="fa fa-fax fa-fw"></i>Fax:</strong> {{ restaurant.fax }}
+
+
                                                             </address>
-
                                                         </div>
-                                                        <div class="col-sm-12 ">
-                                                            <h4 class="title-section">Moyens de paiement</h4>
-                                                            <div class="row list-show-icons restaurant-list">
-                                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-                                                                    <i class="pf pf-cb"></i>
-                                                                    {% if form.bankCard is defined %}
-                                                                        {{ form_row(form.bankCard) }}
-                                                                    {% endif %}
+                                                        <div class="col-sm-12">
+                                                            <h4 class="title-section">Livraisons</h4>
+                                                            <div class="block">
+                                                                {% if  communesDelivered is defined %}
+
+                                                                    <dl>
+                                                                        <dt><i class="fa fa-map-o fa-fw"></i>Communes
+                                                                            Livrés:
+                                                                        </dt>
+
+                                                                        <dd>
+                                                                            <ul class="list-inline">
+
+                                                                                {% for indexConmune, commune in communesDelivered %}
+                                                                                    <li>{{ commune.name }}
+                                                                                        {% if indexConmune> communesDelivered | length %}
+                                                                                            <i class="fa fa-circle"></i>
+                                                                                        {% endif %}
+                                                                                    </li>
+                                                                                {% else %}
+                                                                                    <li>Aucune ville</li>
+
+                                                                                {% endfor %}
+                                                                            </ul>
+
+                                                                        </dd>
+
+                                                                    </dl>
+
+                                                                {% endif %}
+
+                                                                <h5 class="text-bold"><i
+                                                                            class="fa fa-motorcycle fa-fw"></i> Se
+                                                                    faire livrer </h5>
+                                                                <div class="row">
+                                                                    {% for  delivery in restaurant.deliveries %}
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> {{ delivery.deliveryPrice | number_format(2, ',', '.') }}
+                                                                                €</strong>
+                                                                            Minimum de commande
+                                                                        </div>
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> {{ delivery.takeAwayOrderMin | number_format(2, ',', '.') }}
+                                                                                € </strong><br>
+                                                                            Frais de livraison
+                                                                        </div>
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> {{ delivery.takeAwayDurationMin | number_format }}
+                                                                                à {{ delivery.takeAwayDurationMax | number_format }}
+                                                                                min</strong>
+                                                                            <br>
+                                                                            Délai de livraison
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> 12,00 €</strong>
+                                                                            Minimum de commande
+                                                                        </div>
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> 0,00 € </strong><br>
+                                                                            Frais de livraison
+                                                                        </div>
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> 12 à 30 min</strong>
+                                                                            <br>
+                                                                            Délai de livraison
+                                                                        </div>
+                                                                    {% endfor %}
                                                                 </div>
 
-                                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-                                                                    <i class="pf pf-paypal"></i>
-                                                                    {% if form.paypal is defined %}
-                                                                        {{ form_row(form.paypal) }}
-                                                                    {% endif %}
-                                                                </div>
-                                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-                                                                    <i class="pf pf-card"></i>
-                                                                    {% if form.ticketRestaurant is defined %}
-                                                                        {{ form_row(form.ticketRestaurant) }}
-                                                                    {% endif %}
-                                                                </div>
+                                                                {% if restaurant.onTheSpot is defined and restaurant.onTheSpot %}
+                                                                    <h5 class="text-bold"><i
+                                                                                class="fa fa-map-marker fa-fw"></i>À
+                                                                        Emporter</h5>
 
-                                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-                                                                    <i class="pf pf-cash"></i>
-                                                                    {% if form.cash is defined %}
-                                                                        {{ form_row(form.cash) }}
-                                                                    {% endif %}
-                                                                </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4 text-center">
+                                                                            <strong> {{ restaurant. onTheSpotOrderMin | number_format(2, ',', '.') }}
+                                                                                € </strong><br>
+                                                                            Minimum de commande
+                                                                        </div>
+                                                                        <div class="col-sm-4 text-center">
+                                                                            {% if restaurant.onTheSpotDurationMin>0 %}
+                                                                                <strong> {{ restaurant.onTheSpotDurationMin | number_format }}
+                                                                                    à {{ restaurant.onTheSpotDurationMax | number_format }}
+                                                                                    min</strong>
+                                                                            {% else %}
+                                                                                <strong>Dès {{ restaurant.onTheSpotDurationMax | number_format }}
+                                                                                    min</strong>
+                                                                            {% endif %}
+                                                                            <br>
+                                                                            Délai de livraison
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+
+
                                                             </div>
+
                                                         </div>
+
 
                                                         {#  <div class="col-sm-4">
                                                               <a href="" class="btn btn-sm blue btn-block"><i
@@ -161,84 +252,109 @@
                                                 </div>
                                                 <div class="col-sm-5">
 
+                                                    {#{{ dump(date) }}#}
+                                                    {#{{ dump(date | date("l")) }}#}
                                                     <h4 class="">Horraires d'ouverture
+{#
                                                         <small class="pull-right ">État: Fermé</small>
+#}
                                                     </h4>
 
-                                                    <table class="table">
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-4">Lundi:</td>
-                                                            <td class="col-sm-4"> 11h00 à 14h00</td>
-                                                            <td class="col-sm-4"> 18h30 à 23h30</td>
-                                                        </tr>
-                                                    </table>
+                                                    {% if restaurant.openingHours is defined and restaurant.openingHours %}
+                                                        <table class="table">
+                                                            {% for open in restaurant.openingHours %}
+                                                                <tr>
+                                                                    <td class="col-sm-4">{{ app_date.getWeekday(open.day) }}</td>
+                                                                    <td class="col-sm-4"> 11h00 à 14h00</td>
+                                                                    <td class="col-sm-4"> 18h30 à 23h30</td>
+                                                                </tr>
+                                                            {% else %}
+                                                                <tr>
+                                                                    <td colspan="3">Aucune donnée trouvée</td>
+                                                                </tr>
+                                                            {% endfor %}
+
+                                                        </table>
+
+                                                    {% else %}
+                                                        <div class="note note-info">
+                                                            <h4 class="block">Nada</h4>
+                                                            <p>Text</p>
+                                                        </div>
+
+                                                    {% endif %}
+                                                    <h4 class="title-section">Moyens de paiement</h4>
+                                                    <div class="row list-show-icons restaurant-list">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                            <i class="pf pf-cb"></i>
+                                                            {% if form.bankCard is defined %}
+                                                                {{ form_row(form.bankCard) }}
+                                                            {% endif %}
+                                                        </div>
+
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                            <i class="pf pf-paypal"></i>
+                                                            {% if form.paypal is defined %}
+                                                                {{ form_row(form.paypal) }}
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                            <i class="pf pf-card"></i>
+                                                            {% if form.ticketRestaurant is defined %}
+                                                                {{ form_row(form.ticketRestaurant) }}
+                                                            {% endif %}
+                                                        </div>
+
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                            <i class="pf pf-cash"></i>
+                                                            {% if form.cash is defined %}
+                                                                {{ form_row(form.cash) }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
 
                                                 </div>
 
                                             </div>
                                         </div>
+                                        <div class="tab-pane fade" id="description">
+                                            {% if restaurant.description is defined and restaurant.description %}
+                                                {{ restaurant.description | raw }}
+                                            {% endif %}
+                                        </div>
+
                                         <div id="images" class="tab-pane fade">
                                             <h4 class="title-section">Photos du restaurant</h4>
                                             <div class="row">
-                                                {% for i in [1..8] %}
-                                                <div class="col-sm-3">
-                                                    <img src="{{ asset('public/img/no_image.png') }}"
-                                                         alt="Pas d'image"
-                                                         class="img-responsive img-logo"/>
-                                                </div>
+                                                {% for image in restaurant.images %}
+                                                    <div class="col-sm-3">
+                                                        <img src="{{ asset(image.path) }}"
+                                                             alt="Image Error"
+                                                             class="img-responsive img-logo"/>
+                                                    </div>
                                                 {% else %}
-                                                 <div class="col-sm-12">
-                                                     <div class="note note-info">
-                                                         <h4 class="block">Pas d'image</h4>
-                                                         <p>Vous n'avez pas de photo encore pour ce restaurant.</p>
-                                                     </div>
-                                                 </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="note note-info">
+                                                            <h4 class="block">Pas d'image</h4>
+                                                            <p>Vous n'avez pas de photo encore pour ce restaurant.</p>
+                                                        </div>
+                                                    </div>
                                                 {% endfor %}
                                             </div>
                                         </div>
                                         <div id="comments" class="tab-pane fade">
                                             <h4 class="title-section">Photos du restaurant</h4>
                                             <div class="row">
-                                                {% if comments is defined and comments%}
-                                                
-                                                
+                                                {% if comments is defined and comments %}
+
                                                 {% else %}
-                                                 <div class="col-sm-12">
-                                                     <div class="note note-info">
-                                                         <h4 class="block">Pas d'image</h4>
-                                                         <p>Vous n'avez reçu aucun commentaire encore pour ce restaurant.</p>
-                                                     </div>
-                                                 </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="note note-info">
+                                                            <h4 class="block">Aucun commentaire trouvé</h4>
+                                                            <p>Vous n'avez reçu aucun commentaire encore pour ce
+                                                                restaurant.</p>
+                                                        </div>
+                                                    </div>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -253,7 +369,19 @@
                     </div>
                 </div>
 
+                {% else %}
 
+                    <div class="col-sm-12">
+                        <div class="note note-info">
+                            <h2 class="block"><strong>Oups</strong>: Vous n'a pas de restaurant encore</h2>
+                            <p></p>
+                            <p>Veuillez cliquer sur ce lien pour créer votre restaurant: <a
+                                        href="{{ path('restaurant_new') }}">Lien</a></p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

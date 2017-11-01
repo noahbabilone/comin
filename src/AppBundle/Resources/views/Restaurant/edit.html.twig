@@ -4,57 +4,542 @@
      {{ parent() }}
      {% stylesheets
      'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
-
+     'public/plugins/payment-font/css/paymentfont.min.css'
+     'public/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css'
+     'public/assets/global/plugins/bootstrap-sweetalert/sweetalert.css'
+     "public/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
+     "public/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+     'public/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'
+     'bundles/app/css/restaurant.css'
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
-     {% endstylesheets %}
+     {% endstylesheets %}l
  {% endblock stylesheets %}
 
-
-{% block title %}Mon Compte |  {{ parent() }} {% endblock %}
+{% block title %}Création Restaurant |  {{ parent() }} {% endblock %}
 
 {% block header_breadcrumb %}
     <li>
-        <span>Liste Restaurants</span>
+        <a href="" alt="Tous les restaurants" title="Tous les restaurants">Liste Restaurants</a>
         <i class="fa fa-circle"></i>
     </li>
 
     <li>
-        <span>Création</span>
+        <span>Édition</span>
     </li>
 {% endblock header_breadcrumb %}
 
-
 {% block action_toolbar %}
     <div class="btn-group pull-right">
-        <a type="button" class="btn red btn-sm btn-outline">
-            <i class="fa fa-arrow-left"></i> Tous les restaurants
+
+        <a href="{{ path('restaurant_index') }}" type="button" class="btn red btn-sm btn-outline">
+            <i class="fa fa-arrow-left"></i> Retour à la liste des restaurants
         </a>
     </div>
 {% endblock action_toolbar %}
+
 {% block back_body %}
-    <h1>Restaurant edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    <div class="row">
+        {% if form is defined %}
+            {{ form_start(form, { 'attr': { 'id': 'form_restaurant_add','autocomplete':'off', 'class': 'forms' } }) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('restaurant_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            <div class="portlet light">
+                <div class="portlet-body">
+                    <div class="tabbable-line tabbable-full-width"> {#tabbable-tabdrop#}
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a class="btn" data-toggle="tab" href="#info"> <i class="fa fa-home fa-fw"></i>
+                                    Restaurant</a>
+                            </li>
+                            <li>
+                                <a class="btn" data-toggle="tab" href="#opening"> <i class="fa fa-calendar fa-fw"></i>
+                                    Horaires d'ouverture</a>
+                            </li>
+                            <li>
+                                <a class="btn" data-toggle="tab" href="#payments"> <i
+                                            class="fa fa-credit-card fa-fw"></i>
+                                    Moyens de paiement</a>
+                            </li>
+                            <li>
+                                <a class="btn" data-toggle="tab" href="#delivery"> <i
+                                            class="fa fa-motorcycle fa-fw"></i>
+                                    Livraisons</a>
+                            </li>
+                            <li>
+                                <a class="btn" data-toggle="tab" href="#images"> <i class="fa fa-camera fa-fw"></i>
+                                    Images</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            {% if app.request.hasPreviousSession %}
+                                <div class="row">
+                                    {% for type, messages in app.session.flashbag.all() %}
+                                        {% for message in messages %}
+                                            <div class="col-md-12">
+                                                <div class="alert alert-{{ type }} fade in  alert-dismissable">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                            aria-hidden="true"></button>
+                                                    <strong>{{ type }}</strong>
+                                                    {{ message }}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {{ form_errors(form) }}
+                                </div>
+                            </div>
+
+                            <div id="info" class="tab-pane fade in active">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="message-alert" class="alert alert-danger display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <h4 class="form-section"><i class="fa fa-info fa-fw"></i>Informations</h4>
+                                        {% if form.name is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.name) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-home"></i>
+                                                    {{ form_widget(form.name) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if form.speciality is defined %}
+                                            <div class="form-group">
+                                                {{ form_label(form.speciality) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-cutlery"></i>
+                                                    {{ form_widget(form.speciality) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="row">
+                                            {% if form.phone is defined %}
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.phone) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-phone"></i>
+                                                            {{ form_widget(form.phone) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if form.fax is defined %}
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.fax) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-fax"></i>
+                                                            {{ form_widget(form.fax) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+
+
+                                            {% if form.rite is defined %}
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.rite) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-globe"></i>
+                                                            {{ form_widget(form.rite) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+                                        {% if form.description is defined %}
+                                            <div class="form-group hide" id="input_description">
+                                                {{ form_label(form.description) }}
+                                                {{ form_widget(form.description) }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Adresse </h4>
+
+                                        <div class="row">
+                                            {% if form.address is defined %}
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.address) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-map-signs"></i>
+                                                            {{ form_widget(form.address) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="row">
+
+                                            {% if form.region is defined %}
+                                                <div class="col-sm-6">
+                                                    {{ form_row(form.region) }}
+                                                </div>
+                                            {% endif %}
+                                            {% if form.department is defined %}
+                                                <div class="col-sm-6">
+                                                    {{ form_row(form.department) }}
+                                                </div>
+                                            {% endif %}
+                                            {% if form.city is defined %}
+                                                <div class="col-sm-12">
+                                                    {{ form_row(form.city) }}
+                                                </div>
+                                            {% endif %}
+
+                                            <div class="col-sm-12">
+                                                <h4 class="form-section"><i class="fa fa-map-marker fa-fw"></i>Localisation
+                                                    <button class="btn btn-xs green btn-outline pull-right"
+                                                            id="gmap_geocoding_btn"><i
+                                                                class="fa fa-refresh fa-fw"></i> Localiser
+                                                    </button>
+                                                </h4>
+                                                <div id="gmap_geocoding" class="gmaps"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="opening" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        {% if form.openingHours is defined %}
+                                            <h4 class="form-section">Heures d'ouverture
+                                                <button type="button" class="btn btn-sm green pull-right"
+                                                        id="bntOpeningHours"><i
+                                                            class="fa fa-clock-o fa-fw"></i> Ajout Heure d'ouverture
+                                                </button>
+                                            </h4>
+                                            <div class="row margin-top-40 margin-bottom-20 text-center loading">
+                                                <div class="col-sm-12">
+                                                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.openingHours,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.openingHours) }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {% if form.exceptionalClosure is defined %}
+                                            <h4 class="form-section">Fermeture Exceptionnelle
+                                                <button type="button" class="btn btn-sm red pull-right"
+                                                        id="bntExceptionalClosure"><i
+                                                            class="fa fa-clock-o fa-fw"></i> Ajout Heure Fermeture
+                                                </button>
+                                            </h4>
+
+                                            <div class="form-group">
+                                                {{ form_label(form.exceptionalClosure,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.exceptionalClosure) }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="payments" class="tab-pane fade">
+                                <h4 class="form-section">Moyens de paiement </h4>
+
+                                <div class="row text-center restaurant-add list-show-icons">
+
+                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                        <i class="pf pf-cb"></i>
+                                        {% if form.bankCard is defined %}
+                                            {{ form_row(form.bankCard) }}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                        <i class="pf pf-paypal"></i>
+                                        {% if form.paypal is defined %}
+                                            {{ form_row(form.paypal) }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                        <i class="pf pf-card"></i>
+                                        {% if form.ticketRestaurant is defined %}
+                                            {{ form_row(form.ticketRestaurant) }}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                        <i class="pf pf-cash"></i>
+                                        {% if form.cash is defined %}
+                                            {{ form_row(form.cash) }}
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div id="delivery" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        {% if form.communesDelivered is defined %}
+                                            <h4 class="form-section"><i class="fa fa-map-o fa-fw"></i>Communes
+                                                livrées</h4>
+                                            <div class="form-group">
+                                                {{ form_label(form.communesDelivered,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.communesDelivered) }}
+                                            </div>
+                                        {% endif %}
+
+                                        {% if form.deliveryDistance is defined %}
+                                            <h4 class="form-section margin-top-20"><i
+                                                        class="fa fa-street-view fa-fw"></i>Distance de
+                                                livraison (km)</h4>
+                                            <div class="form-group">
+                                                {{ form_label(form.deliveryDistance,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.deliveryDistance) }}
+                                            </div>
+                                        {% endif %}
+                                        {% if form.delivery is defined %}
+
+                                            <h4 class="form-section margin-top-20"><i class="fa motorcycle fa-fw"></i>À
+                                                Commandes {% if form.delivery.takeAway is defined %}
+                                                    <div class="pull-right block-inline">
+                                                        {{ form_label(form.delivery.takeAway,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                        {{ form_widget(form.delivery.takeAway) }}
+                                                    </div>
+                                                {% endif %}
+                                            </h4>
+                                            <div class="row">
+
+                                                <div class="col-sm-4">
+                                                    {% if form.delivery.takeAwayOrderMin is defined %}
+                                                        <div class="form-group">
+                                                            {{ form_label(form.delivery.takeAwayOrderMin) }}
+                                                            <div class="input-icon">
+                                                                <i class="fa fa-eur"></i>
+                                                                {{ form_widget(form.delivery.takeAwayOrderMin) }}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="col-sm-3">
+                                                    {% if form.delivery.deliveryPrice is defined %}
+                                                        <div class="form-group">
+                                                            {{ form_label(form.delivery.deliveryPrice) }}
+                                                            <div class="input-icon">
+                                                                <i class="fa fa-eur"></i>
+                                                                {{ form_widget(form.delivery.deliveryPrice) }}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <div class="row">
+
+                                                        <div class="col-sm-12">
+                                                            <label for="">Délai de préparation</label>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            {% if form.delivery.takeAwayDurationMin is defined %}
+                                                                <div class="form-group">
+                                                                    {{ form_label(form.delivery.takeAwayDurationMin,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                                    <div class="input-icon">
+                                                                        <i class="fa fa-clock-o"></i>
+                                                                        {{ form_widget(form.delivery.takeAwayDurationMin) }}
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            {% if form.delivery.takeAwayDurationMax is defined %}
+                                                                <div class="form-group">
+                                                                    {{ form_label(form.delivery.takeAwayDurationMax,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                                    <div class="input-icon">
+                                                                        <i class="fa fa-clock-o"></i>
+                                                                        {{ form_widget(form.delivery.takeAwayDurationMax) }}
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <h4 class="form-section"><i class="fa fa-map-marker fa-fw"></i>À
+                                            Emporter {% if form.onTheSpot is defined %}
+                                                <div class="pull-right block-inline">
+                                                    {{ form_label(form.onTheSpot,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                    {{ form_widget(form.onTheSpot) }}
+                                                </div>
+                                            {% endif %}
+                                        </h4>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                {% if form.onTheSpotOrderMin is defined %}
+                                                    <div class="form-group">
+                                                        {{ form_label(form.onTheSpotOrderMin) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-eur"></i>
+                                                            {{ form_widget(form.onTheSpotOrderMin) }}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="row">
+
+                                                    <div class="col-sm-12">
+                                                        <label for="">Délai de préparation (Min et Max)</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        {% if form.onTheSpotDurationMin is defined %}
+                                                            <div class="form-group">
+                                                                {{ form_label(form.onTheSpotDurationMin,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                                <div class="input-icon">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    {{ form_widget(form.onTheSpotDurationMin) }}
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        {% if form.onTheSpotDurationMin is defined %}
+                                                            <div class="form-group">
+                                                                {{ form_label(form.onTheSpotDurationMax,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                                <div class="input-icon">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    {{ form_widget(form.onTheSpotDurationMax) }}
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div id="images" class="tab-pane fade">
+                                {% if form.imageLogo is defined %}
+                                    <h4 class="form-section">Logo (200*200 Max:30ko) </h4>
+
+                                    <div class="form-group ">
+                                        {{ form_label(form.imageLogo,null,{'label_attr':{'class':'sr-only'}}) }}
+                                        <div class="fileinput logo fileinput-new text-center" data-provides="fileinput">
+                                            <div class=" fileinput-new thumbnail">
+                                                <img src="{{ asset('public/img/no_image.png') }}"
+                                                     alt="Pas d'image"
+                                                     class="image-responsive"/>
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                            <div class="text-center">
+                                                <span class="btn default btn-sm btn-file">
+                                                    <span class="fileinput-new"> <i class="fa fa-file fa-fw"></i>Selectionner une image </span>
+                                                    <span class="fileinput-exists"> <i class="fa fa-file fa-fw"></i> Changer l'image</span>
+                                                    {{ form_widget(form.imageLogo) }}
+                                                </span>
+                                                <a href="javascript:;" class="btn red btn-sm fileinput-exists"
+                                                   data-dismiss="fileinput"><i class="fa fa-remove fa-fw"></i> Supprimer
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if form.images is defined %}
+                                    <h4 class="form-section">Photos du restaurant
+                                        <button type="button" class="btn btn-sm green pull-right"
+                                                id="btnImageAdd"><i
+                                                    class="fa fa-plus fa-fw"></i> Ajout une Image
+                                        </button>
+                                    </h4>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            {{ form_label(form.images,null,{'label_attr':{'class':'sr-only'}}) }}
+                                            {{ form_widget(form.images) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-actions">
+                                    <div class="col-sm-3 ">
+                                        <button type="submit"
+                                                id="btn_submit" class="btn green btn-sm btn-block"><span
+                                                    class="fa fa-save"></span>
+                                            Enregistrer
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <a href="{{ path('app_account_add') }}"
+                                           id="btn_submit" class="btn btn-outline red btn-sm btn-block"><span
+                                                    class="fa fa-remove"></span>
+                                            Annuler
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+
+        {% endif %}
+    </div>
+
 {% endblock back_body %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
+    {% block javascripts %}
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback"
+        ></script>
+
+        {{ parent() }}
+        {% javascripts
+        "public/assets/global/plugins/gmaps/gmaps.min.js"
+        'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+        'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
+        "public/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"
+        "public/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
+        "public/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        "public/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
+        "public/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
+        "public/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
+        'bundles/app/js/restaurant/add.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+    {% endblock %}
