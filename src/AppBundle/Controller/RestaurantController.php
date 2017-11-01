@@ -54,6 +54,13 @@ class RestaurantController extends Controller
             $em->flush();
 
             if ($restaurant->getId()) {
+
+                if (null !== $form->get("imageLogo")->getData() && null !== $restaurant->getSlug()) {
+                    $logo = $this->get('app.upload_service')->upload($form->get("imageLogo")->getData(), 'restaurant', $restaurant->getId(), $restaurant->getSlug());
+                    $restaurant->setLogo($logo);
+                }
+
+
 //                /** @var Image $image */
                 foreach ($restaurant->getImages() as $key => $image) {
                     if ($image->getFile()) {
@@ -64,8 +71,8 @@ class RestaurantController extends Controller
                         if ($key % 10 == 0)
                             $em->flush();
                     }
-                    $em->flush();
                 }
+                $em->flush();
 
             }
 

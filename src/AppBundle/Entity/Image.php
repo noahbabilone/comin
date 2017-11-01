@@ -48,6 +48,13 @@ class Image
     protected $path;
     
      /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true)
+     */
+    private $thumbnail;
+    
+     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="images")
      */
     private $restaurant;

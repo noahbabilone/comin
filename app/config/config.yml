@@ -8,7 +8,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
-    google_api_key: AIzaSyA_fMQTFWQ6SidrwEWTFBQF6OIJzlMxkFU
+    google_api_key: AIzaSyDdf8zYom6suOh_HQO2QuQU-LX1t5gQQYg
     image_base_folder: ../web
     image_folder_url: uploads
 

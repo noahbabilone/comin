@@ -44,14 +44,14 @@ class Restaurant
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
-    
+
     /**
      * @var string
      *
@@ -165,6 +165,13 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluation", mappedBy="restaurant")
      */
     private $evaluations;
+
+    /**
+     * @var string
+     * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     */
+    private $logo;
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Image", mappedBy="restaurant",cascade={"persist", "remove"})
      */
@@ -1080,5 +1087,29 @@ class Restaurant
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     *
+     * @return Restaurant
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }
