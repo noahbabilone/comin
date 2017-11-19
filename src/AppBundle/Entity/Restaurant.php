@@ -58,13 +58,7 @@ class Restaurant
      * @ORM\Column(name="speciality", type="string", length=255, nullable=true)
      */
     private $speciality;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="rite", type="string", length=255, nullable=true)
-     */
-    private $rite;
+    
     /**
      * @var string
      *
@@ -75,9 +69,30 @@ class Restaurant
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string", length=255, nullable=true)
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
      */
-    private $fax;
+    private $website; 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manager", type="string", length=255, nullable=true)
+     */
+    private $manager;  
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manager_mail", type="string", length=255, nullable=true)
+     */
+    private $managerMail; 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manager_phone", type="string", length=255, nullable=true)
+     */
+    private $managerPhone;
 
     /**
      * @var bool
@@ -374,31 +389,7 @@ class Restaurant
     {
         return $this->speciality;
     }
-
-    /**
-     * Set rite
-     *
-     * @param string $rite
-     *
-     * @return Restaurant
-     */
-    public function setRite($rite)
-    {
-        $this->rite = $rite;
-
-        return $this;
-    }
-
-    /**
-     * Get rite
-     *
-     * @return string
-     */
-    public function getRite()
-    {
-        return $this->rite;
-    }
-
+    
     /**
      * Set phone
      *
@@ -422,31 +413,7 @@ class Restaurant
     {
         return $this->phone;
     }
-
-    /**
-     * Set fax
-     *
-     * @param string $fax
-     *
-     * @return Restaurant
-     */
-    public function setFax($fax)
-    {
-        $this->fax = $fax;
-
-        return $this;
-    }
-
-    /**
-     * Get fax
-     *
-     * @return string
-     */
-    public function getFax()
-    {
-        return $this->fax;
-    }
-
+    
     /**
      * Set onTheSpot
      *
@@ -1111,5 +1078,101 @@ class Restaurant
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Set website
+     *
+     * @param string $website
+     *
+     * @return Restaurant
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    /**
+     * Get website
+     *
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set manager
+     *
+     * @param string $manager
+     *
+     * @return Restaurant
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return string
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
+     * Set managerMail
+     *
+     * @param string $managerMail
+     *
+     * @return Restaurant
+     */
+    public function setManagerMail($managerMail)
+    {
+        $this->managerMail = $managerMail;
+
+        return $this;
+    }
+
+    /**
+     * Get managerMail
+     *
+     * @return string
+     */
+    public function getManagerMail()
+    {
+        return $this->managerMail;
+    }
+
+    /**
+     * Set managerPhone
+     *
+     * @param string $managerPhone
+     *
+     * @return Restaurant
+     */
+    public function setManagerPhone($managerPhone)
+    {
+        $this->managerPhone = $managerPhone;
+
+        return $this;
+    }
+
+    /**
+     * Get managerPhone
+     *
+     * @return string
+     */
+    public function getManagerPhone()
+    {
+        return $this->managerPhone;
     }
 }

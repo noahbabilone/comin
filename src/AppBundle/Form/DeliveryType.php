@@ -3,8 +3,8 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,53 +16,76 @@ class DeliveryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('takeAway', ChoiceType::class, array(
-                    'label' => 'À emporter',
+//            ->add('active', ChoiceType::class, array(
+//                    'label' => "Livraison",
+//                    'required' => true,
+//                    'choices' => [
+//                        'Oui' => true,
+//                        'Non' => false,
+//                    ],
+//                    'data' => true,
+//                    'attr' => array(
+//                        'class' => 'bs-select',
+//                    ),
+//                )
+//            )
+            ->add('city', TextType::class, array(
+                    'label' => 'Ville',
                     'required' => true,
-                    'choices' => [
-                        'Oui' => true,
-                        'Non' => false,
+                    'attr' => [
+                        'class' => 'input_delivery_city',
+                        'placeholder' => 'Ville',
                     ],
-                    'data' => true,
-                    'attr' => array(
-                        'class' => 'bs-select',
-                        'placeholder' => 'Restaurant',
-                    ),
                 )
             )
-            ->add('deliveryPrice', NumberType::class, array(
+            ->add('noonOrderMin', NumberType::class, [
+                    'label' => 'Min de commande Midi',
+                    'required' => true,
+                    'data' => 0,
+                    'attr' => [
+                        'class' => 'input_noon_order_min',
+                        'placeholder' => '12,00',
+                    ],
+                ]
+            )
+            ->add('nightOrderMin', NumberType::class, [
+                    'label' => 'Min de commande Soir',
+                    'required' => true,
+                    'data' => 0,
+                    'attr' => [
+                        'class' => 'input_night_order_min',
+                        'placeholder' => '12,00',
+                    ],
+                ]
+            )
+            ->add('price', NumberType::class, [
                     'label' => 'Frais de livraison',
                     'required' => true,
                     'data' => 0,
-                    'attr' => array(
+                    'attr' => [
+                        'class' => 'input_price',
                         'placeholder' => '0.00',
-                    ),
-                )
+                    ],
+                ]
+
             )
-            ->add('takeAwayOrderMin', NumberType::class, array(
-                    'label' => 'Minimum de commande',
+            ->add('durationMin', NumberType::class, array(
+                    'label' => 'Délai Min',
                     'required' => true,
-                    'data' => 0,
-                    'attr' => array(
+                    'attr' => [
+                        'class' => 'input_duration_min',
                         'placeholder' => 'Min',
-                    ),
+                    ],
                 )
             )
-            ->add('takeAwayDurationMin', NumberType::class, array(
-                    'label' => 'Min',
+            ->add('durationMax', NumberType::class, [
+                    'label' => 'Délai Max',
                     'required' => true,
-                    'attr' => array(
-                        'placeholder' => 'Min',
-                    ),
-                )
-            )
-            ->add('takeAwayDurationMax', NumberType::class, array(
-                    'label' => 'Min',
-                    'required' => true,
-                    'attr' => array(
+                    'attr' => [
+                        'class' => 'input_duration_max',
                         'placeholder' => 'Max',
-                    ),
-                )
+                    ],
+                ]
             );
     }
 

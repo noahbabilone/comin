@@ -37,12 +37,39 @@ class RestaurantType extends AbstractType
                     ),
                 )
             )
+            ->add('manager', TextType::class, array(
+                    'label' => 'Nom / Prenom',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'Jean Dupont',
+                    ),
+                )
+            )
+            ->add('managerPhone', TextType::class, array(
+                    'label' => 'Téléphone',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => '01 02 03 04 05',
+                    ),
+                )
+            )
+            ->add('managerMail', TextType::class, array(
+                    'label' => 'E-Mail',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => '',
+                        'placeholder' => 'nom@domaine.com',
+                    ),
+                )
+            )
             ->add('speciality', TextType::class, array(
                     'label' => 'Spécialité*',
                     'required' => true,
                     'attr' => array(
                         'class' => '',
-                        'placeholder' => 'Spécialité de la maison',
+                        'placeholder' => 'Pizza, Halal, Sandwiches-scalades ...',
                     ),
                 )
             )
@@ -107,17 +134,29 @@ class RestaurantType extends AbstractType
                     ),
                 )
             )
-            ->add('delivery', DeliveryType::class, array(
-                    'label' => 'Distance de livraison (km',
+//            ->add('delivery', DeliveryType::class, array(
+//                    'label' => 'Distance de livraison (km',
+//                    'required' => false,
+//                    'mapped' => false,
+//                    'attr' => array(
+//                        'class' => '',
+//                        'placeholder' => 'delivery',
+//                    ),
+//                )
+//            )   
+         
+            ->add('deliveries', CollectionType::class, array(
+                    'label' => "Delivery",
                     'required' => false,
-                    'mapped' => false,
+                    'entry_type' => DeliveryType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'delete_empty' => true,
                     'attr' => array(
-                        'class' => '',
-                        'placeholder' => 'rite',
-                    ),
+                        'class' => "form-delivery"
+                    )
                 )
-            )
-            ->add('exceptionalClosure', CollectionType::class, array(
+            )->add('exceptionalClosure', CollectionType::class, array(
                     'label' => "Fermeture Exceptionnelle",
                     'required' => false,
                     'entry_type' => ExceptionalClosureType::class,
@@ -129,7 +168,6 @@ class RestaurantType extends AbstractType
                     )
                 )
             )
-            
             ->add('imageLogo', FileType::class, array(
                     'label' => "Logo (200*200)",
                     'required' => false,
@@ -150,29 +188,20 @@ class RestaurantType extends AbstractType
                     )
                 )
             )
-            ->add('rite', TextType::class, array(
-                    'label' => 'Rite',
-                    'required' => false,
-                    'attr' => array(
-                        'class' => '',
-                        'placeholder' => 'rite',
-                    ),
-                )
-            )
             ->add('phone', TextType::class, array(
-                    'label' => 'Téléphone',
-                    'required' => false,
+                    'label' => 'Téléphone*',
+                    'required' => true,
                     'attr' => array(
                         'class' => '',
                         'placeholder' => '01 02 03 04 05',
                     ),
                 )
-            )->add('fax', TextType::class, array(
-                    'label' => 'Fax',
+            )->add('website', TextType::class, array(
+                    'label' => 'URL Site Web',
                     'required' => false,
                     'attr' => array(
                         'class' => '',
-                        'placeholder' => '01 02 03 04 05',
+                        'placeholder' => 'www.my-restaurant.com',
                     ),
                 )
             )
@@ -282,7 +311,10 @@ class RestaurantType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
-                        'class' => 'bs-select'
+                        'class' => 'bs-select',
+                        'data-live-search' => true,
+                        'data-size' => "7",
+
                     ]
                 ]
             );
@@ -347,8 +379,12 @@ class RestaurantType extends AbstractType
                 'required' => false,
                 'auto_initialize' => false,
                 'choices' => $region ? $region->getDepartments() : [],
+                'disabled' => $region ? false : true,
                 'attr' => [
-                    'class' => 'bs-department bs-select'
+                    'class' => 'bs-department bs-select',
+                    'data-live-search' => true,
+                    'data-size' => "7",
+
                 ]
             ]
         );
@@ -373,8 +409,13 @@ class RestaurantType extends AbstractType
             'auto_initialize' => false,
             'placeholder' => $department ? 'Sélectionnez votre ville' : 'Sélectionnez votre département',
             'choices' => $department ? $department->getCity() : [],
+            'disabled' => $department ? false : true,
+
             'attr' => [
-                'class' => 'bs-city bs-select input_city'
+                'class' => 'bs-city bs-select input_city',
+                'data-live-search' => true,
+                'data-size' => "7",
+//                'data-container'=>"body",
             ]
         ]);
     }
@@ -391,8 +432,12 @@ class RestaurantType extends AbstractType
 //            'multiple' => true,
             'placeholder' => $department ? 'Sélectionnez des villes' : 'Sélectionnez votre département',
             'choices' => $department ? $department->getCity() : [],
+            'disabled' => $department ? false : true,
             'attr' => [
-                'class' => 'bs-communesDelivered bs-select'
+                'class' => 'bs-communesDelivered bs-select',
+                'data-live-search' => true,
+                'data-size' => "7",
+
             ]
         ]);
     }

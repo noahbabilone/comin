@@ -23,46 +23,57 @@ class Delivery
      */
     private $id;
 
-
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\City", mappedBy="restaurant")
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_price", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=true)
      */
-    private $deliveryPrice;
+    private $price;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="take_away", type="boolean", nullable=true)
+     * @ORM\Column(name="active", type="boolean", nullable=true)
      */
-    private $takeAway;
+    private $active;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="take_away_order_min", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="noon_order_min", type="float", precision=10, scale=0, nullable=true)
      */
-    private $takeAwayOrderMin;
+    private $noonOrderMin;  
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="night_order_min", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $nightOrderMin;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="order_min", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $orderMin;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="take_away_duration_min", type="integer", nullable=true)
+     * @ORM\Column(name="duration_min", type="integer", nullable=true)
      */
-    private $takeAwayDurationMin;
+    private $durationMin;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="take_away_duration_max", type="integer", nullable=true)
+     * @ORM\Column(name="duration_max", type="integer", nullable=true)
      */
-    private $takeAwayDurationMax;
+    private $durationMax;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="deliveries")
@@ -90,16 +101,10 @@ class Delivery
      *
      * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
      */
+
     private $visible;
 
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->city = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -111,126 +116,196 @@ class Delivery
         return $this->id;
     }
 
-    
-
     /**
-     * Set deliveryPrice
+     * Set city
      *
-     * @param float $deliveryPrice
+     * @param string $city
      *
      * @return Delivery
      */
-    public function setDeliveryPrice($deliveryPrice)
+    public function setCity($city)
     {
-        $this->deliveryPrice = $deliveryPrice;
+        $this->city = $city;
 
         return $this;
     }
 
     /**
-     * Get deliveryPrice
+     * Get city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return Delivery
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
      *
      * @return float
      */
-    public function getDeliveryPrice()
+    public function getPrice()
     {
-        return $this->deliveryPrice;
+        return $this->price;
     }
 
     /**
-     * Set takeAway
+     * Set active
      *
-     * @param boolean $takeAway
+     * @param boolean $active
      *
      * @return Delivery
      */
-    public function setTakeAway($takeAway)
+    public function setActive($active)
     {
-        $this->takeAway = $takeAway;
+        $this->active = $active;
 
         return $this;
     }
 
     /**
-     * Get takeAway
+     * Get active
      *
      * @return boolean
      */
-    public function getTakeAway()
+    public function getActive()
     {
-        return $this->takeAway;
+        return $this->active;
     }
 
     /**
-     * Set takeAwayOrderMin
+     * Set noonOrderMin
      *
-     * @param float $takeAwayOrderMin
+     * @param float $noonOrderMin
      *
      * @return Delivery
      */
-    public function setTakeAwayOrderMin($takeAwayOrderMin)
+    public function setNoonOrderMin($noonOrderMin)
     {
-        $this->takeAwayOrderMin = $takeAwayOrderMin;
+        $this->noonOrderMin = $noonOrderMin;
 
         return $this;
     }
 
     /**
-     * Get takeAwayOrderMin
+     * Get noonOrderMin
      *
      * @return float
      */
-    public function getTakeAwayOrderMin()
+    public function getNoonOrderMin()
     {
-        return $this->takeAwayOrderMin;
+        return $this->noonOrderMin;
     }
 
     /**
-     * Set takeAwayDurationMin
+     * Set nightOrderMin
      *
-     * @param integer $takeAwayDurationMin
+     * @param float $nightOrderMin
      *
      * @return Delivery
      */
-    public function setTakeAwayDurationMin($takeAwayDurationMin)
+    public function setNightOrderMin($nightOrderMin)
     {
-        $this->takeAwayDurationMin = $takeAwayDurationMin;
+        $this->nightOrderMin = $nightOrderMin;
 
         return $this;
     }
 
     /**
-     * Get takeAwayDurationMin
+     * Get nightOrderMin
      *
-     * @return integer
+     * @return float
      */
-    public function getTakeAwayDurationMin()
+    public function getNightOrderMin()
     {
-        return $this->takeAwayDurationMin;
+        return $this->nightOrderMin;
     }
 
     /**
-     * Set takeAwayDurationMax
+     * Set orderMin
      *
-     * @param integer $takeAwayDurationMax
+     * @param float $orderMin
      *
      * @return Delivery
      */
-    public function setTakeAwayDurationMax($takeAwayDurationMax)
+    public function setOrderMin($orderMin)
     {
-        $this->takeAwayDurationMax = $takeAwayDurationMax;
+        $this->orderMin = $orderMin;
 
         return $this;
     }
 
     /**
-     * Get takeAwayDurationMax
+     * Get orderMin
+     *
+     * @return float
+     */
+    public function getOrderMin()
+    {
+        return $this->orderMin;
+    }
+
+    /**
+     * Set durationMin
+     *
+     * @param integer $durationMin
+     *
+     * @return Delivery
+     */
+    public function setDurationMin($durationMin)
+    {
+        $this->durationMin = $durationMin;
+
+        return $this;
+    }
+
+    /**
+     * Get durationMin
      *
      * @return integer
      */
-    public function getTakeAwayDurationMax()
+    public function getDurationMin()
     {
-        return $this->takeAwayDurationMax;
+        return $this->durationMin;
+    }
+
+    /**
+     * Set durationMax
+     *
+     * @param integer $durationMax
+     *
+     * @return Delivery
+     */
+    public function setDurationMax($durationMax)
+    {
+        $this->durationMax = $durationMax;
+
+        return $this;
+    }
+
+    /**
+     * Get durationMax
+     *
+     * @return integer
+     */
+    public function getDurationMax()
+    {
+        return $this->durationMax;
     }
 
     /**
@@ -303,40 +378,6 @@ class Delivery
     public function getVisible()
     {
         return $this->visible;
-    }
-
-    /**
-     * Add city
-     *
-     * @param \AppBundle\Entity\City $city
-     *
-     * @return Delivery
-     */
-    public function addCity(\AppBundle\Entity\City $city)
-    {
-        $this->city[] = $city;
-
-        return $this;
-    }
-
-    /**
-     * Remove city
-     *
-     * @param \AppBundle\Entity\City $city
-     */
-    public function removeCity(\AppBundle\Entity\City $city)
-    {
-        $this->city->removeElement($city);
-    }
-
-    /**
-     * Get city
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCity()
-    {
-        return $this->city;
     }
 
     /**

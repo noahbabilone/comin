@@ -13,7 +13,12 @@
      'bundles/app/css/restaurant.css'
      filter='cssrewrite' %}
      <link rel="stylesheet" href="{{ asset_url }}"/>
-     {% endstylesheets %}l
+     {% endstylesheets %}
+     <style type="text/css">
+         .bs-select {
+             /*z-index: 9998;*/
+         }
+     </style>
  {% endblock stylesheets %}
 
 {% block title %}Création Restaurant |  {{ parent() }} {% endblock %}
@@ -138,32 +143,17 @@
                                                     </div>
                                                 </div>
                                             {% endif %}
-                                            {% if form.fax is defined %}
-                                                <div class="col-sm-6">
+                                            {% if form.website is defined %}
+                                                <div class="col-sm-12">
                                                     <div class="form-group">
-                                                        {{ form_label(form.fax) }}
-                                                        <div class="input-icon">
-                                                            <i class="fa fa-fax"></i>
-                                                            {{ form_widget(form.fax) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-
-
-
-                                            {% if form.rite is defined %}
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        {{ form_label(form.rite) }}
+                                                        {{ form_label(form.website) }}
                                                         <div class="input-icon">
                                                             <i class="fa fa-globe"></i>
-                                                            {{ form_widget(form.rite) }}
+                                                            {{ form_widget(form.website) }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             {% endif %}
-
                                         </div>
                                         {% if form.description is defined %}
                                             <div class="form-group hide" id="input_description">
@@ -171,6 +161,46 @@
                                                 {{ form_widget(form.description) }}
                                             </div>
                                         {% endif %}
+
+                                        <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Gestionnaire du site 
+                                        </h4>
+                                        <div class="row">
+                                            {% if form.manager is defined %}
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.manager) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-user"></i>
+                                                            {{ form_widget(form.manager) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if form.managerPhone is defined %}
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.managerPhone) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-phone"></i>
+                                                            {{ form_widget(form.managerPhone) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if form.managerMail is defined %}
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.managerMail) }}
+                                                        <div class="input-icon">
+                                                            <i class="fa fa-envelope"></i>
+                                                            {{ form_widget(form.managerMail) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+
                                     </div>
                                     <div class="col-sm-6">
                                         <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Adresse </h4>
@@ -314,73 +344,7 @@
                                                 {{ form_widget(form.deliveryDistance) }}
                                             </div>
                                         {% endif %}
-                                        {% if form.delivery is defined %}
 
-                                            <h4 class="form-section margin-top-20"><i class="fa motorcycle fa-fw"></i>À
-                                                Commandes {% if form.delivery.takeAway is defined %}
-                                                    <div class="pull-right block-inline">
-                                                        {{ form_label(form.delivery.takeAway,null,{'label_attr':{'class':'sr-only'}}) }}
-                                                        {{ form_widget(form.delivery.takeAway) }}
-                                                    </div>
-                                                {% endif %}
-                                            </h4>
-                                            <div class="row">
-
-                                                <div class="col-sm-4">
-                                                    {% if form.delivery.takeAwayOrderMin is defined %}
-                                                        <div class="form-group">
-                                                            {{ form_label(form.delivery.takeAwayOrderMin) }}
-                                                            <div class="input-icon">
-                                                                <i class="fa fa-eur"></i>
-                                                                {{ form_widget(form.delivery.takeAwayOrderMin) }}
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-
-                                                <div class="col-sm-3">
-                                                    {% if form.delivery.deliveryPrice is defined %}
-                                                        <div class="form-group">
-                                                            {{ form_label(form.delivery.deliveryPrice) }}
-                                                            <div class="input-icon">
-                                                                <i class="fa fa-eur"></i>
-                                                                {{ form_widget(form.delivery.deliveryPrice) }}
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="col-sm-5">
-                                                    <div class="row">
-
-                                                        <div class="col-sm-12">
-                                                            <label for="">Délai de préparation</label>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            {% if form.delivery.takeAwayDurationMin is defined %}
-                                                                <div class="form-group">
-                                                                    {{ form_label(form.delivery.takeAwayDurationMin,null,{'label_attr':{'class':'sr-only'}}) }}
-                                                                    <div class="input-icon">
-                                                                        <i class="fa fa-clock-o"></i>
-                                                                        {{ form_widget(form.delivery.takeAwayDurationMin) }}
-                                                                    </div>
-                                                                </div>
-                                                            {% endif %}
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            {% if form.delivery.takeAwayDurationMax is defined %}
-                                                                <div class="form-group">
-                                                                    {{ form_label(form.delivery.takeAwayDurationMax,null,{'label_attr':{'class':'sr-only'}}) }}
-                                                                    <div class="input-icon">
-                                                                        <i class="fa fa-clock-o"></i>
-                                                                        {{ form_widget(form.delivery.takeAwayDurationMax) }}
-                                                                    </div>
-                                                                </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
                                     </div>
 
                                     <div class="col-sm-6">
@@ -441,6 +405,22 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-sm-12">
+                                        {% if form.deliveries is defined %}
+
+                                            <h4 class="form-section margin-top-20"><i
+                                                        class="fa fa-motorcycle fa-fw"></i>À
+                                                Commandes
+                                                <button class="btn btn-sm green pull-right" id="addDelivery">Ajouter
+                                                </button>
+                                            </h4>
+
+                                            <div class="form-group">
+                                                {{ form_label(form.deliveries,null,{'label_attr':{'class':'sr-only'}}) }}
+                                                {{ form_widget(form.deliveries) }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
 
                             </div>
