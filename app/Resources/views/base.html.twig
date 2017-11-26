@@ -20,7 +20,7 @@
     {% block stylesheets %}
         {#<!-- BEGIN GLOBAL MANDATORY STYLES -->#}
         {% stylesheets
-        'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all'
+        'https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all'
         'public/assets/global/plugins/font-awesome/css/font-awesome.min.css'
         'public/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
         'public/assets/global/plugins/bootstrap/css/bootstrap.min.css'
@@ -28,11 +28,7 @@
         filter='cssrewrite' %}
         {#<!-- END GLOBAL MANDATORY STYLES -->#}
         <link rel="stylesheet" href="{{ asset_url }}"/>
-
-        {#
-         'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all'
-        #}
-
+        
         {% endstylesheets %}
     {% endblock %}
 
