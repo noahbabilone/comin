@@ -47,7 +47,7 @@
 
     <div class="row">
         {% if form is defined %}
-            {{ form_start(form, { 'attr': { 'id': 'form_restaurant_add','autocomplete':'off', 'class': 'forms' } }) }}
+            {{ form_start(form, { 'attr': { 'id': 'form_restaurant_new','autocomplete':'off', 'class': 'forms' } }) }}
 
             <div class="portlet light">
                 <div class="portlet-body">
@@ -75,6 +75,11 @@
                                 <a class="btn" data-toggle="tab" href="#images"> <i class="fa fa-camera fa-fw"></i>
                                     Images</a>
                             </li>
+                            <li>
+                                <a class="btn" data-toggle="tab" href="#manager"> <i
+                                            class="fa fa-user-secret fa-fw"></i>
+                                    Manager</a>
+                            </li>
                         </ul>
                         <div class="tab-content">
                             {% if app.request.hasPreviousSession %}
@@ -100,15 +105,18 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="message-alert" class="alert alert-danger display-hide">
+                                        <button class="close" data-close="alert"></button>
+                                        <span class="glyphicon glyphicon-warning-sign"></span> <span
+                                                class="message-error">Veuillez remplire tous les champs obligatoires.</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="info" class="tab-pane fade in active">
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <div id="message-alert" class="alert alert-danger display-hide">
-                                            <button class="close" data-close="alert"></button>
-                                            <span class="message-error">Veuillez remplire tous les champs obligatoires.</span>
-                                        </div>
-                                    </div>
-
                                     <div class="col-sm-6">
                                         <h4 class="form-section"><i class="fa fa-info fa-fw"></i>Informations</h4>
                                         {% if form.name is defined %}
@@ -161,46 +169,6 @@
                                                 {{ form_widget(form.description) }}
                                             </div>
                                         {% endif %}
-
-                                        <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Gestionnaire du site 
-                                        </h4>
-                                        <div class="row">
-                                            {% if form.manager is defined %}
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        {{ form_label(form.manager) }}
-                                                        <div class="input-icon">
-                                                            <i class="fa fa-user"></i>
-                                                            {{ form_widget(form.manager) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                            {% if form.managerPhone is defined %}
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        {{ form_label(form.managerPhone) }}
-                                                        <div class="input-icon">
-                                                            <i class="fa fa-phone"></i>
-                                                            {{ form_widget(form.managerPhone) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                            {% if form.managerMail is defined %}
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        {{ form_label(form.managerMail) }}
-                                                        <div class="input-icon">
-                                                            <i class="fa fa-envelope"></i>
-                                                            {{ form_widget(form.managerMail) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-
-
                                     </div>
                                     <div class="col-sm-6">
                                         <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Adresse </h4>
@@ -466,7 +434,46 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            <div id="manager" class="tab-pane fade">
+                                <h4 class="form-section"><i class="fa fa-globe fa-fw"></i>Gestionnaire du site 
+                                </h4>
 
+                                <div class="row">
+                                    {% if form.manager is defined %}
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.manager) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ form_widget(form.manager) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if form.managerPhone is defined %}
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.managerPhone) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-phone"></i>
+                                                    {{ form_widget(form.managerPhone) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if form.managerMail is defined %}
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.managerMail) }}
+                                                <div class="input-icon">
+                                                    <i class="fa fa-envelope"></i>
+                                                    {{ form_widget(form.managerMail) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <hr>
@@ -510,10 +517,8 @@
     {% block javascripts %}
         {{ parent() }}
         {% set gapiUrl ="https://maps.googleapis.com/maps/api/js?key="~  gApiKey ~"&callback" %}
-        <script src="{{ asset(gapiUrl) }}"></script>
+        <script type="text/javascript" src="{{ asset(gapiUrl) }}"></script>
         {% javascripts
-
-
         "public/assets/global/plugins/gmaps/gmaps.min.js"
         'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
         'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'

@@ -402,7 +402,7 @@ class RestaurantType extends AbstractType
     private function addCityField(FormInterface $form, Department $department = null)
     {
         $form->add('city', EntityType::class, [
-            'label' => 'Ville*',
+            'label' => 'Code Postal / Ville*',
             'class' => 'AppBundle\Entity\City',
             'mapped' => true,
             'required' => false,

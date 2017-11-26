@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Restaurant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route as Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -52,13 +52,12 @@ class RestaurantController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($restaurant);
-            $em->flush();
+            //$em->flush();
             if ($restaurant->getId()) {
                 if (null !== $form->get("imageLogo")->getData() && null !== $restaurant->getSlug()) {
                     $logo = $this->get('app.upload_service')->upload($form->get("imageLogo")->getData(), 'restaurant', $restaurant->getId(), $restaurant->getSlug());
                     $restaurant->setLogo($logo);
                 }
-
 //                /** @var Image $image */
                 foreach ($restaurant->getImages() as $key => $image) {
                     if ($image->getFile()) {
@@ -66,6 +65,7 @@ class RestaurantController extends Controller
                         $path = $this->get('app.upload_service')->upload($image->getFile(), 'restaurant', $restaurant->getId());
                         $image->setPath($path);
                         $image->setPosition($key);
+                        $image->setRestaurant($restaurant);
                         if ($key % 10 == 0)
                             $em->flush();
                     }

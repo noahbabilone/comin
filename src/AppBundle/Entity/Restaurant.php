@@ -136,7 +136,7 @@ class Restaurant
 
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Delivery", mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Delivery", mappedBy="restaurant",cascade={"persist", "remove"})
      */
     private $deliveries;
 

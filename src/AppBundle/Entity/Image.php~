@@ -48,6 +48,13 @@ class Image
     protected $path;
     
      /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true)
+     */
+    private $thumbnail;
+    
+     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Restaurant", inversedBy="images")
      */
     private $restaurant;
@@ -154,5 +161,29 @@ class Image
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Set restaurant
+     *
+     * @param \AppBundle\Entity\Restaurant $restaurant
+     *
+     * @return Image
+     */
+    public function setRestaurant(\AppBundle\Entity\Restaurant $restaurant = null)
+    {
+        $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    /**
+     * Get restaurant
+     *
+     * @return \AppBundle\Entity\Restaurant
+     */
+    public function getRestaurant()
+    {
+        return $this->restaurant;
     }
 }

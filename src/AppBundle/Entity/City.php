@@ -258,7 +258,8 @@ class City
     function __toString()
     {
         // TODO: Implement __toString() method.
-        return $this->name .' - '.$this->code;
+//        return $this->name .' - '.$this->code;
+        return $this->code .' - '.$this->name;
     }
 
     /**
