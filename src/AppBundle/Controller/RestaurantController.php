@@ -28,7 +28,7 @@ class RestaurantController extends Controller
         $date->setTimezone(new \DateTimeZone("Europe/Paris"));
 
         $restaurants = $em->getRepository('AppBundle:Restaurant')->findAll();
-        
+
         return $this->render('AppBundle:Restaurant:index.html.twig', array(
             'restaurants' => $restaurants,
             'date' => $date,
@@ -46,23 +46,18 @@ class RestaurantController extends Controller
     public function newAction(Request $request)
     {
         $restaurant = new Restaurant();
-
         $form = $this->createForm('AppBundle\Form\RestaurantType', $restaurant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            dump($restaurant) or die;
             $em = $this->getDoctrine()->getManager();
             $em->persist($restaurant);
             $em->flush();
-
             if ($restaurant->getId()) {
-
                 if (null !== $form->get("imageLogo")->getData() && null !== $restaurant->getSlug()) {
                     $logo = $this->get('app.upload_service')->upload($form->get("imageLogo")->getData(), 'restaurant', $restaurant->getId(), $restaurant->getSlug());
                     $restaurant->setLogo($logo);
                 }
-
 
 //                /** @var Image $image */
                 foreach ($restaurant->getImages() as $key => $image) {
@@ -76,15 +71,21 @@ class RestaurantController extends Controller
                     }
                 }
                 $em->flush();
-
             }
 
             return $this->redirectToRoute('restaurant_index');
 //            return $this->redirectToRoute('restaurant_show', array('id' => $restaurant->getId()));
         }
 
+        if ($request->server->get('HTTP_HOST') == $this->getParameter('domaine_name')) {
+            $gApiKey = $this->getParameter('google_api_key_dns');
+        } else {
+            $gApiKey = $this->getParameter('google_api_key');
+        }
+
         return $this->render('AppBundle:Restaurant:new.html.twig', array(
             'restaurant' => $restaurant,
+            'gApiKey' => $gApiKey,
             'form' => $form->createView(),
         ));
     }

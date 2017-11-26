@@ -500,12 +500,16 @@
 
         {% endif %}
     </div>
+    {#{{ dump(app.request) }}#}
+    {#{{ dump(app.environment) }}#}
+    {#{{ dump(app.request.server.get("SERVER_NAME")) }}#}
+
 
 {% endblock back_body %}
 
     {% block javascripts %}
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback"
-        ></script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key={{ gApiKey }}&callback"></script>
 
         {{ parent() }}
         {% javascripts

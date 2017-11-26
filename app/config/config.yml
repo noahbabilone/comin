@@ -9,6 +9,8 @@ imports:
 parameters:
     locale: fr
     google_api_key: AIzaSyDdf8zYom6suOh_HQO2QuQU-LX1t5gQQYg
+    google_api_key_dns: AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg
+    domaine_name: com-in.ga
     image_base_folder: ../web
     image_folder_url: uploads
 
