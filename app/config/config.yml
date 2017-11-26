@@ -45,6 +45,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         google_api_key: '%google_api_key%'
+        domaine_name: '%domaine_name%'
         app_date: '@app.date'
     form_themes:
         - bootstrap_3_layout.html.twig

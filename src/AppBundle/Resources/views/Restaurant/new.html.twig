@@ -508,8 +508,14 @@
 {% endblock back_body %}
 
     {% block javascripts %}
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg&callback"></script>
+        {% if   app.environment == domaine_name %}
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg&callback=initMap"></script>
+        {% else %}
+                  <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key={{ gApiKey }}&callback"></script>
+     
+        {% endif %}
 
         {{ parent() }}
         {% javascripts
