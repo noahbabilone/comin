@@ -509,7 +509,7 @@
     {% block javascripts %}
         {% if app.request.server.get("SERVER_NAME") == domaine_name %}
             <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg&callback=initMap"></script>
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg&callback"></script>
         {% else %}
                   <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key={{ gApiKey }}&callback"></script>
