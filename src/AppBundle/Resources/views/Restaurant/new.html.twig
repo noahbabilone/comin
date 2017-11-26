@@ -504,20 +504,16 @@
     {#{{ dump(app.environment) }}#}
     {#{{ dump(app.request.server.get("SERVER_NAME")) }}#}
 
+
 {% endblock back_body %}
 
     {% block javascripts %}
-        {% if app.request.server.get("SERVER_NAME") == domaine_name %}
-            <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg&callback"></script>
-        {% else %}
-                  <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key={{ gApiKey }}&callback"></script>
-     
-        {% endif %}
-
         {{ parent() }}
+        {% set gapiUrl ="https://maps.googleapis.com/maps/api/js?key="~  gApiKey ~"&callback" %}
+        <script src="{{ asset(gapiUrl) }}"></script>
         {% javascripts
+
+
         "public/assets/global/plugins/gmaps/gmaps.min.js"
         'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
         'public/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
