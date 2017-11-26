@@ -504,11 +504,10 @@
     {#{{ dump(app.environment) }}#}
     {#{{ dump(app.request.server.get("SERVER_NAME")) }}#}
 
-
 {% endblock back_body %}
 
     {% block javascripts %}
-        {% if   app.environment == domaine_name %}
+        {% if app.request.server.get("SERVER_NAME") == domaine_name %}
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUD8SXB6HzsDNlMVdjBQUPAH2uZjr2Mco-LX1t5gQQYg&callback=initMap"></script>
         {% else %}
