@@ -47,7 +47,7 @@ class Ingredient
     /**
      * @var bool
      *
-     * @ORM\Column(name="visible", type="boolean", nullable=true ,options={ "default":true })
+     * @ORM\Column(name="visible", type="boolean",options={ "default":true })
      */
     private $visible;
 

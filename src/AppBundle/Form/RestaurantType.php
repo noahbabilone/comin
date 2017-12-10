@@ -429,7 +429,7 @@ class RestaurantType extends AbstractType
             'mapped' => false,
 
             'auto_initialize' => false,
-//            'multiple' => true,
+            'multiple' => true,
             'placeholder' => $department ? 'Sélectionnez des villes' : 'Sélectionnez votre département',
             'choices' => $department ? $department->getCity() : [],
             'disabled' => $department ? false : true,

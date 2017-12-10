@@ -3,11 +3,18 @@
  {% block stylesheets %}
      {{ parent() }}
      {% stylesheets
-     'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
-     'public/plugins/payment-font/css/paymentfont.min.css'
-     'bundles/app/css/restaurant.css'
-     filter='cssrewrite' %}
-     <link rel="stylesheet" href="{{ asset_url }}"/>
+         'public/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+         'public/plugins/payment-font/css/paymentfont.min.css'
+         'bundles/app/css/restaurant.css'
+         filter='cssrewrite' %}
+         <link rel="stylesheet" href="{{ asset_url }}"/>
+
+         <style>
+             .table-info td {
+                 border: none !important;
+
+             }
+         </style>
      {% endstylesheets %}
 
  {% endblock stylesheets %}
@@ -17,7 +24,6 @@
 {% block header_breadcrumb %}
     <li>
         <span>Liste Restaurants</span>
-        <i class="fa fa-circle"></i>
     </li>
 {% endblock header_breadcrumb %}
 
@@ -55,33 +61,30 @@
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
                                 <span class="caption-subject font-blue-madison bold uppercase">{{ restaurant.name }}</span>
-                                    <a href="{{ path('restaurant_edit',{'slug': restaurant.slug}) }}"
-                                       class="btn btn-xs green"><i
-                                                class="fa fa-edit fa-faw"></i> Modifier</a>
-                                    <a href="" class="btn btn-xs red"><i
-                                                class="fa fa-lock fa-faw"></i> Désactiver</a>
-                                
+                                <a href="{{ path('restaurant_edit',{'slug': restaurant.slug}) }}"
+                                   class="btn btn-xs green"><i
+                                            class="fa fa-edit fa-faw"></i> Modifier</a>
+                                <a href="" class="btn btn-xs red"><i
+                                            class="fa fa-lock fa-faw"></i> Désactiver</a>
+
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
                                     <a class="btn" data-toggle="tab" href="#info-{{ restaurant.slug }}"> <i
-                                                class="fa fa-info-circle fa-fw"></i>
-                                        Restaurant</a>
+                                                class="fa fa-info-circle fa-fw"></i> Restaurant</a>
                                 </li>
                                 <li>
                                     <a class="btn" data-toggle="tab" href="#description-{{ restaurant.slug }}"> <i
-                                                class="fa fa-pencil-square-o fa-fw"></i>
-                                        Description</a>
+                                                class="fa fa-pencil-square-o fa-fw"></i> Description</a>
                                 </li>
                                 <li>
                                     <a class="btn" data-toggle="tab" href="#images-{{ restaurant.slug }}"> <i
-                                                class="fa fa-picture-o fa-fw"></i>
-                                        Galerie photo</a>
+                                                class="fa fa-picture-o fa-fw"></i> Galerie photo</a>
                                 </li>
                                 <li>
                                     <a class="btn" data-toggle="tab" href="#comments-{{ restaurant.slug }}"> <i
-                                                class="fa fa-comments-o fa-fw"></i>
-                                        Commentaires ({{ restaurant.evaluations| length }})</a>
+                                                class="fa fa-comments-o fa-fw"></i> Commentaires
+                                        ({{ restaurant.evaluations| length }})</a>
                                 </li>
                             </ul>
                         </div>
@@ -98,15 +101,6 @@
                                              alt="Pas d'image"
                                              class="img-responsive img-logo"/>
                                     {% endif %}
-
-                                    {#<div class="group btn-group-justified">
-                                        <a href="{{ path('restaurant_edit',{'slug': restaurant.slug}) }}"
-                                           class="btn btn-xs green"><i
-                                                    class="fa fa-edit fa-faw"></i>Editer</a>
-                                        <a href="" class="btn btn-xs red"><i
-                                                    class="fa fa-lock fa-faw"></i>Désactiver</a>
-                                    </div>#}
-
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="tab-content">
@@ -116,34 +110,41 @@
                                                     <div class="row">
                                                         <div class="col-sm-12">
                                                             <h4 class="title-section">Informations</h4>
-                                                            <ul class="list-unstyled">
-                                                                <li>
-                                                                    <strong><i class="fa fa-cutlery fa-fw"></i>Spécialité:</strong> {{ restaurant.speciality | capitalize }}
 
-                                                                    {# <li>
-                                                                         <strong><i class="fa  fa-globe fa-fw"></i>Rite
-                                                                             :</strong> {{ restaurant.rite  | capitalize }}
-                                                                         <br>
-                                                                     </li>#}
-                                                            </ul>
-
-                                                            <address>
-                                                                <strong><i class="fa fa-map-marker fa-fw"></i>Adresse:
-                                                                </strong> {{ restaurant.address }}
-                                                                ,{{ restaurant.city.name }} 94103, France <br>
-                                                                <strong><i class="fa fa-phone fa-fw"></i>Téléphone:
-                                                                </strong> {{ restaurant.phone }} <br>
-                                                                <strong><i class="fa fa-globe fa-fw"></i>Site
-                                                                    web:</strong> {{ restaurant.website }}
-
-
-                                                            </address>
+                                                            <table class="table table-info">
+                                                                <tr class="">
+                                                                    <td class="col-sm-2">
+                                                                        <strong><i class="fa fa-cutlery fa-fw"></i>Spécialité:</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-9">{{ restaurant.speciality | capitalize }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="col-sm-2">
+                                                                        <strong> <i class="fa fa-map-marker fa-fw"></i>Adresse:</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-9">{{ restaurant.address }}
+                                                                        ,{{ restaurant.city.name }} 94103, France
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="col-sm-3">
+                                                                        <strong><i class="fa fa-phone fa-fw"></i>Téléphone:</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-9">{{ restaurant.phone }}                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="col-sm-3">
+                                                                        <strong> <i class="fa fa-globe fa-fw"></i>Site
+                                                                            web:</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-9">{{ restaurant.website }}                                                                   </td>
+                                                                </tr>
+                                                            </table>
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <h4 class="title-section">Livraisons</h4>
                                                             <div class="block">
-                                                                {% if  communesDelivered is defined %}
-
+                                                                {% if  restaurant.communesDelivered is defined %}
                                                                     <dl>
                                                                         <dt><i class="fa fa-map-o fa-fw"></i>Communes
                                                                             Livrés:
@@ -152,12 +153,11 @@
                                                                         <dd>
                                                                             <ul class="list-inline">
 
-                                                                                {% for indexConmune, commune in communesDelivered %}
-                                                                                    <li>{{ commune.name }}
-                                                                                        {% if indexConmune> communesDelivered | length %}
-                                                                                            <i class="fa fa-circle"></i>
-                                                                                        {% endif %}
-                                                                                    </li>
+                                                                                {% for commune in restaurant.communesDelivered %}
+                                                                                    <li>{{ commune.name }}</li>
+                                                                                    {% if loop.last != true %}
+                                                                                        <li> -</li>{% endif %}
+
                                                                                 {% else %}
                                                                                     <li>Aucune ville</li>
 
@@ -165,49 +165,102 @@
                                                                             </ul>
 
                                                                         </dd>
-
                                                                     </dl>
 
                                                                 {% endif %}
 
-                                                                <h5 class="text-bold"><i
-                                                                            class="fa fa-motorcycle fa-fw"></i> Se
+                                                                <h5 class="text-bold">
+                                                                    <i class="fa fa-motorcycle fa-fw"></i> Se
                                                                     faire livrer </h5>
-                                                                <div class="row">
-                                                                    {% for  delivery in restaurant.deliveries %}
-                                                                        <div class="col-sm-4 text-center">
-                                                                            <strong> {{ delivery.deliveryPrice | number_format(2, ',', '.') }}
-                                                                                €</strong>
-                                                                            Minimum de commande
-                                                                        </div>
-                                                                        <div class="col-sm-4 text-center">
-                                                                            <strong> {{ delivery.takeAwayOrderMin | number_format(2, ',', '.') }}
-                                                                                € </strong><br>
-                                                                            Frais de livraison
-                                                                        </div>
-                                                                        <div class="col-sm-4 text-center">
-                                                                            <strong> {{ delivery.takeAwayDurationMin | number_format }}
-                                                                                à {{ delivery.takeAwayDurationMax | number_format }}
-                                                                                min</strong>
-                                                                            <br>
-                                                                            Délai de livraison
-                                                                        </div>
-                                                                    {% else %}
-                                                                        <div class="col-sm-4 text-center">
-                                                                            <strong> 12,00 €</strong>
-                                                                            Minimum de commande
-                                                                        </div>
-                                                                        <div class="col-sm-4 text-center">
-                                                                            <strong> 0,00 € </strong><br>
-                                                                            Frais de livraison
-                                                                        </div>
-                                                                        <div class="col-sm-4 text-center">
-                                                                            <strong> 12 à 30 min</strong>
-                                                                            <br>
-                                                                            Délai de livraison
-                                                                        </div>
-                                                                    {% endfor %}
-                                                                </div>
+
+                                                                {#{{ dump(restaurant.deliveries) }}#}
+                                                                {% if restaurant.deliveries is defined and restaurant.deliveries %}
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>Ville</th>
+                                                                            <th class="text-center">Min Commande Midi
+                                                                            </th>
+                                                                            <th class="text-center">Min Commande Soir
+                                                                            </th>
+                                                                            <th class="text-center">Frai de livraison
+                                                                            </th>
+                                                                            <th class="text-center">Délai de livraison
+                                                                            </th>
+                                                                            {#<th class="text-center">Délai Min</th>#}
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% for  delivery in restaurant.deliveries %}
+                                                                            {# <div class="col-sm-2 text-center">
+                                                                                 <strong> {{ delivery.city | capitalize }}                                                                                </strong>
+                                                                             </div>
+                                                                             <div class="col-sm-3 text-center">
+                                                                                 <strong> {{ delivery.noonOrderMin | number_format(2, ',', '.') }}
+                                                                                     €</strong><br>
+                                                                                 Min de commande Midi
+                                                                             </div>
+                                                                             <div class="col-sm-3 text-center">
+                                                                                 <strong> {{ delivery.nightOrderMin | number_format(2, ',', '.') }}
+                                                                                     € </strong><br>
+                                                                                 Min de commande Soir
+                                                                             </div>
+     
+                                                                             <div class="col-sm-3 text-center">
+                                                                                 <strong> {{ delivery.price | number_format(2, ',', '.') }}
+                                                                                     € </strong><br>
+                                                                                 Frais de livraison
+                                                                             </div>
+                                                                             <div class="col-sm-3 text-center">
+                                                                                 <strong> {{ delivery.durationMin | number_format }}
+                                                                                     à {{ delivery.durationMin | number_format }}
+                                                                                     min</strong><br>
+                                                                                 <br>
+                                                                                 Délai Min
+                                                                             </div>
+                                                                             <div class="col-sm-3 text-center">
+                                                                                 <strong> {{ delivery.durationMax | number_format }}
+                                                                                     à {{ delivery.durationMax | number_format }}
+                                                                                     min</strong><br>
+                                                                                 Délai Max
+                                                                             </div>
+                                                                             <br>#}
+
+
+                                                                            <tr>
+                                                                                <td>{{ delivery.city | capitalize }}  </td>
+                                                                                <td class="text-center">{{ delivery.noonOrderMin | number_format(2, ',', '.') }}
+                                                                                    €
+                                                                                </td>
+                                                                                <td class="text-center">{{ delivery.nightOrderMin | number_format(2, ',', '.') }}
+                                                                                    €
+                                                                                </td>
+                                                                                <td class="text-center">{{ delivery.price | number_format(2, ',', '.') }}
+                                                                                    €
+                                                                                </td>
+                                                                                <td class="text-center">{{ delivery.durationMin | number_format }}
+                                                                                    à {{ delivery.durationMax | number_format }}
+                                                                                    min
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                {% else %}
+                                                                    <div class="col-sm-4 text-center">
+                                                                        <strong> 12,00 €</strong>
+                                                                        Minimum de commande
+                                                                    </div>
+                                                                    <div class="col-sm-4 text-center">
+                                                                        <strong> 0,00 € </strong><br>
+                                                                        Frais de livraison
+                                                                    </div>
+                                                                    <div class="col-sm-4 text-center">
+                                                                        <strong> 12 à 30 min</strong>
+                                                                        <br>
+                                                                        Délai de livraison
+                                                                    </div>
+                                                                {% endif %}
 
                                                                 {% if restaurant.onTheSpot is defined and restaurant.onTheSpot %}
                                                                     <h5 class="text-bold"><i
@@ -277,32 +330,75 @@
 
                                                     {% endif %}
                                                     <h4 class="title-section">Moyens de paiement</h4>
-                                                    <div class="row list-show-icons restaurant-list">
-                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                    <div class="row list-show-icons restaurant-list text-center">
+                                                        <div class="col-lg-6 margin-bottom-10 col-md-6 col-sm-4 col-xs-6">
                                                             <i class="pf pf-cb"></i>
-                                                            {% if form.bankCard is defined %}
-                                                                {{ form_row(form.bankCard) }}
-                                                            {% endif %}
+
+                                                            <input type="checkbox"
+                                                                    {% if restaurant.bankCard is defined and restaurant.bankCard == true %}
+                                                                        checked
+                                                                    {% endif %}
+                                                                   class='btn-switch hide' data-size="mini"
+                                                                   data-on="<i class='fa fa-check'></i> Carte bancaire"
+                                                                   data-off="<i class='fa fa-remove'></i> Carte bancaire"
+                                                                   data-onstyle="success"
+                                                                   data-offstyle="default"
+                                                                   data-toggle="toggle"
+                                                                   data-width="130"
+                                                                   disabled
+                                                            >
+
                                                         </div>
 
-                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                        <div class="col-lg-6 col-md-6  margin-bottom-10 col-sm-4 col-xs-6">
                                                             <i class="pf pf-paypal"></i>
-                                                            {% if form.paypal is defined %}
-                                                                {{ form_row(form.paypal) }}
-                                                            {% endif %}
+                                                               <input type="checkbox"
+                                                            {% if restaurant.paypal is defined and restaurant.paypal == true %}
+                                                                        checked
+                                                                    {% endif %}
+                                                                   class='btn-switch hide' data-size="mini"
+                                                                   data-on="<i class='fa fa-check'></i> Paypal"
+                                                                   data-off="<i class='fa fa-remove'></i> Carte bancaire"
+                                                                   data-onstyle="success"
+                                                                   data-offstyle="default"
+                                                                   data-toggle="toggle"
+                                                                   data-width="130"
+                                                                      disabled
+                                                            >
                                                         </div>
-                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                        <div class="col-lg-6 col-md-6  margin-bottom-10 col-sm-4 col-xs-6">
                                                             <i class="pf pf-card"></i>
-                                                            {% if form.ticketRestaurant is defined %}
-                                                                {{ form_row(form.ticketRestaurant) }}
-                                                            {% endif %}
+
+                                                            <input type="checkbox"
+                                                                    {% if restaurant.ticketRestaurant is defined and restaurant.ticketRestaurant == true %}
+                                                                        checked
+                                                                    {% endif %}
+                                                                    disabled
+                                                                   class='btn-switch hide' data-size="mini"
+                                                                   data-on="<i class='fa fa-check'></i> Ticket Resto"
+                                                                   data-off="<i class='fa fa-remove'></i> Ticket Resto"
+                                                                   data-onstyle="success"
+                                                                   data-offstyle="default"
+                                                                   data-toggle="toggle"
+                                                                   data-width="130"
+                                                            >
                                                         </div>
 
-                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                        <div class="col-lg-6 col-md-6  margin-bottom-10 col-sm-4 col-xs-6">
                                                             <i class="pf pf-cash"></i>
-                                                            {% if form.cash is defined %}
-                                                                {{ form_row(form.cash) }}
-                                                            {% endif %}
+                                                            <input type="checkbox"
+                                                                    {% if restaurant.cash is defined and restaurant.cash == true %}
+                                                                        checked
+                                                                    {% endif %}
+                                                                    disabled
+                                                                   class='btn-switch hide' data-size="mini"
+                                                                   data-on="<i class='fa fa-check'></i>  Espèce"
+                                                                   data-off="<i class='fa fa-remove'></i> Espèce"
+                                                                   data-onstyle="success"
+                                                                   data-offstyle="default"
+                                                                   data-toggle="toggle"
+                                                                   data-width="130"
+                                                            >
                                                         </div>
                                                     </div>
 
@@ -353,14 +449,14 @@
                                         </div>
 
                                         {#<div class="row">#}
-                                            {#<div class="col-sm-4">#}
-                                                {#<a href="" class="btn btn-sm blue btn-block"><i#}
-                                                            {#class="fa fa-edit fa-faw"></i> Editer</a>#}
-                                            {#</div>#}
-                                            {#<div class="col-sm-4">#}
-                                                {#<a href="" class="btn btn-sm red btn-outline btn-block"><i#}
-                                                            {#class="fa fa-lock fa-faw"></i> Désactiver</a>#}
-                                            {#</div>#}
+                                        {#<div class="col-sm-4">#}
+                                        {#<a href="" class="btn btn-sm blue btn-block"><i#}
+                                        {#class="fa fa-edit fa-faw"></i> Editer</a>#}
+                                        {#</div>#}
+                                        {#<div class="col-sm-4">#}
+                                        {#<a href="" class="btn btn-sm red btn-outline btn-block"><i#}
+                                        {#class="fa fa-lock fa-faw"></i> Désactiver</a>#}
+                                        {#</div>#}
                                         {#</div>#}
                                     </div>
 
@@ -396,7 +492,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts %}
-    <script src="{{ asset_url }}"></script>
+    {% javascripts
+        'public/plugins/bootstrap-switch/js/bootstrap-toggle.min.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

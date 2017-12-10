@@ -2,6 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
+use AppBundle\Entity\City;
+use AppBundle\Entity\Delivery;
+use AppBundle\Entity\OpeningHours;
 use AppBundle\Entity\Restaurant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,16 +27,13 @@ class RestaurantController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+//        $em = $this->getDoctrine()->getManager();
         $date = new \DateTime("now");
         $date->setTimezone(new \DateTimeZone("Europe/Paris"));
 
-        $restaurants = $em->getRepository('AppBundle:Restaurant')->findAll();
+        $restaurants = $this->getDoctrine()->getRepository(Restaurant::class)->findBy([], ['id' => 'DESC']);
 
-        return $this->render('AppBundle:Restaurant:index.html.twig', array(
-            'restaurants' => $restaurants,
-            'date' => $date,
-        ));
+        return $this->render('AppBundle:Restaurant:index.html.twig', array('restaurants' => $restaurants, 'date' => $date,));
     }
 
     /**
@@ -52,13 +53,18 @@ class RestaurantController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($restaurant);
-            //$em->flush();
+/*            dump($form->get('openingHours'));
+            dump($restaurant->getOpeningHours())or die;*/
+            $em->flush();
+
+            
             if ($restaurant->getId()) {
                 if (null !== $form->get("imageLogo")->getData() && null !== $restaurant->getSlug()) {
                     $logo = $this->get('app.upload_service')->upload($form->get("imageLogo")->getData(), 'restaurant', $restaurant->getId(), $restaurant->getSlug());
                     $restaurant->setLogo($logo);
                 }
-//                /** @var Image $image */
+                
+                /** @var Image $image */
                 foreach ($restaurant->getImages() as $key => $image) {
                     if ($image->getFile()) {
                         $image->setName($restaurant->getName());
@@ -66,13 +72,33 @@ class RestaurantController extends Controller
                         $image->setPath($path);
                         $image->setPosition($key);
                         $image->setRestaurant($restaurant);
-                        if ($key % 10 == 0)
-                            $em->flush();
+                        if ($key % 10 == 0) $em->flush();
                     }
                 }
-                $em->flush();
-            }
 
+                /** @var City $communesDelivered */
+                foreach ($restaurant->getCommunesDelivered() as $key => $communesDelivered) {
+                    $communesDelivered->setRestaurant($restaurant);
+                    if ($key % 10 == 0) $em->flush();
+                }
+                /** @var Delivery $deliveries */
+                foreach ($restaurant->getDeliveries() as $key => $deliveries) {
+                    $deliveries->setRestaurant($restaurant);
+                    if ($key % 10 == 0) $em->flush();
+                } 
+                /** @var OpeningHours $peningHours */
+                foreach ($restaurant->getOpeningHours() as $key => $peningHours) {
+                    $peningHours->setRestaurantOpen($restaurant);
+                    if ($key % 10 == 0) $em->flush();
+                }
+                /** @var OpeningHours $exceptionalClosure */
+                foreach ($restaurant->getExceptionalClosure() as $key => $exceptionalClosure) {
+                    $exceptionalClosure->setRestaurantClose($restaurant);
+                    if ($key % 10 == 0) $em->flush();
+                }
+                $em->flush();
+
+            }
             return $this->redirectToRoute('restaurant_index');
 //            return $this->redirectToRoute('restaurant_show', array('id' => $restaurant->getId()));
         }
@@ -83,11 +109,7 @@ class RestaurantController extends Controller
             $gApiKey = $this->getParameter('google_api_key');
         }
 
-        return $this->render('AppBundle:Restaurant:new.html.twig', array(
-            'restaurant' => $restaurant,
-            'gApiKey' => $gApiKey,
-            'form' => $form->createView(),
-        ));
+        return $this->render('AppBundle:Restaurant:new.html.twig', array('restaurant' => $restaurant, 'gApiKey' => $gApiKey, 'form' => $form->createView(),));
     }
 
     /**
@@ -100,10 +122,19 @@ class RestaurantController extends Controller
     {
         $deleteForm = $this->createDeleteForm($restaurant);
 
-        return $this->render('AppBundle:Restaurant:show.html.twig', array(
-            'restaurant' => $restaurant,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render('AppBundle:Restaurant:show.html.twig', array('restaurant' => $restaurant, 'delete_form' => $deleteForm->createView(),));
+    }
+
+    /**
+     * Creates a form to delete a restaurant entity.
+     *
+     * @param Restaurant $restaurant The restaurant entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(Restaurant $restaurant)
+    {
+        return $this->createFormBuilder()->setAction($this->generateUrl('restaurant_delete', array('id' => $restaurant->getId())))->setMethod('DELETE')->getForm();
     }
 
     /**
@@ -120,10 +151,7 @@ class RestaurantController extends Controller
         if (!$restaurant instanceof Restaurant) {
             $this->setFlash('custom-alerts alert alert-danger fade in', '<i class="fa fa-warning"></i>  n\'a pu être trouvée!');
 
-            $this->addFlash(
-                'error',
-                'Restaurant not found!'
-            );
+            $this->addFlash('error', 'Restaurant not found!');
             return $this->redirectToRoute('restaurant_index');
         }
 
@@ -138,10 +166,7 @@ class RestaurantController extends Controller
             return $this->redirectToRoute('restaurant_edit', array('id' => $restaurant->getId()));
         }
 
-        return $this->render('AppBundle:Restaurant:edit.html.twig', array(
-            'restaurant' => $restaurant,
-            'form' => $editForm->createView(),
-        ));
+        return $this->render('AppBundle:Restaurant:edit.html.twig', array('restaurant' => $restaurant, 'form' => $editForm->createView(),));
     }
 
     /**
@@ -162,20 +187,5 @@ class RestaurantController extends Controller
         }
 
         return $this->redirectToRoute('restaurant_index');
-    }
-
-    /**
-     * Creates a form to delete a restaurant entity.
-     *
-     * @param Restaurant $restaurant The restaurant entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Restaurant $restaurant)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('restaurant_delete', array('id' => $restaurant->getId())))
-            ->setMethod('DELETE')
-            ->getForm();
     }
 }
